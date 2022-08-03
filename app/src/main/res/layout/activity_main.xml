@@ -6,8 +6,8 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity"
     android:padding="8dp"
-    android:id="@+id/topPart"
     >
+
     <ImageView
         android:id="@+id/avatar"
         android:layout_width="48dp"
@@ -16,9 +16,8 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:src="@tools:sample/avatars"
         tools:ignore="ContentDescription" />
-
     <TextView
-        android:id="@+id/textView1"
+        android:id="@+id/autor"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
@@ -33,32 +32,30 @@
         tools:text="@sample/posts.json/data/autor" />
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/published"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="@+id/avatar"
-        app:layout_constraintTop_toBottomOf="@+id/textView1"
+        app:layout_constraintTop_toBottomOf="@+id/autor"
         app:layout_constraintStart_toEndOf="@+id/avatar"
         android:layout_marginStart="16dp"
         android:singleLine="true"
         android:ellipsize="end"
         tools:text="@sample/posts.json/data/published"
         tools:ignore="MissingConstraints" />
-
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_baseline_more_vert_24"
         app:layout_constraintEnd_toEndOf="parent"
         android:background="@android:color/transparent"
-        tools:ignore="MissingConstraints"
-        />
+        tools:ignore="MissingConstraints" />
     <androidx.constraintlayout.widget.Barrier
         android:id="@+id/barrier1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:barrierDirection="bottom"
-        app:constraint_referenced_ids="avatar,textView2"
+        app:constraint_referenced_ids="avatar,published"
         />
     <TextView
         android:id="@+id/content"
@@ -67,8 +64,6 @@
         app:layout_constraintTop_toBottomOf="@+id/barrier1"
         app:layout_constraintStart_toStartOf="parent"
         android:layout_marginTop="16dp"
-        tools:ignore="MissingConstraints"
-        tools:text="@sample/posts.json/data/content"
         />
     <TextView
         android:id="@+id/url"
@@ -80,7 +75,6 @@
         tools:ignore="MissingConstraints"
         tools:text="@sample/posts.json/data/url"
         />
-
     <androidx.constraintlayout.widget.Barrier
         android:id="@+id/barrier2"
         android:layout_width="wrap_content"
@@ -88,7 +82,6 @@
         app:barrierDirection="bottom"
         app:constraint_referenced_ids="url,content"
         />
-
     <ImageView
         android:id="@+id/imagyLikes"
         android:layout_width="wrap_content"
@@ -99,7 +92,6 @@
         app:layout_constraintTop_toTopOf="@id/barrier2"
         android:layout_marginTop="4dp"
         tools:ignore="MissingConstraints" />
-
     <TextView
         android:id="@+id/likes"
         android:layout_width="wrap_content"
@@ -111,7 +103,6 @@
         android:textSize="18dp"
         tools:ignore="MissingConstraints"
         tools:text="@sample/posts.json/data/likes" />
-
     <ImageView
         android:id="@+id/imageShare"
         android:layout_width="wrap_content"
@@ -156,5 +147,6 @@
         android:textSize="18sp"
         tools:ignore="MissingConstraints"
         tools:text="@sample/posts.json/data/viewed" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
 
