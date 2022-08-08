@@ -8,6 +8,7 @@ interface PostRepository {
     fun get(): LiveData<Post>
     fun like()
     fun share()
+    fun likeById(id: Int)
 }
 class PostRepositoryInMemory: PostRepository {
     private var post = Post(
@@ -33,6 +34,10 @@ class PostRepositoryInMemory: PostRepository {
 
     override fun share() {
         post=post.copy(shares=post.shares++)
+    }
+
+    override fun likeById(id: Int) {
+
     }
 
 }
