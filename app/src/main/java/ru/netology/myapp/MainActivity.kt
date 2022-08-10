@@ -1,5 +1,6 @@
 package ru.netology.myapp
 
+import android.icu.number.NumberFormatter.with
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.ImageView
@@ -22,7 +23,6 @@ class MainActivity : AppCompatActivity() {
                 share = 999,
                 viewed = 22)
 
-
         binding.content.text = post.content
         binding.autor.text = post.autor
         binding.published.text = post.published
@@ -32,6 +32,7 @@ class MainActivity : AppCompatActivity() {
         binding.viewed.text = post.viewed.toString()
 
         binding.imagyLikes.setOnClickListener {
+            val b=30
             post.iLiked = !post.iLiked
             binding.likes.text = if (post.iLiked) numberToString(likesNow + 1) else numberToString(likesNow)
             binding.imagyLikes.setImageResource(
@@ -46,6 +47,9 @@ class MainActivity : AppCompatActivity() {
         binding.imageShare.setOnClickListener {
             post.share = post.share+1
             binding.share.text = numberToString(post.share)
+        }
+        binding.root.setOnClickListener {
+            val i=30
         }
     }
 }
