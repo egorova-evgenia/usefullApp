@@ -38,7 +38,6 @@ class PostRepositoryInMemory: PostRepository {
     }
 
     override fun likeById(id: Int) {
-
     }
 
 }

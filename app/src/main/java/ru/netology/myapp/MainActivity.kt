@@ -33,15 +33,14 @@ class MainActivity : AppCompatActivity() {
                     R.drawable.ic_outline_favorite_border_24
                 }
             binding.imagyLikes.setImageResource(imgLike)
-
-            binding.imagyLikes.setOnClickListener {
-                viewModel.like()
-            }
-
-            binding.imageShare.setOnClickListener {
-                viewModel.share()
-            }
         }
+         binding.imagyLikes.setOnClickListener {
+            viewModel.like()
+        }
+        binding.imageShare.setOnClickListener {
+            viewModel.share()
+        }
+
     }
 }
 /*???
