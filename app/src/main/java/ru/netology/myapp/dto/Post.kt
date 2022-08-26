@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 
 data class Post(
-        val id: Long,
+        val id: Int,
         val autor: String,
         val autorAvatar: String,
         val published: String,
