@@ -11,8 +11,10 @@ import ru.netology.myapp.numberToString
 import java.util.Collections.emptyList
 
 typealias OnLikeListener =(post: Post) -> Unit
+typealias OnShareListener =(post: Post) -> Unit
 
-class PostsAdapter(private val onLikeListener: OnLikeListener): RecyclerView.Adapter<PostsAdapter.PostViewHolder>() {
+
+class PostsAdapter(private val onLikeListener: OnLikeListener, private val onShareListener: OnShareListener): RecyclerView.Adapter<PostsAdapter.PostViewHolder>() {
     var list = emptyList<Post>()
     set(value){
         field=value
@@ -21,7 +23,7 @@ class PostsAdapter(private val onLikeListener: OnLikeListener): RecyclerView.Ada
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostViewHolder {
         val binding = CardPostBinding.inflate(LayoutInflater.from(parent.context),parent,false)
-        return PostViewHolder(binding, onLikeListener)
+        return PostViewHolder(binding, onLikeListener, onShareListener)
     }
 
     override fun onBindViewHolder(holder: PostViewHolder, position: Int) {
@@ -30,25 +32,29 @@ class PostsAdapter(private val onLikeListener: OnLikeListener): RecyclerView.Ada
     }
 
     override fun getItemCount(): Int = list.size
-
-    class PostViewHolder(private val binding: CardPostBinding, private val onLikeListener: OnLikeListener): RecyclerView.ViewHolder(binding.root){
+//    , val onLikeListener: OnLikeListener
+    class PostViewHolder(val binding: CardPostBinding, private val onLikeListener: OnLikeListener, private val onShareListener: OnShareListener): RecyclerView.ViewHolder(binding.root){
         fun bind(post: Post) {
             binding.apply {
-                binding.content.text = post.content
-                binding.autor.text = post.autor
-                binding.published.text = post.published
-                binding.likes.text = numberToString(post.likes)
-                binding.share.text = numberToString(post.shares)
-                binding.viewed.text = numberToString(post.viewes)
+                content.text = post.content
+                autor.text = post.autor
+                published.text = post.published
+                likes.text = numberToString(post.likes)
+                share.text = numberToString(post.shares)
+                viewed.text = numberToString(post.viewes)
                 val imgLike = if (post.iLiked) {
                     R.drawable.ic_baseline_favorite_24
                 } else {
                     R.drawable.ic_outline_favorite_border_24
                 }
-                binding.imagyLikes.setImageResource(imgLike)
+                imagyLikes.setImageResource(imgLike)
 
-                binding.imagyLikes.setOnClickListener {
+                imagyLikes.setOnClickListener {
                     onLikeListener(post)
+                }
+
+                imageShare.setOnClickListener {
+                    onShareListener(post)
                 }
             }
         }

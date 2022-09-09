@@ -3,14 +3,9 @@ package ru.netology.myapp
 /*import android.icu.number.NumberFormatter.with*/
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.viewModels
-import androidx.lifecycle.ViewModel
 import ru.netology.myapp.adapter.PostsAdapter
-/*import android.widget.ImageView*/
 import ru.netology.myapp.databinding.ActivityMainBinding
-import ru.netology.myapp.databinding.CardPostBinding
-import ru.netology.myapp.dto.Post
 import ru.netology.myapp.viewmodel.PostViewModel
 
 
@@ -22,18 +17,21 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         val viewModel by viewModels<PostViewModel>()
-        val adapter = PostsAdapter {
-            viewModel.likeById(it.id)
-        }
+        val adapter = PostsAdapter ({
+            viewModel.likeById(it.id)},
+            {viewModel.shareById(it.id)
+        })
         binding.list.adapter=adapter
 
-        viewModel.data.observe(this) { posts ->
+        val observe = viewModel.data.observe(this) { posts ->
             posts.map { post ->
-                adapter.list=posts
-        }
+                adapter.list = posts
+//                println("adapter")
+            }
 
+        }
     }
-}}
+}
 
 
 
