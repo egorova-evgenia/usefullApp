@@ -8,7 +8,6 @@ import ru.netology.myapp.adapter.PostsAdapter
 import ru.netology.myapp.databinding.ActivityMainBinding
 import ru.netology.myapp.viewmodel.PostViewModel
 
-
 /*@Suppress("IMPLICIT_NOTHING_TYPE_ARGUMENT_IN_RETURN_POSITION")*/
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -19,8 +18,8 @@ class MainActivity : AppCompatActivity() {
         val viewModel by viewModels<PostViewModel>()
         val adapter = PostsAdapter ({
             viewModel.likeById(it.id)},
-            {viewModel.shareById(it.id)
-        })
+            {viewModel.shareById(it.id)}
+        )
         binding.list.adapter=adapter
 
         val observe = viewModel.data.observe(this) { posts ->
