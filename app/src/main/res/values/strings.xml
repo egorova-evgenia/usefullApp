@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">MyApp</string>
     <string name="nmedia">NMedia!</string>
+    <string name="popst_menu_remove">Remove</string>
 </resources>

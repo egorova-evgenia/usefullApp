@@ -2,4 +2,5 @@
 <resources>
     <string name="app_name">Приложение</string>
     <string name="nmedia" translatable="false">НМедиа!</string>
+    <string name="popst_menu_remove">Remove</string>
 </resources>

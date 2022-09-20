@@ -16,16 +16,16 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         val viewModel by viewModels<PostViewModel>()
-        val adapter = PostsAdapter ({
-            viewModel.likeById(it.id)},
-            {viewModel.shareById(it.id)}
+        val adapter = PostsAdapter (
+            {viewModel.likeById(it.id)},
+            {viewModel.shareById(it.id)},
+            {viewModel.removeById(it.id)}
         )
         binding.list.adapter=adapter
 
         val observe = viewModel.data.observe(this) { posts ->
             posts.map { post ->
                 adapter.list = posts
-//                println("adapter")
             }
 
         }
