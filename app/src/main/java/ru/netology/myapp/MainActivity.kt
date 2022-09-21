@@ -24,8 +24,7 @@ class MainActivity : AppCompatActivity() {
 
         val observe = viewModel.data.observe(this) { posts ->
             posts.map { post ->
-                adapter.list = posts
-//                println("adapter")
+                adapter.submitList(posts)
             }
 
         }
