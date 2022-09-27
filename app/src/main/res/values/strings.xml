@@ -2,4 +2,6 @@
     <string name="app_name">MyApp</string>
     <string name="nmedia">NMedia!</string>
     <string name="popst_menu_remove">Remove</string>
+    <string name="write_your_text_input">Write your text</string>
+    <string name="empty_post">Post is empty</string>
 </resources>

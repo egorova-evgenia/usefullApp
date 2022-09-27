@@ -11,6 +11,7 @@ interface PostRepository {
     fun likeById(id: Int)
     fun shareById(id:Int)
     fun removeById(id:Int)
+    fun save(post: Post)
 }
 class PostRepositoryInMemory: PostRepository {
     private var posts = listOf(Post(
@@ -58,6 +59,15 @@ class PostRepositoryInMemory: PostRepository {
 
     override fun removeById(id: Int) {
         posts=posts.filter {it.id!=id}
+        data.value=posts
+    }
+
+    fun getNextId() = posts.size
+
+    override fun save(post: Post) {
+        posts= listOf(post.copy(
+            id=getNextId()
+        )) + posts
         data.value=posts
     }
 
