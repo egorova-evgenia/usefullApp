@@ -47,7 +47,7 @@
 
         app:srcCompat="@drawable/ic_cancel"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/save"
+        app:layout_constraintBottom_toBottomOf="@id/editeModeText"
         app:layout_constraintTop_toTopOf="@id/editeModeText"
         />
 

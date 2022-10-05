@@ -51,13 +51,13 @@ class MainActivity : AppCompatActivity() {
 
         viewModel.edited.observe(this) {edited ->
 //            isItVisible=true
-            binding.editTextGroup.visibility=View.VISIBLE
 
             if (edited.id==newPostId) {
 //                isItVisible=false
                 return@observe
             }
             binding.content.setText(edited.content)
+            binding.editTextGroup.visibility=View.VISIBLE
             binding.content.requestFocus()
 
 
@@ -89,7 +89,7 @@ class MainActivity : AppCompatActivity() {
             binding.content.clearFocus()
             AndroidUtils.hideKeyboard(binding.content)
             binding.editTextGroup.visibility=View.GONE
-            binding.content.setText(" ")
+            binding.content.setText("")
         }
 
         binding.list.adapter=adapter
