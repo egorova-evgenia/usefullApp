@@ -5,9 +5,9 @@ import androidx.lifecycle.ViewModel
 import ru.netology.myapp.dto.Post
 import ru.netology.myapp.repository.PostRepository
 import ru.netology.myapp.repository.PostRepositoryInMemory
-
+val newPostId=-1
 val empty = Post(
-    -1,
+    newPostId,
     "Mary",
     "@tools:sample/avatars",
     "30 июля в 15.30",
@@ -27,6 +27,7 @@ class PostViewModel: ViewModel() {
     fun removeById(id: Int) = repository.removeById(id)
 
     val edited = MutableLiveData(empty)
+
     fun editContent(content: String) {
         edited.value?.let {
         val trimmed = content.trim()
@@ -38,8 +39,16 @@ class PostViewModel: ViewModel() {
     fun save(){
         edited.value?.let {
             repository.save(it)
+            edited.value = empty
 
         }
+    }
+    fun edit(post: Post){
+        edited.value =post
+    }
+
+    fun  cancelEdit(){
+        edited.value =empty // сброс текста
     }
 
 }

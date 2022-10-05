@@ -3,4 +3,7 @@
     <string name="app_name">Приложение</string>
     <string name="nmedia" translatable="false">НМедиа!</string>
     <string name="popst_menu_remove">Remove</string>
+    <string name="write_your_text_input">Введите текст</string>
+    <string name="empty_post">Нет текста</string>
+    <string name="popst_menu_edit">Редактировать</string>
 </resources>

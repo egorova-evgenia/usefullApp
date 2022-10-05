@@ -3,12 +3,16 @@ package ru.netology.myapp
 /*import android.icu.number.NumberFormatter.with*/
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
+import ru.netology.myapp.adapter.PostEventListener
 import ru.netology.myapp.adapter.PostsAdapter
 import ru.netology.myapp.databinding.ActivityMainBinding
+import ru.netology.myapp.dto.Post
 import ru.netology.myapp.repository.utils.AndroidUtils
 import ru.netology.myapp.viewmodel.PostViewModel
+import ru.netology.myapp.viewmodel.newPostId
 
 /*@Suppress("IMPLICIT_NOTHING_TYPE_ARGUMENT_IN_RETURN_POSITION")*/
 class MainActivity : AppCompatActivity() {
@@ -18,11 +22,60 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         val viewModel by viewModels<PostViewModel>()
-        val adapter = PostsAdapter ({
-            viewModel.likeById(it.id)},
-            {viewModel.shareById(it.id)},
-            {viewModel.removeById(it.id)}
+        val adapter = PostsAdapter (
+            object : PostEventListener{
+                override fun onLike(post: Post) {
+                    viewModel.likeById(post.id)
+                }
+
+                override fun onShare(post: Post) {
+                    viewModel.shareById(post.id)
+                }
+
+                override fun onRemove(post: Post) {
+                    viewModel.removeById(post.id)
+                }
+
+                override fun onEdit(post: Post) {
+                    viewModel.edit(post)
+                }
+
+                override fun onCancelEdit(post: Post) {
+                    viewModel.edit(post)
+                }
+
+            }
         )
+
+        var isItVisible=false
+
+        viewModel.edited.observe(this) {edited ->
+//            isItVisible=true
+            binding.editTextGroup.visibility=View.VISIBLE
+
+            if (edited.id==newPostId) {
+//                isItVisible=false
+                return@observe
+            }
+            binding.content.setText(edited.content)
+            binding.content.requestFocus()
+
+
+
+
+        }
+//        isItVisible=true
+//        binding.editTextGroup.visibility = if (isItVisible) View.VISIBLE else View.GONE
+//
+        binding.cancel.setOnClickListener {
+            viewModel.cancelEdit()
+            binding.content.setText("")
+            binding.content.clearFocus()
+            AndroidUtils.hideKeyboard(binding.content)
+            binding.editTextGroup.visibility=View.GONE
+
+//            isItVisible=false
+        }
 
         binding.save.setOnClickListener{
             if (binding.content.text.isNullOrBlank()) {
@@ -35,6 +88,7 @@ class MainActivity : AppCompatActivity() {
             viewModel.save()
             binding.content.clearFocus()
             AndroidUtils.hideKeyboard(binding.content)
+            binding.editTextGroup.visibility=View.GONE
             binding.content.setText(" ")
         }
 
@@ -43,15 +97,9 @@ class MainActivity : AppCompatActivity() {
             posts.map { post ->
                 adapter.submitList(posts)
             }
-
         }
     }
 }
-
-
-
-
-
 
 
 

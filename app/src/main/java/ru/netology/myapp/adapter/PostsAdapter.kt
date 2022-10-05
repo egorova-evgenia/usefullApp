@@ -12,17 +12,23 @@ import ru.netology.myapp.dto.Post
 import ru.netology.myapp.numberToString
 import java.util.Collections.emptyList
 
-typealias OnLikeListener =(post: Post) -> Unit
-typealias OnShareListener =(post: Post) -> Unit
-typealias OnRemoveListener =(post: Post) -> Unit
+//typealias OnLikeListener =(post: Post) -> Unit
+//typealias OnShareListener =(post: Post) -> Unit
+//typealias OnRemoveListener =(post: Post) -> Unit
 
-class PostsAdapter(private val onLikeListener: OnLikeListener,
-                   private val onShareListener: OnShareListener,
-                   private val onRemoveListener: OnRemoveListener,
+interface PostEventListener{
+    fun onLike(post: Post)
+    fun onShare(post: Post)
+    fun onRemove(post: Post)
+    fun onEdit(post: Post)
+    fun onCancelEdit(post: Post)
+}
+
+class PostsAdapter(private val listener: PostEventListener
                    ): ListAdapter<Post, PostsAdapter.PostViewHolder>(PostDiffCallback()) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostViewHolder {
         val binding = CardPostBinding.inflate(LayoutInflater.from(parent.context),parent,false)
-        return PostViewHolder(binding, onLikeListener, onShareListener, onRemoveListener)
+        return PostViewHolder(binding, listener)
     }
 
     override fun onBindViewHolder(holder: PostViewHolder, position: Int) {
@@ -30,9 +36,7 @@ class PostsAdapter(private val onLikeListener: OnLikeListener,
         holder.bind(post)
     }
     class PostViewHolder(val binding: CardPostBinding,
-                         private val onLikeListener: OnLikeListener,
-                         private val onShareListener: OnShareListener,
-                         private val onRemoveListener: OnRemoveListener
+                         val listener: PostEventListener
                          ): RecyclerView.ViewHolder(binding.root){
         fun bind(post: Post) {
             binding.apply {
@@ -50,11 +54,11 @@ class PostsAdapter(private val onLikeListener: OnLikeListener,
                 imagyLikes.setImageResource(imgLike)
 
                 imagyLikes.setOnClickListener {
-                    onLikeListener(post)
+                    listener.onLike(post)
                 }
 
                 imageShare.setOnClickListener {
-                    onShareListener(post)
+                    listener.onShare(post)
                 }
 
                 menu.setOnClickListener {
@@ -62,8 +66,10 @@ class PostsAdapter(private val onLikeListener: OnLikeListener,
                         inflate(R.menu.post_menu)
                         setOnMenuItemClickListener {menuItem ->
                             when (menuItem.itemId){
-                                R.id.remove -> {onRemoveListener(post)
+                                R.id.remove -> {listener.onRemove(post)
                                 return@setOnMenuItemClickListener true}
+                                R.id.edit -> {listener.onEdit(post)
+                                    return@setOnMenuItemClickListener true}
                             }
                             false
                         }
