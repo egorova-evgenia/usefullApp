@@ -9,6 +9,6 @@ fun numberToString(number: Int): String {
         number < 10000 -> DecimalFormat("#0.0").format(number/1000.0)+"K"
         number < 100000 -> (number / 1000).toString()+"K"
         number < 110000 -> "1M"
-        else -> DecimalFormat("#0.0").format(number/100000.0)+"M"
+        else -> DecimalFormat("#0.0").format(number/1_000_000.0)+"M"
     }
 }

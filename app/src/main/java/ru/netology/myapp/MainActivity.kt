@@ -26,15 +26,10 @@ class MainActivity : AppCompatActivity() {
             posts.map { post ->
                 adapter.submitList(posts)
             }
+        }
 
+        binding.root.setOnClickListener {
+            val i=10
         }
     }
 }
-
-
-
-
-
-
-
-
