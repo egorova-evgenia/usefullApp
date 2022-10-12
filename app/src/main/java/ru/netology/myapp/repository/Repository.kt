@@ -3,13 +3,14 @@ package ru.netology.myapp.repository
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import ru.netology.myapp.dto.Post
+import ru.netology.myapp.viewmodel.newPostId
 
 interface PostRepository {
     fun getAll(): LiveData<List<Post>>
-//    fun like()
-//    fun share()
     fun likeById(id: Int)
     fun shareById(id:Int)
+    fun removeById(id:Int)
+    fun save(post: Post)
 }
 class PostRepositoryInMemory: PostRepository {
     private var posts = listOf(Post(
@@ -55,4 +56,24 @@ class PostRepositoryInMemory: PostRepository {
         data.value=posts
     }
 
+    override fun removeById(id: Int) {
+        posts=posts.filter {it.id!=id}
+        data.value=posts
+    }
+
+    fun getNextId() = posts.size
+
+    override fun save(post: Post) {
+//        data.value =
+//        posts=listOf(post.copy(id = posts.firstOrNull()?.id?:1)) + posts
+
+        if    (post.id == newPostId) {
+            posts=listOf(post.copy(id = getNextId())) + posts
+        } else {
+        posts=posts.map {
+            if (it.id==post.id) it.copy(content = post.content) else it
+        }
+        }
+        data.value = posts
+    }
 }

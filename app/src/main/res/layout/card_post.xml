@@ -44,6 +44,7 @@
         tools:text="@sample/posts.json/data/published" />
 
     <ImageView
+        android:id="@+id/menu"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@android:color/transparent"
