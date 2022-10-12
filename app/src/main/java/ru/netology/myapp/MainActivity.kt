@@ -50,31 +50,21 @@ class MainActivity : AppCompatActivity() {
         var isItVisible=false
 
         viewModel.edited.observe(this) {edited ->
-//            isItVisible=true
 
             if (edited.id==newPostId) {
-//                isItVisible=false
                 return@observe
             }
             binding.content.setText(edited.content)
             binding.editTextGroup.visibility=View.VISIBLE
             binding.content.requestFocus()
-
-
-
-
         }
-//        isItVisible=true
-//        binding.editTextGroup.visibility = if (isItVisible) View.VISIBLE else View.GONE
-//
+
         binding.cancel.setOnClickListener {
             viewModel.cancelEdit()
             binding.content.setText("")
             binding.content.clearFocus()
             AndroidUtils.hideKeyboard(binding.content)
             binding.editTextGroup.visibility=View.GONE
-
-//            isItVisible=false
         }
 
         binding.save.setOnClickListener{
@@ -100,6 +90,3 @@ class MainActivity : AppCompatActivity() {
         }
     }
 }
-
-
-
