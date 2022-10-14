@@ -47,8 +47,6 @@ class MainActivity : AppCompatActivity() {
             }
         )
 
-        var isItVisible=false
-
         viewModel.edited.observe(this) {edited ->
 
             if (edited.id==newPostId) {

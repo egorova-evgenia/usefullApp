@@ -43,21 +43,18 @@ class PostsAdapter(private val listener: PostEventListener
                 content.text = post.content
                 autor.text = post.autor
                 published.text = post.published
-                likes.text = numberToString(post.likes)
-                share.text = numberToString(post.shares)
-                viewed.text = numberToString(post.viewes)
-                val imgLike = if (post.iLiked) {
-                    R.drawable.ic_baseline_favorite_24
-                } else {
-                    R.drawable.ic_outline_favorite_border_24
-                }
-                imagyLikes.setImageResource(imgLike)
 
-                imagyLikes.setOnClickListener {
+                imageViewed.text = numberToString(post.viewes)
+
+                buttonLikes.isChecked=post.iLiked
+                buttonLikes.text=numberToString(post.likes)
+                buttonShare.text=numberToString(post.shares)
+
+                buttonLikes.setOnClickListener {
                     listener.onLike(post)
                 }
 
-                imageShare.setOnClickListener {
+                buttonShare.setOnClickListener {
                     listener.onShare(post)
                 }
 

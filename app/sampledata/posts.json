@@ -9,7 +9,8 @@
       "url": "www.url.ru",
       "likes": 10,
       "share": 2,
-      "viewed": 22
+      "viewed": 22,
+      "iLiked": true
     }
   ]
 }
