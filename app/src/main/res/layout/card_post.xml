@@ -47,7 +47,7 @@
         android:layout_height="wrap_content"
         app:icon="@drawable/ic_baseline_more_vert_24"
         app:iconTint="@color/usualGrey"
-        style="Widget.App.Button.button_style"
+        style="@style/Widget.AppTheme.button_style"
         android:contentDescription="@string/menu_description"
         app:layout_constraintEnd_toEndOf="parent"
         tools:ignore="MissingConstraints" />
