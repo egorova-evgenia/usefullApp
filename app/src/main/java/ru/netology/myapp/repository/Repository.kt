@@ -15,7 +15,7 @@ interface PostRepository {
 class PostRepositoryInMemory: PostRepository {
     private var posts = listOf(Post(
             id = 0,
-            autor = "Netology. Длииииииииииииииииииииииииииииииииииииинно",
+            autor = "Autor_Name. Длииииииииииииииииииииииииииииииииииииинно",
             autorAvatar = "@tools:sample/avatars",
             published = "30 июля в 10.30",
             content = "короткий текст" +
