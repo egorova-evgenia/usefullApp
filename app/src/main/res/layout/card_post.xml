@@ -96,7 +96,7 @@
         style="@style/Widget.AppTheme.LikeButton"
         tools:isChecked="@sample/posts.json/data/iLiked"
         tools:text="@sample/posts.json/data/likes"
-         />
+        />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/buttonShare"
@@ -122,6 +122,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/buttonLikes"
         android:contentDescription="@string/viewed_description"
-         />
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
