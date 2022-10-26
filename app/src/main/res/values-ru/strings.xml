@@ -12,5 +12,6 @@
     <string name="viewed_description">Просмотры</string>
     <string name="menu_description">меню</string>
     <string name="create_new_post_description">новый пост</string>
+    <string name="save">save</string>
 
 </resources>

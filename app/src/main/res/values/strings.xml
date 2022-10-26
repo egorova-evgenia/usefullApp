@@ -11,5 +11,6 @@
     <string name="viewed_description">viewed</string>
     <string name="menu_description">menu</string>
     <string name="create_new_post_description">add new post</string>
+    <string name="save">save</string>
 
 </resources>

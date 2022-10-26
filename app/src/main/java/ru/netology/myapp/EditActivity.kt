@@ -3,16 +3,20 @@ package ru.netology.myapp
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.widget.Toast
+import ru.netology.myapp.databinding.ActivityEditBinding
 import ru.netology.myapp.databinding.ActivityNewPostBinding
 
-class NewPostActivity : AppCompatActivity() {
+class EditActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val binding = ActivityNewPostBinding.inflate(layoutInflater)
+        setContentView(R.layout.activity_edit)
+        val binding = ActivityEditBinding.inflate(layoutInflater)
         setContentView(binding.root)
-//        binding.content.requestFocus()
+
+        val text = intent.getStringExtra(Intent.EXTRA_TEXT).toString()
+        binding.content.setText(text)
+
         binding.save.setOnClickListener{
 
             if (binding.content.text.isNullOrBlank()) {
@@ -23,11 +27,8 @@ class NewPostActivity : AppCompatActivity() {
 
                 val result = Intent().putExtra(Intent.EXTRA_TEXT,binding.content.text.toString())
                 setResult(RESULT_OK,result)
-                }
-                    finish()
             }
-
-
+        finish()
     }
-
+    }
 }

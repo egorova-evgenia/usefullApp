@@ -1,17 +1,15 @@
 package ru.netology.myapp
 
 /*import android.icu.number.NumberFormatter.with*/
-import androidx.appcompat.app.AppCompatActivity
+import android.content.Intent
 import android.os.Bundle
-import android.view.View
-import android.widget.Toast
 import androidx.activity.result.launch
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import ru.netology.myapp.adapter.PostEventListener
 import ru.netology.myapp.adapter.PostsAdapter
 import ru.netology.myapp.databinding.ActivityMainBinding
 import ru.netology.myapp.dto.Post
-import ru.netology.myapp.repository.utils.AndroidUtils
 import ru.netology.myapp.viewmodel.PostViewModel
 import ru.netology.myapp.viewmodel.newPostId
 
@@ -26,7 +24,13 @@ class MainActivity : AppCompatActivity() {
 
         val newPostLauncher = registerForActivityResult(NewPostActivityContract()){text->
             text ?:return@registerForActivityResult
-            viewModel.editContent(text)
+            viewModel.editContent(text.toString())
+            viewModel.save()
+        }
+
+        val editPostLauncher = registerForActivityResult(EditActivityContract()){text->
+            text ?:return@registerForActivityResult
+            viewModel.editContent(text.toString())
             viewModel.save()
         }
 
@@ -37,6 +41,7 @@ class MainActivity : AppCompatActivity() {
                 }
 
                 override fun onShare(post: Post) {
+
                     viewModel.shareById(post.id)
                 }
 
@@ -45,6 +50,16 @@ class MainActivity : AppCompatActivity() {
                 }
 
                 override fun onEdit(post: Post) {
+//                    val intent = Intent().apply {
+//                        intent.putExtra(Intent.EXTRA_TEXT, post.content)
+//                    }
+//                    startActivity(intent)
+//                    val putIntent = Intent()
+//                        action = Intent().ACTION_SEND
+//                        putExtra()
+////                        val text = getStringExtra()
+//                    }
+                    editPostLauncher.launch(post.content.toString())
                     viewModel.edit(post)
                 }
 
@@ -95,8 +110,13 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        binding.plus.setOnClickListener(){
+        binding.plus.setOnClickListener{
             newPostLauncher.launch()
+//             registerForActivityResult(NewPostActivityContract()){text->
+//            text ?:return@registerForActivityResult
+//                 viewModel.editContent(text)
+//                 viewModel.save()
+//        }.launch()
         }
     }
 }
