@@ -29,6 +29,6 @@ class EditActivity : AppCompatActivity() {
                 setResult(RESULT_OK,result)
             }
         finish()
-    }
+        }
     }
 }
