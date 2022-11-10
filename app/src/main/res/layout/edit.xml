@@ -17,49 +17,16 @@
         android:contentDescription="@string/save"
         />
 
+
     <EditText
         android:id="@+id/content"
-        android:inputType="textMultiLine"
-        android:background="@android:color/transparent"
-        android:gravity="top"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="8dp"
+        android:background="@android:color/transparent"
+        android:gravity="center_horizontal|center_vertical"
         android:hint="@string/write_your_text_input"
         android:importantForAutofill="no"
-        />
-
-
-    <!--    <TextView-->
-    <!--            android:id="@+id/editeModeText"-->
-    <!--            android:layout_width="wrap_content"-->
-    <!--            android:layout_height="wrap_content"-->
-    <!--            android:layout_margin="4dp"-->
-    <!--            android:textSize="18sp"-->
-    <!--            android:text="@string/edit_mode"-->
-    <!--            app:layout_constraintEnd_toStartOf="@+id/cancel"-->
-    <!--            app:layout_constraintStart_toStartOf="parent"-->
-    <!--            app:layout_constraintBottom_toTopOf="@+id/content"-->
-    <!--            />-->
-
-    <!--    <ImageView-->
-    <!--        android:id="@+id/cancel"-->
-    <!--        android:layout_width="wrap_content"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        android:padding="8dp"-->
-
-    <!--        app:srcCompat="@drawable/ic_cancel"-->
-    <!--        app:layout_constraintEnd_toEndOf="parent"-->
-    <!--        app:layout_constraintBottom_toBottomOf="@id/editeModeText"-->
-    <!--        app:layout_constraintTop_toTopOf="@id/editeModeText"-->
-    <!--        />-->
-
-    <!--    <androidx.constraintlayout.widget.Group-->
-    <!--        android:id="@+id/editTextGroup"-->
-    <!--        android:layout_width="wrap_content"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        android:visibility= "gone"-->
-    <!--        app:constraint_referenced_ids="editeModeText,cancel"-->
-    <!--        tools:ignore="UnknownId" />-->
+        android:inputType="textMultiLine"
+        android:padding="8dp" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

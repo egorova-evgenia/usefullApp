@@ -41,6 +41,13 @@ class MainActivity : AppCompatActivity() {
                 }
 
                 override fun onShare(post: Post) {
+//                    val intent = Intent().apply{
+//                        action =Intent.ACTION_SEND
+//                        putExtra(Intent.EXTRA_TEXT,post.content.toString())
+//                        type = "text/plain"
+//                    }
+//                    val shareIntent = Intent.createChooser(intent, getString(R.string.chooser_share_post))
+//                    startActivity(shareIntent)
 
                     viewModel.shareById(post.id)
                 }
@@ -112,11 +119,6 @@ class MainActivity : AppCompatActivity() {
 
         binding.plus.setOnClickListener{
             newPostLauncher.launch()
-//             registerForActivityResult(NewPostActivityContract()){text->
-//            text ?:return@registerForActivityResult
-//                 viewModel.editContent(text)
-//                 viewModel.save()
-//        }.launch()
         }
     }
 }

@@ -3,9 +3,11 @@ package ru.netology.myapp
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
 import ru.netology.myapp.databinding.ActivityEditBinding
 import ru.netology.myapp.databinding.ActivityNewPostBinding
+import ru.netology.myapp.repository.utils.AndroidUtils
 
 class EditActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -14,8 +16,11 @@ class EditActivity : AppCompatActivity() {
         val binding = ActivityEditBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val text = intent.getStringExtra(Intent.EXTRA_TEXT).toString()
-        binding.content.setText(text)
+        if (intent.getStringExtra(Intent.EXTRA_TEXT)!=null) {
+            val text = intent.getStringExtra(Intent.EXTRA_TEXT).toString()
+            binding.editGroup.visibility= View.VISIBLE
+            binding.content.setText(text)
+        }
 
         binding.save.setOnClickListener{
 
@@ -30,5 +35,11 @@ class EditActivity : AppCompatActivity() {
             }
         finish()
         }
+
+        binding.cancel.setOnClickListener {
+            setResult(RESULT_CANCELED)
+            finish()
+        }
+
     }
 }
