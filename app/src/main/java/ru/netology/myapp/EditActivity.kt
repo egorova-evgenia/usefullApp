@@ -20,6 +20,8 @@ class EditActivity : AppCompatActivity() {
             val text = intent.getStringExtra(Intent.EXTRA_TEXT).toString()
             binding.editGroup.visibility= View.VISIBLE
             binding.content.setText(text)
+        } else {
+            binding.editGroup.visibility= View.GONE
         }
 
         binding.save.setOnClickListener{
