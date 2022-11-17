@@ -41,14 +41,11 @@ class MainActivity : AppCompatActivity() {
                 }
 
                 override fun onShare(post: Post) {
-//                    val intent = Intent().apply{
-//                        action =Intent.ACTION_SEND
-//                        putExtra(Intent.EXTRA_TEXT,post.content.toString())
-//                        type = "text/plain"
-//                    }
-//                    val shareIntent = Intent.createChooser(intent, getString(R.string.chooser_share_post))
-//                    startActivity(shareIntent)
-
+                    val intent = Intent()
+                        .setAction(Intent.ACTION_SEND)
+                        .setType("text/plain")
+                    val createChooser = Intent.createChooser(intent, "Choose app")
+                    startActivity(createChooser)
                     viewModel.shareById(post.id)
                 }
 
@@ -57,17 +54,12 @@ class MainActivity : AppCompatActivity() {
                 }
 
                 override fun onEdit(post: Post) {
-//                    val intent = Intent().apply {
-//                        intent.putExtra(Intent.EXTRA_TEXT, post.content)
-//                    }
-//                    startActivity(intent)
-//                    val putIntent = Intent()
-//                        action = Intent().ACTION_SEND
-//                        putExtra()
-////                        val text = getStringExtra()
-//                    }
-                    editPostLauncher.launch(post.content.toString())
-                    viewModel.edit(post)
+                    val res = editPostLauncher.launch(post.content.toString())
+                    if (res!=null) {
+                        viewModel.edit(post)
+                    } else {
+                        viewModel.cancelEdit()
+                    }
                 }
 
                 override fun onCancelEdit(post: Post) {
@@ -82,33 +74,7 @@ class MainActivity : AppCompatActivity() {
             if (edited.id==newPostId) {
                 return@observe
             }
-//            binding.content.setText(edited.content)
-//            binding.editTextGroup.visibility=View.VISIBLE
-//            binding.content.requestFocus()
         }
-//
-//        binding.cancel.setOnClickListener {
-//            viewModel.cancelEdit()
-//            binding.content.setText("")
-//            binding.content.clearFocus()
-//            AndroidUtils.hideKeyboard(binding.content)
-//            binding.editTextGroup.visibility=View.GONE
-//        }
-
-//        binding.save.setOnClickListener{
-//            if (binding.content.text.isNullOrBlank()) {
-//                Toast.makeText( it.context,getString(R.string.empty_post), Toast.LENGTH_SHORT)
-//                    .show()
-//                return@setOnClickListener
-//            }
-//            val text = binding.content.text?.toString().orEmpty()
-//            viewModel.editContent(text)
-//            viewModel.save()
-//            binding.content.clearFocus()
-//            AndroidUtils.hideKeyboard(binding.content)
-//            binding.editTextGroup.visibility=View.GONE
-//            binding.content.setText("")
-//        }
 
         binding.list.adapter=adapter
         val observe = viewModel.data.observe(this) { posts ->

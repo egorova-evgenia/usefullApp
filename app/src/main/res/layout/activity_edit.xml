@@ -8,13 +8,20 @@
     tools:context=".MainActivity"
     >
 
-<!--<androidx.coordinatorlayout.widget.CoordinatorLayout-->
-<!--    xmlns:android="http://schemas.android.com/apk/res/android"-->
-<!--    xmlns:app="http://schemas.android.com/apk/res-auto"-->
-<!--    xmlns:tools="http://schemas.android.com/tools"-->
-<!--    android:layout_width="match_parent"-->
-<!--    android:layout_height="match_parent"-->
-<!--    tools:context=".EditActivity">-->
+    <EditText
+        android:id="@+id/content"
+        android:inputType="textMultiLine"
+        android:background="@android:color/transparent"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        android:hint="@string/write_your_text_input"
+        android:importantForAutofill="no"
+
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editeModeText"
+        />
 
 
     <TextView
@@ -27,21 +34,6 @@
     app:layout_constraintEnd_toStartOf="@+id/cancel"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toTopOf="parent"/>
-<!--    android:layout_gravity="start|top"-->
-
-
-<!--    <com.google.android.material.floatingactionbutton.FloatingActionButton-->
-<!--        android:id="@+id/cancel"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:padding="8dp"-->
-<!--        android:layout_gravity="end|top"-->
-<!--        app:srcCompat="@drawable/ic_cancel"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintBottom_toBottomOf="@id/editGroup"-->
-<!--        app:layout_constraintTop_toTopOf="@id/editGroup"-->
-<!--        android:contentDescription="cancel"-->
-<!--        />-->
 
     <ImageView
         android:id="@+id/cancel"
@@ -58,7 +50,7 @@
         android:id="@+id/editGroup"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:visibility= "gone"
+        android:visibility= "visible"
         app:constraint_referenced_ids="editeModeText,cancel"
         tools:ignore="UnknownId" />
 
@@ -74,21 +66,4 @@
         android:contentDescription="@string/save"
         />
 
-    <EditText
-        android:id="@+id/content"
-        android:inputType="textMultiLine"
-        android:background="@android:color/transparent"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:padding="8dp"
-        android:hint="@string/write_your_text_input"
-        android:importantForAutofill="no"
-
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editGroup"
-        />
-
-<!--</androidx.coordinatorlayout.widget.CoordinatorLayout>-->
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
