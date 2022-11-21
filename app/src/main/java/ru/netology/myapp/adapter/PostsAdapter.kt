@@ -6,7 +6,7 @@ import android.widget.PopupMenu
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import ru.netology.myapp.R
-import ru.netology.myapp.databinding.ActivityMainBinding
+//import ru.netology.myapp.databinding.ActivityMainBinding
 import ru.netology.myapp.databinding.CardPostBinding
 import ru.netology.myapp.dto.Post
 import ru.netology.myapp.numberToString
