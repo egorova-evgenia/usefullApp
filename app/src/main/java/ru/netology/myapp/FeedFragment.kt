@@ -39,11 +39,11 @@ class FeedFragment : Fragment() {
 //            viewModel.save()
 //        }
 
-        val editPostLauncher = registerForActivityResult(EditActivityContract()){text->
-            text ?:return@registerForActivityResult
-            viewModel.editContent(text.toString())
-            viewModel.save()
-        }
+//        val editPostLauncher = registerForActivityResult(EditActivityContract()){text->
+//            text ?:return@registerForActivityResult
+//            viewModel.editContent(text.toString())
+//            viewModel.save()
+//        }
 
         val adapter = PostsAdapter (
             object : PostEventListener{
