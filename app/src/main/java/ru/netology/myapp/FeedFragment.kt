@@ -72,7 +72,7 @@ class FeedFragment : Fragment() {
                      { textArg = post.content })
 //                    val res = editPostLauncher.launch(post.content.toString())
 //                    if (res!=null) {
-                        viewModel.edit(post)
+//                        viewModel.edit(post)
 //                    } else {
 //                        viewModel.cancelEdit()
 //                    }

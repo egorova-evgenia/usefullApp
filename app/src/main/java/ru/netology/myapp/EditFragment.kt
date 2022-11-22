@@ -12,13 +12,14 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import ru.netology.myapp.FeedFragment.Companion.textArg
 import ru.netology.myapp.databinding.FragmentEditBinding
+import ru.netology.myapp.viewmodel.PostViewModel
 
 class EditFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?): View?
-    {
+        savedInstanceState: Bundle?
+    ): View? {
         super.onCreate(savedInstanceState)
         val binding = FragmentEditBinding.inflate(
             inflater,
@@ -26,11 +27,12 @@ class EditFragment : Fragment() {
             false
         )
 
-        arguments?.textArg?.let (binding.content::setText)
-//        {
-//            binding.editGroup.visibility= View.VISIBLE
-//
-//        }
+        val viewModel: PostViewModel by viewModels(ownerProducer = ::requireParentFragment)
+
+        arguments?.textArg?.let(binding.content::setText)
+
+        val txt=binding.content
+        println(txt)
 
 //        if (intent.getStringExtra(Intent.EXTRA_TEXT)!=null) {
 //            val text = intent.getStringExtra(Intent.EXTRA_TEXT).toString()
@@ -40,29 +42,40 @@ class EditFragment : Fragment() {
 //            binding.editGroup.visibility= View.GONE
 //        }
 
-        binding.save.setOnClickListener{
+        binding.save.setOnClickListener {
 
             if (binding.content.text.isNullOrBlank()) {
-                Toast.makeText( it.context,getString(R.string.empty_post), Toast.LENGTH_SHORT)
+                Toast.makeText(it.context, getString(R.string.empty_post), Toast.LENGTH_SHORT)
                     .show()
 //                activity?.setResult(Activity.RESULT_CANCELED)
             } else {
 
-                val result = Intent().putExtra(Intent.EXTRA_TEXT,binding.content.text.toString())
+                val result = Intent().putExtra(Intent.EXTRA_TEXT, binding.content.text.toString())
 //                activity?.setResult(Activity.RESULT_OK,result) // Это нужно передавать?
-//                viewModel.editContent(result.toString())
-//                viewModel.save()
+                viewModel.editContent(result.toString())
+                viewModel.save()
             }
 
             findNavController().navigateUp()
         }
 
         binding.cancel.setOnClickListener {
-//            viewModel.cancelEdit
+            viewModel.cancelEdit()
 //            activity?.setResult(Activity.RESULT_CANCELED)
             findNavController().navigateUp()
         }
         return binding.root
 
+    }
+
+//    companion object {
+//        var Bundle.textArg: String? StringArg
+//    }
+
+    companion object {
+        private const val CONTENT_KEY = "CONTENT_KEY"
+        var Bundle.textArg: String?
+            set(value) = putString(CONTENT_KEY,textArg)
+            get() = getString(CONTENT_KEY)
     }
 }
