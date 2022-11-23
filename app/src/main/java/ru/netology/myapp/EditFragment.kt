@@ -50,9 +50,7 @@ class EditFragment : Fragment() {
 //                activity?.setResult(Activity.RESULT_CANCELED)
             } else {
 
-                val result = Intent().putExtra(Intent.EXTRA_TEXT, binding.content.text.toString())
-//                activity?.setResult(Activity.RESULT_OK,result) // Это нужно передавать?
-                viewModel.editContent(result.toString())
+                viewModel.editContent(binding.content.text.toString())
                 viewModel.save()
             }
 
