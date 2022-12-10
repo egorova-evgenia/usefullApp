@@ -13,6 +13,8 @@ interface PostRepository {
     fun save(post: Post)
 }
 class PostRepositoryInMemory: PostRepository {
+
+    // Вот аналог PostRepositorySQLiteImpl
     private var posts = listOf(Post(
             id = 0,
             autor = "Autor_Name. Длииииииииииииииииииииииииииииииииииииинно",

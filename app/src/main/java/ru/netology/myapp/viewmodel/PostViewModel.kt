@@ -8,6 +8,9 @@ import ru.netology.myapp.dto.Post
 import ru.netology.myapp.repository.PostRepository
 import ru.netology.myapp.repository.PostRepositoryFileImpl
 import ru.netology.myapp.repository.PostRepositoryInMemory
+import ru.netology.myapp.repository.PostRepositorySQLiteImpl
+import ru.netology.myapp.repository.db.AppDb
+
 val newPostId=-1
 val empty = Post(
     newPostId,
@@ -25,8 +28,8 @@ val empty = Post(
 //class PostViewModel: ViewModel() {
 //    private val repository: PostRepository = PostRepositoryInMemory()
 class PostViewModel(application: Application) : AndroidViewModel(application) {
-        private val repository: PostRepository = PostRepositoryFileImpl(application)
-
+//        private val repository: PostRepository = PostRepositoryFileImpl(application)
+       private val repository: PostRepository = PostRepositorySQLiteImpl(AppDb.getInstance(application).postDao)
 
     val data=repository.getAll()
     fun likeById(id: Int)=repository.likeById(id)
