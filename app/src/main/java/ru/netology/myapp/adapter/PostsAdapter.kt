@@ -1,6 +1,7 @@
 package ru.netology.myapp.adapter
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupMenu
 import androidx.recyclerview.widget.ListAdapter
@@ -19,6 +20,7 @@ import java.util.Collections.emptyList
 interface PostEventListener{
     fun onLike(post: Post)
     fun onShare(post: Post)
+    fun onPlay(post: Post)
     fun onRemove(post: Post)
     fun onEdit(post: Post)
     fun onCancelEdit(post: Post)
@@ -50,12 +52,18 @@ class PostsAdapter(private val listener: PostEventListener
                 buttonLikes.text=numberToString(post.likes)
                 buttonShare.text=numberToString(post.shares)
 
+                if (!post.youTubeLink.isNullOrBlank()) videoGroup.visibility = View.VISIBLE
+
                 buttonLikes.setOnClickListener {
                     listener.onLike(post)
                 }
 
                 buttonShare.setOnClickListener {
                     listener.onShare(post)
+                }
+
+                startYouTube.setOnClickListener {
+                    listener.onPlay(post)
                 }
 
                 menu.setOnClickListener {

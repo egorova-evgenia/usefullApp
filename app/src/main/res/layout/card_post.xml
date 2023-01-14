@@ -76,12 +76,43 @@
         app:layout_constraintTop_toBottomOf="@+id/content"
         tools:text="@sample/posts.json/data/url" />
 
+    <ImageView
+        android:id="@+id/startYouTube"
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/vector"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/url"
+        tools:src="@tools:sample/backgrounds/scenic" />
+
+    <ImageButton
+        android:id="@+id/play"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:backgroundTint="@android:color/transparent"
+        android:src="@drawable/ic_play_60"
+        app:layout_constraintBottom_toBottomOf="@id/startYouTube"
+        app:layout_constraintEnd_toEndOf="@id/startYouTube"
+        app:layout_constraintStart_toStartOf="@id/startYouTube"
+        app:layout_constraintTop_toTopOf="@id/startYouTube" />
+
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/videoGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:constraint_referenced_ids="startYouTube, play"
+        android:visibility="gone"
+        />
+
     <androidx.constraintlayout.widget.Barrier
         android:id="@+id/barrier2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:barrierDirection="bottom"
-        app:constraint_referenced_ids="url,content" />
+        app:constraint_referenced_ids="url,content,startYouTube" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/buttonLikes"
@@ -123,5 +154,6 @@
         app:layout_constraintTop_toTopOf="@+id/buttonLikes"
         android:contentDescription="@string/viewed_description"
         />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
