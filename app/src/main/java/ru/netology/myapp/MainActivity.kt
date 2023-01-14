@@ -2,10 +2,13 @@ package ru.netology.myapp
 
 /*import android.icu.number.NumberFormatter.with*/
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import androidx.activity.result.launch
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_INDEFINITE
+import com.google.android.material.snackbar.Snackbar
 import ru.netology.myapp.adapter.PostEventListener
 import ru.netology.myapp.adapter.PostsAdapter
 import ru.netology.myapp.databinding.ActivityMainBinding
@@ -41,12 +44,23 @@ class MainActivity : AppCompatActivity() {
                 }
 
                 override fun onShare(post: Post) {
-                    val intent = Intent()
-                        .setAction(Intent.ACTION_SEND)
-                        .setType("text/plain")
+                    val intent = Intent().apply{
+                        action = Intent.ACTION_SEND
+                        putExtra(Intent.EXTRA_TEXT, post.content)
+                        type="text/plain"
+                    }
                     val createChooser = Intent.createChooser(intent, "Choose app")
                     startActivity(createChooser)
                     viewModel.shareById(post.id)
+                }
+
+                override fun onPlay(post: Post) {
+                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(post.youTubeLink))
+//                    Return the Activity component that should be used to handle this intent.
+//                    Запускает интент, если resolveActivity найдет подходящее пиложение???
+//                    intent.resolveActivity(packageManager)
+//                                            }
+                    startActivity(intent)
                 }
 
                 override fun onRemove(post: Post) {
@@ -55,11 +69,7 @@ class MainActivity : AppCompatActivity() {
 
                 override fun onEdit(post: Post) {
                     val res = editPostLauncher.launch(post.content.toString())
-                    if (res!=null) {
-                        viewModel.edit(post)
-                    } else {
-                        viewModel.cancelEdit()
-                    }
+                    viewModel.edit(post)
                 }
 
                 override fun onCancelEdit(post: Post) {
@@ -68,6 +78,8 @@ class MainActivity : AppCompatActivity() {
 
             }
         )
+
+
 
         viewModel.edited.observe(this) {edited ->
 
@@ -85,6 +97,23 @@ class MainActivity : AppCompatActivity() {
 
         binding.plus.setOnClickListener{
             newPostLauncher.launch()
+        }
+
+        intent?.let {
+            if (it.action !=Intent.ACTION_SEND){
+                return@let
+            }
+            val txt = it.getStringExtra(Intent.EXTRA_TEXT)
+            if (txt.isNullOrBlank()){
+                Snackbar.make(binding.root, "Text is empty", LENGTH_INDEFINITE)
+                    .setAction(android.R.string.ok) {
+                        finish()
+                    }.show()
+                return@let
+            }
+
+            viewModel.editContent(txt.toString())
+            viewModel.save()
         }
     }
 }

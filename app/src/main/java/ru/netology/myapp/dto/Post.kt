@@ -13,6 +13,7 @@ data class Post(
         var likes: Int,
         var shares: Int ,
         var viewes: Int ,
-        var iLiked: Boolean = false
+        var iLiked: Boolean = false,
+        val youTubeLink: String? = null
 )
 

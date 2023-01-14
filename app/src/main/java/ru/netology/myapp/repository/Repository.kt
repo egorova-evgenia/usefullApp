@@ -23,7 +23,8 @@ class PostRepositoryInMemory: PostRepository {
             url = "www.url.ru",
             likes = 0,
             shares = 999,
-            viewes = 22
+            viewes = 22,
+            youTubeLink = "https://youtu.be/dOlRgjJNn-4"
     ),
         Post(
             id = 1,
@@ -69,10 +70,12 @@ class PostRepositoryInMemory: PostRepository {
 
         if    (post.id == newPostId) {
             posts=listOf(post.copy(id = getNextId())) + posts
+//            posts=listOf(post.copy(id = getNextId(), youTubeLink = "https://youtu.be/8-4ce9_0PSg")) + posts
+
         } else {
-        posts=posts.map {
-            if (it.id==post.id) it.copy(content = post.content) else it
-        }
+            posts=posts.map {
+                if (it.id==post.id) it.copy(content = post.content) else it
+            }
         }
         data.value = posts
     }
