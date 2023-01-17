@@ -1,7 +1,5 @@
 package ru.netology.myapp
 
-import android.app.Activity
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,7 +8,6 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import ru.netology.myapp.FeedFragment.Companion.textArg
 import ru.netology.myapp.databinding.FragmentEditBinding
 import ru.netology.myapp.viewmodel.PostViewModel
 
@@ -29,18 +26,10 @@ class EditFragment : Fragment() {
 
         val viewModel: PostViewModel by viewModels(ownerProducer = ::requireParentFragment)
 
-        arguments?.textArg?.let(binding.content::setText)
-
-        val txt=binding.content
-        println(txt)
-
-//        if (intent.getStringExtra(Intent.EXTRA_TEXT)!=null) {
-//            val text = intent.getStringExtra(Intent.EXTRA_TEXT).toString()
-//            binding.editGroup.visibility= View.VISIBLE
-//            binding.content.setText(text)
-//        } else {
-//            binding.editGroup.visibility= View.GONE
-//        }
+        arguments?.textArg?.let {
+            binding.editGroup.visibility= View.VISIBLE
+            binding.content.setText(it)
+        }
 
         binding.save.setOnClickListener {
 
@@ -66,14 +55,14 @@ class EditFragment : Fragment() {
 
     }
 
-//    companion object {
-//        var Bundle.textArg: String? StringArg
-//    }
-
     companion object {
-        private const val CONTENT_KEY = "CONTENT_KEY"
-        var Bundle.textArg: String?
-            set(value) = putString(CONTENT_KEY,textArg)
-            get() = getString(CONTENT_KEY)
+        var Bundle.textArg: String? by StringArg
     }
+
+//    companion object {
+//        private const val CONTENT_KEY = "CONTENT_KEY"
+//        var Bundle.textArg: String?
+//            set(value) = putString(CONTENT_KEY,textArg)
+//            get() = getString(CONTENT_KEY)
+//    }
 }

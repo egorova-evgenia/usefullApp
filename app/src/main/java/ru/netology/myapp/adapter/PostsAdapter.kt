@@ -12,9 +12,6 @@ import ru.netology.myapp.dto.Post
 import ru.netology.myapp.numberToString
 import java.util.Collections.emptyList
 
-//typealias OnLikeListener =(post: Post) -> Unit
-//typealias OnShareListener =(post: Post) -> Unit
-//typealias OnRemoveListener =(post: Post) -> Unit
 
 interface PostEventListener{
     fun onLike(post: Post)

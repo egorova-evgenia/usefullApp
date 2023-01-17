@@ -69,7 +69,8 @@ class FeedFragment : Fragment() {
                     findNavController().navigate(
                         R.id.action_feedFragment_to_editFragment,
                     Bundle().apply
-                     { textArg = post.content })
+                     { textArg = post.content }
+                    )
 //                    val res = editPostLauncher.launch(post.content.toString())
 //                    if (res!=null) {
 //                        viewModel.edit(post)
@@ -102,19 +103,11 @@ class FeedFragment : Fragment() {
         binding.plus.setOnClickListener{
             findNavController().navigate(R.id.action_feedFragment_to_editFragment)
         }
-
         return binding.root
     }
+
     companion object {
-        private const val CONTENT_KEY = "CONTENT_KEY"
-        var Bundle.textArg: String?
-        set(value) = putString(CONTENT_KEY,textArg)
-        get() = getString(CONTENT_KEY)
+        var Bundle.textArg: String? by StringArg
     }
-//        const val CONTENT ="CONTENT"
-//        fun newInstance (text: String) = FeedFragment().apply {
-//            arguments = bundleOf(
-//                CONTENT to text)
-//        }
 
 }

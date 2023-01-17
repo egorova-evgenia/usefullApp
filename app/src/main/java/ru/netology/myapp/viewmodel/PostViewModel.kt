@@ -40,7 +40,6 @@ class PostViewModel: ViewModel() {
         edited.value?.let {
             repository.save(it)
             edited.value = empty
-
         }
     }
     fun edit(post: Post){
