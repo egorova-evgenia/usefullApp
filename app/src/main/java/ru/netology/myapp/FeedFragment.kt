@@ -5,10 +5,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.activity.result.launch
-import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -17,7 +13,6 @@ import ru.netology.myapp.adapter.PostsAdapter
 import ru.netology.myapp.databinding.FragmentFeedBinding
 import ru.netology.myapp.dto.Post
 import ru.netology.myapp.viewmodel.PostViewModel
-import ru.netology.myapp.viewmodel.newPostId
 
 /*@Suppress("IMPLICIT_NOTHING_TYPE_ARGUMENT_IN_RETURN_POSITION")*/
 class FeedFragment : Fragment() {
@@ -32,18 +27,6 @@ class FeedFragment : Fragment() {
         )
 
         val viewModel: PostViewModel by viewModels(ownerProducer = ::requireParentFragment)
-
-//        val newPostLauncher = registerForActivityResult(NewPostActivityContract()){text->
-//            text ?:return@registerForActivityResult
-//            viewModel.editContent(text.toString())
-//            viewModel.save()
-//        }
-
-//        val editPostLauncher = registerForActivityResult(EditActivityContract()){text->
-//            text ?:return@registerForActivityResult
-//            viewModel.editContent(text.toString())
-//            viewModel.save()
-//        }
 
         val adapter = PostsAdapter (
             object : PostEventListener{
@@ -71,29 +54,43 @@ class FeedFragment : Fragment() {
                     Bundle().apply
                      { textArg = post.content }
                     )
-//                    val res = editPostLauncher.launch(post.content.toString())
-//                    if (res!=null) {
-//                        viewModel.edit(post)
-//                    } else {
-//                        viewModel.cancelEdit()
-//                    }
+                    viewModel.edit(post)
                 }
 
                 override fun onCancelEdit(post: Post) {
                     viewModel.edit(post)
                 }
 
+                override fun onShowOnePost(post: Post){
+                    val bundle: Bundle = Bundle()
+                    bundle.putString("text", post.content)
+                    bundle.putString("autor", post.autor)
+                    bundle.putString("published", post.published)
+                    bundle.putInt("id", post.id)
+
+                    findNavController().navigate(R.id.action_feedFragment_to_onePostFragment,
+                        bundle
+//                        Bundle().apply
+//                        { textArg = post.content }
+                    )
+                }
             }
         )
 
-        viewModel.edited.observe(viewLifecycleOwner) {edited ->
-
-            if (edited.id==newPostId) {
-                return@observe
-            }
-        }
+//        viewModel.edited.observe(viewLifecycleOwner) {edited ->
+//
+//            if (edited.id==newPostId) {
+//                return@observe
+//            }
+//        }
 
         binding.list.adapter=adapter
+//        val observe = viewModel.data.observe(viewLifecycleOwner) { posts ->
+//            posts.map { post ->
+//                adapter.submitList(posts)
+//            }
+//        }
+
         val observe = viewModel.data.observe(viewLifecycleOwner) { posts ->
             posts.map { post ->
                 adapter.submitList(posts)
@@ -103,6 +100,7 @@ class FeedFragment : Fragment() {
         binding.plus.setOnClickListener{
             findNavController().navigate(R.id.action_feedFragment_to_editFragment)
         }
+
         return binding.root
     }
 

@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import ru.netology.myapp.databinding.FragmentFeedBinding
+import ru.netology.myapp.databinding.FragmentOnePostBinding
 import ru.netology.myapp.viewmodel.PostViewModel
 
 class OnePostFragment : Fragment() {
@@ -15,13 +15,27 @@ class OnePostFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val binding = FragmentFeedBinding.inflate(
+        val binding = FragmentOnePostBinding.inflate(
             inflater,
             container,
             false
         )
-
         val viewModel: PostViewModel by viewModels(ownerProducer = ::requireParentFragment)
+//        arguments?.textArg?.let {
+//            binding.content.setText(it)
+//
+//        }
+
+        val arg1Value = requireArguments().getString("text")
+        binding.content.setText(arg1Value)
+        val arg2Value = requireArguments().getInt("autor")
+        binding.autor.setText(arg2Value)
+
+
+
         return binding.root
+    }
+    companion object {
+        var Bundle.textArg: String? by StringArg
     }
 }

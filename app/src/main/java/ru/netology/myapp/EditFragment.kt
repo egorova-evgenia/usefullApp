@@ -32,13 +32,10 @@ class EditFragment : Fragment() {
         }
 
         binding.save.setOnClickListener {
-
             if (binding.content.text.isNullOrBlank()) {
                 Toast.makeText(it.context, getString(R.string.empty_post), Toast.LENGTH_SHORT)
                     .show()
-//                activity?.setResult(Activity.RESULT_CANCELED)
             } else {
-
                 viewModel.editContent(binding.content.text.toString())
                 viewModel.save()
             }
@@ -48,21 +45,12 @@ class EditFragment : Fragment() {
 
         binding.cancel.setOnClickListener {
             viewModel.cancelEdit()
-//            activity?.setResult(Activity.RESULT_CANCELED)
             findNavController().navigateUp()
         }
         return binding.root
-
     }
 
     companion object {
         var Bundle.textArg: String? by StringArg
     }
-
-//    companion object {
-//        private const val CONTENT_KEY = "CONTENT_KEY"
-//        var Bundle.textArg: String?
-//            set(value) = putString(CONTENT_KEY,textArg)
-//            get() = getString(CONTENT_KEY)
-//    }
 }

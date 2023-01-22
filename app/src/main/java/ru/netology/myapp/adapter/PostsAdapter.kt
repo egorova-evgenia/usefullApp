@@ -19,6 +19,7 @@ interface PostEventListener{
     fun onRemove(post: Post)
     fun onEdit(post: Post)
     fun onCancelEdit(post: Post)
+    fun onShowOnePost(post: Post)
 }
 
 class PostsAdapter(private val listener: PostEventListener
@@ -53,6 +54,10 @@ class PostsAdapter(private val listener: PostEventListener
 
                 buttonShare.setOnClickListener {
                     listener.onShare(post)
+                }
+
+                content.setOnClickListener {
+                    listener.onShowOnePost(post)
                 }
 
                 menu.setOnClickListener {
