@@ -41,6 +41,15 @@
         android:id="@+id/onePostFragment"
         android:name="ru.netology.myapp.OnePostFragment"
         android:label="fragment_one_post"
-        tools:layout="@layout/fragment_one_post" />
+        tools:layout="@layout/fragment_one_post">
+    <action
+        android:id="@+id/action_onePostFragment_to_editFragment"
+        app:destination="@id/editFragment"
+        app:enterAnim="@android:anim/fade_in"
+        app:exitAnim="@android:anim/fade_out"
+        app:popEnterAnim="@android:anim/fade_in"
+        app:popExitAnim="@android:anim/fade_out"
+        />
+    </fragment>
 
 </navigation>

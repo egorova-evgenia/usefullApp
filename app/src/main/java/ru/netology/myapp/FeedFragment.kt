@@ -62,34 +62,16 @@ class FeedFragment : Fragment() {
                 }
 
                 override fun onShowOnePost(post: Post){
-                    val bundle: Bundle = Bundle()
-                    bundle.putString("text", post.content)
-                    bundle.putString("autor", post.autor)
-                    bundle.putString("published", post.published)
-                    bundle.putInt("id", post.id)
-
-                    findNavController().navigate(R.id.action_feedFragment_to_onePostFragment,
-                        bundle
-//                        Bundle().apply
-//                        { textArg = post.content }
+                    findNavController().navigate(
+                        R.id.action_feedFragment_to_onePostFragment,
+                        Bundle().apply
+                        { textArg = post.id.toString() }
                     )
                 }
             }
         )
 
-//        viewModel.edited.observe(viewLifecycleOwner) {edited ->
-//
-//            if (edited.id==newPostId) {
-//                return@observe
-//            }
-//        }
-
         binding.list.adapter=adapter
-//        val observe = viewModel.data.observe(viewLifecycleOwner) { posts ->
-//            posts.map { post ->
-//                adapter.submitList(posts)
-//            }
-//        }
 
         val observe = viewModel.data.observe(viewLifecycleOwner) { posts ->
             posts.map { post ->
@@ -100,7 +82,6 @@ class FeedFragment : Fragment() {
         binding.plus.setOnClickListener{
             findNavController().navigate(R.id.action_feedFragment_to_editFragment)
         }
-
         return binding.root
     }
 

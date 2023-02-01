@@ -12,16 +12,6 @@ import ru.netology.myapp.dto.Post
 import ru.netology.myapp.numberToString
 import java.util.Collections.emptyList
 
-
-interface PostEventListener{
-    fun onLike(post: Post)
-    fun onShare(post: Post)
-    fun onRemove(post: Post)
-    fun onEdit(post: Post)
-    fun onCancelEdit(post: Post)
-    fun onShowOnePost(post: Post)
-}
-
 class PostsAdapter(private val listener: PostEventListener
                    ): ListAdapter<Post, PostsAdapter.PostViewHolder>(PostDiffCallback()) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostViewHolder {

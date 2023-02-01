@@ -1,12 +1,21 @@
 package ru.netology.myapp
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.PopupMenu
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
+import ru.netology.myapp.FeedFragment.Companion.textArg
+import ru.netology.myapp.adapter.PostEventListener
+import ru.netology.myapp.adapter.PostViewHolder
+import ru.netology.myapp.adapter.PostsAdapter
+import ru.netology.myapp.databinding.CardPostBinding
 import ru.netology.myapp.databinding.FragmentOnePostBinding
+import ru.netology.myapp.dto.Post
 import ru.netology.myapp.viewmodel.PostViewModel
 
 class OnePostFragment : Fragment() {
@@ -15,23 +24,69 @@ class OnePostFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val binding = FragmentOnePostBinding.inflate(
+        val binding = CardPostBinding.inflate(
             inflater,
             container,
             false
         )
         val viewModel: PostViewModel by viewModels(ownerProducer = ::requireParentFragment)
-//        arguments?.textArg?.let {
-//            binding.content.setText(it)
-//
-//        }
+        val postId = arguments?.textArg?.toInt()
+        if (postId!=null) {
+        val post =viewModel.findPost(postId)
+        binding.apply {
+            content.text = post.content
+            autor.text = post.autor
+            published.text = post.published
 
-        val arg1Value = requireArguments().getString("text")
-        binding.content.setText(arg1Value)
-        val arg2Value = requireArguments().getInt("autor")
-        binding.autor.setText(arg2Value)
+            imageViewed.text = numberToString(post.viewes)
 
+            buttonLikes.isChecked = post.iLiked
+            buttonLikes.text = numberToString(post.likes)
+            buttonShare.text = numberToString(post.shares)
 
+            buttonLikes.setOnClickListener {
+                viewModel.likeById(post.id)
+            }
+
+            buttonShare.setOnClickListener {
+                val intent = Intent()
+                    .setAction(Intent.ACTION_SEND)
+                    .setType("text/plain")
+                val createChooser = Intent.createChooser(intent, "Choose app")
+                startActivity(createChooser)
+                viewModel.shareById(post.id)
+            }
+
+                menu.setOnClickListener {
+                    PopupMenu(it.context, it).apply {
+                        inflate(R.menu.post_menu)
+                        setOnMenuItemClickListener {menuItem ->
+                            when (menuItem.itemId){
+                                R.id.remove -> {viewModel.removeById(post.id)
+                                    findNavController().navigateUp()
+                                    return@setOnMenuItemClickListener true}
+                                R.id.edit -> {
+                                    findNavController().navigate(
+                                        R.id.action_onePostFragment_to_editFragment,
+                                        Bundle().apply
+                                        { textArg = post.content }
+                                    )
+                                    viewModel.edit(post)
+                                    return@setOnMenuItemClickListener true}
+                            }
+                            false
+                        }
+
+                        show()
+                    }
+                }
+            }
+        }
+
+        val observe = viewModel.data.observe(viewLifecycleOwner) { posts ->
+            posts[postId!!].likes
+            posts[postId!!].shares
+            }
 
         return binding.root
     }

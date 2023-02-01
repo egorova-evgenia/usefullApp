@@ -3,6 +3,7 @@ package ru.netology.myapp.repository
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import ru.netology.myapp.dto.Post
+import ru.netology.myapp.exceptions.PostNotFoundException
 import ru.netology.myapp.viewmodel.newPostId
 
 interface PostRepository {
@@ -11,6 +12,7 @@ interface PostRepository {
     fun shareById(id:Int)
     fun removeById(id:Int)
     fun save(post: Post)
+    fun findPost(id: Int): Post
 }
 class PostRepositoryInMemory: PostRepository {
     private var posts = listOf(Post(
@@ -64,8 +66,6 @@ class PostRepositoryInMemory: PostRepository {
     fun getNextId() = posts.size
 
     override fun save(post: Post) {
-//        data.value =
-//        posts=listOf(post.copy(id = posts.firstOrNull()?.id?:1)) + posts
 
         if    (post.id == newPostId) {
             posts=listOf(post.copy(id = getNextId())) + posts
@@ -76,4 +76,14 @@ class PostRepositoryInMemory: PostRepository {
         }
         data.value = posts
     }
+
+    override fun findPost(id: Int): Post {
+        val pst = posts.find {it.id==id}
+        if (pst != null) {
+                return pst
+            }
+            else {throw PostNotFoundException("Пост не найден")}
+    }
+
+
 }

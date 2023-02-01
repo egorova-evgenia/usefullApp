@@ -50,4 +50,6 @@ class PostViewModel: ViewModel() {
         edited.value =empty // сброс текста
     }
 
+    fun findPost(id: Int):Post = repository.findPost(id)
+
 }
