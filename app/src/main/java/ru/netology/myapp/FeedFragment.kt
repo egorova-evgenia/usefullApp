@@ -29,6 +29,7 @@ class FeedFragment : Fragment() {
         val viewModel: PostViewModel by viewModels(ownerProducer = ::requireParentFragment)
 
         val adapter = PostsAdapter (
+
             object : PostEventListener{
                 override fun onLike(post: Post) {
                     viewModel.likeById(post.id)

@@ -13,6 +13,7 @@ interface PostRepository {
     fun removeById(id:Int)
     fun save(post: Post)
     fun findPost(id: Int): Post
+    fun filterPost(id: Int): List<Post>
 }
 class PostRepositoryInMemory: PostRepository {
     private var posts = listOf(Post(
@@ -79,11 +80,14 @@ class PostRepositoryInMemory: PostRepository {
 
     override fun findPost(id: Int): Post {
         val pst = posts.find {it.id==id}
+
         if (pst != null) {
                 return pst
             }
             else {throw PostNotFoundException("Пост не найден")}
     }
 
+    override fun filterPost(id: Int): List<Post>
+    = posts.filter {it.id==id}
 
 }
