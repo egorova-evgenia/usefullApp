@@ -87,21 +87,17 @@ class OnePostFragment : Fragment() {
                     }
                 }
             }
-            val observe = viewModel.data.observe(viewLifecycleOwner) { _ ->
-                    binding.buttonLikes.text = numberToString(viewModel.findPost(postId).likes)
-                    binding.buttonShare.text = numberToString(viewModel.findPost(postId).shares)
-            }
-
         }
 
+        val observe = viewModel.data.observe(viewLifecycleOwner) { posts ->
 
-//        val observe = viewModel.data.observe(viewLifecycleOwner) { _ ->
-//            if (postId?.let { viewModel.findPost(it) } !=null)
-//            {
-//                binding.buttonLikes.text = numberToString(viewModel.findPost(postId).likes)
-//                binding.buttonShare.text = numberToString(viewModel.findPost(postId).shares)
-//            }
-//        }
+        val post = posts.find { it.id == postId } ?:
+        return@observe
+            binding.buttonLikes.text = numberToString(post.likes)
+            binding.buttonShare.text = numberToString(post.shares)
+
+
+        }
         return binding.root
     }
     companion object {
