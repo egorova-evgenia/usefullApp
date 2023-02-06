@@ -66,8 +66,8 @@ class OnePostFragment : Fragment() {
                         setOnMenuItemClickListener {menuItem ->
                             when (menuItem.itemId){
                                 R.id.remove -> {
-                                    findNavController().navigateUp()
                                     viewModel.removeById(post.id)
+                                    findNavController().navigateUp()
 
 //                                        R.id.action_onePostFragment_to_FeedFragment)
                                     return@setOnMenuItemClickListener true}
@@ -87,12 +87,21 @@ class OnePostFragment : Fragment() {
                     }
                 }
             }
+            val observe = viewModel.data.observe(viewLifecycleOwner) { _ ->
+                    binding.buttonLikes.text = numberToString(viewModel.findPost(postId).likes)
+                    binding.buttonShare.text = numberToString(viewModel.findPost(postId).shares)
+            }
 
         }
-        val observe = viewModel.data.observe(viewLifecycleOwner) { posts ->
-            binding.buttonLikes.text= numberToString(posts[postId!!].likes)
-            binding.buttonShare.text=numberToString(posts[postId!!].shares)
-        }
+
+
+//        val observe = viewModel.data.observe(viewLifecycleOwner) { _ ->
+//            if (postId?.let { viewModel.findPost(it) } !=null)
+//            {
+//                binding.buttonLikes.text = numberToString(viewModel.findPost(postId).likes)
+//                binding.buttonShare.text = numberToString(viewModel.findPost(postId).shares)
+//            }
+//        }
         return binding.root
     }
     companion object {
