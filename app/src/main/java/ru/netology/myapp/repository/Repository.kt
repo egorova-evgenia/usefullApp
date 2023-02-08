@@ -78,7 +78,7 @@ class PostRepositoryInMemory: PostRepository {
             else {throw PostNotFoundException("Пост не найден")}
     }
 
-    override fun filterPost(id: Int): List<Post>
-    = posts.filter {it.id==id}
+//    override fun filterPost(id: Int): List<Post>
+//    = posts.filter {it.id==id}
 
 }

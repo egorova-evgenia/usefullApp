@@ -34,12 +34,5 @@ class PostRepositoryImp(private val dao: PostDao
         val saved = dao.save(PostEntity.fromDto(post))
     }
 
-    override fun findPost(id: Int): Post {
-        dao.findPost(id)
-    }
-
-    override fun filterPost(id: Int): List<Post> {
-        TODO("Not yet implemented")
-    }
-}
+    override fun findPost(id: Int): Post = dao.findPost(id).toDto()
 }

@@ -11,5 +11,4 @@ interface PostRepository {
     fun removeById(id: Int)
     fun save(post: Post)
     fun findPost(id: Int): Post
-    fun filterPost(id: Int): List<Post>
 }
