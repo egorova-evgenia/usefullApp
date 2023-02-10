@@ -95,8 +95,6 @@ class OnePostFragment : Fragment() {
         return@observe
             binding.buttonLikes.text = numberToString(post.likes)
             binding.buttonShare.text = numberToString(post.shares)
-
-
         }
         return binding.root
     }
@@ -104,53 +102,3 @@ class OnePostFragment : Fragment() {
         var Bundle.textArg: String? by StringArg
     }
 }
-
-
-//val adapterO = PostsAdapter(
-//
-//    object : PostEventListener {
-//        override fun onLike(post: Post) {
-//            viewModel.likeById(post.id)
-//        }
-//
-//        override fun onShare(post: Post) {
-//            val intent = Intent()
-//                .setAction(Intent.ACTION_SEND)
-//                .setType("text/plain")
-//            val createChooser = Intent.createChooser(intent, "Choose app")
-//            startActivity(createChooser)
-//            viewModel.shareById(post.id)
-//        }
-//
-//        override fun onRemove(post: Post) {
-//            viewModel.removeById(post.id)
-//            findNavController().navigateUp()
-//        }
-//
-//        override fun onEdit(post: Post) {
-//
-//            findNavController().navigate(
-//                R.id.action_onePostFragment_to_editFragment,
-//                Bundle().apply
-//                { textArg = post.content }
-//            )
-//            viewModel.edit(post)
-//        }
-//
-//        override fun onCancelEdit(post: Post) {
-//            viewModel.edit(post)
-//        }
-//
-//        override fun onShowOnePost(post: Post) {
-//
-//        }
-//    }
-//)
-//
-//binding.list.adapter = adapterO
-//
-//val observe = viewModel.data.observe(viewLifecycleOwner) { posts ->
-//    posts.map { post ->
-//        adapterO.submitList(posts)
-//    }
-//}

@@ -6,7 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import ru.netology.myapp.dto.Post
 import ru.netology.myapp.repository.PostRepository
-import ru.netology.myapp.repository.PostRepositoryFileImpl
+//import ru.netology.myapp.repository.PostRepositoryFileImpl
 import ru.netology.myapp.repository.PostRepositoryInMemory
 val newPostId=-1
 val empty = Post(
@@ -25,7 +25,7 @@ val empty = Post(
 //class PostViewModel: ViewModel() {
 //    private val repository: PostRepository = PostRepositoryInMemory()
 class PostViewModel(application: Application) : AndroidViewModel(application) {
-        private val repository: PostRepository = PostRepositoryFileImpl(application)
+        private val repository: PostRepository = PostRepositoryInMemory()
 
 
     val data=repository.getAll()
