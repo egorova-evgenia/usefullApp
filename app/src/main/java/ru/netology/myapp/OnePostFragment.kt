@@ -26,7 +26,7 @@ class OnePostFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val binding = CardPostBinding.inflate(
+        val binding = FragmentOnePostBinding.inflate(
             inflater,
             container,
             false
