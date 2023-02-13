@@ -10,7 +10,7 @@ import ru.netology.myapp.dto.Post
 import ru.netology.myapp.repository.PostRepository
 import ru.netology.myapp.repository.PostRepositoryImp
 
-val newPostId=-1
+val newPostId=-3
 val empty = Post(
     newPostId,
     "Mary",
