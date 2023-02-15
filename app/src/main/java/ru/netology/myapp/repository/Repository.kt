@@ -78,7 +78,6 @@ class PostRepositoryInMemory: PostRepository {
     fun getNextId() = posts.size
 
     override fun save(post: Post) {
-
         if    (post.id == newPostId) {
             posts=listOf(post.copy(id = getNextId())) + posts
         } else {
