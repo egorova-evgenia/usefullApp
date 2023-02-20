@@ -2,6 +2,7 @@ package ru.netology.myapp.repository
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import ru.netology.myapp.dao.PostDao
 import ru.netology.myapp.dto.Post
 import ru.netology.myapp.exceptions.PostNotFoundException
 import ru.netology.myapp.viewmodel.newPostId
@@ -12,7 +13,7 @@ class PostRepositorySQLImp (private val dao: PostDao): PostRepository {
     private val data = MutableLiveData(posts)
 
     init {
-        posts =dao.getAll()
+//        posts =dao.getAll()
         data.value =posts
     }
 
@@ -43,17 +44,17 @@ class PostRepositorySQLImp (private val dao: PostDao): PostRepository {
     }
 
     override fun save(post: Post) {
-        val id = post.id
-        val saved=dao.save(post)
-
-        posts = if(id == newPostId) {
-            listOf(saved) + posts
-        } else {
-            posts.map {
-                if (it.id==post.id) saved else it
-            }
-        }
-        data.value = posts
+//        val id = post.id
+//        val saved=dao.save(post)
+//
+//        posts = if(id == newPostId) {
+//            listOf(saved) + posts
+//        } else {
+//            posts.map {
+//                if (it.id==post.id) saved else it
+//            }
+//        }
+//        data.value = posts
 
     }
 
@@ -66,5 +67,4 @@ class PostRepositorySQLImp (private val dao: PostDao): PostRepository {
         }
     }
 
-    override fun filterPost(id: Int): List<Post> = posts.filter {it.id==id}
 }

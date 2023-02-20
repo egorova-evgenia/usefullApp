@@ -4,12 +4,14 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.nmedia.db.AppDb
 import ru.netology.myapp.dto.Post
 import ru.netology.myapp.repository.PostRepository
+import ru.netology.myapp.repository.PostRepositoryRoomImp
 //import ru.netology.myapp.repository.PostRepositoryFileImpl
-import ru.netology.myapp.repository.PostRepositoryInMemory
+//import ru.netology.myapp.repository.PostRepositoryInMemory
 import ru.netology.myapp.repository.PostRepositorySQLImp
-import ru.netology.myapp.repository.db_sql.AppDb
+
 
 val newPostId=-1
 val empty = Post(
@@ -29,8 +31,8 @@ val empty = Post(
 //    private val repository: PostRepository = PostRepositoryInMemory()
 class PostViewModel(application: Application) : AndroidViewModel(application) {
 //        private val repository: PostRepository = PostRepositoryInMemory()
-        private val repository: PostRepository = PostRepositorySQLImp(
-            AppDb.getInstance(application).postDao
+        private val repository: PostRepository = PostRepositoryRoomImp(
+            AppDb.getInstance(context = application).postDao()
         )
 
 
@@ -64,6 +66,6 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     fun findPost(id: Int): Post = repository.findPost(id)
-    fun filterPost(id: Int): List<Post> = repository.filterPost(id)
+//    fun filterPost(id: Int): List<Post> = repository.filterPost(id)
 
 }
