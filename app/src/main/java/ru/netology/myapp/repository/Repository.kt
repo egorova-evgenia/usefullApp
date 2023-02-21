@@ -6,15 +6,6 @@ import ru.netology.myapp.dto.Post
 import ru.netology.myapp.exceptions.PostNotFoundException
 import ru.netology.myapp.viewmodel.newPostId
 
-interface PostRepository {
-    fun getAll(): LiveData<List<Post>>
-    fun likeById(id: Int)
-    fun shareById(id:Int)
-    fun removeById(id:Int)
-    fun save(post: Post)
-    fun findPost(id: Int): Post
-    fun filterPost(id: Int): List<Post>
-}
 class PostRepositoryInMemory: PostRepository {
     private var posts = listOf(Post(
             id = 0,
@@ -97,8 +88,5 @@ class PostRepositoryInMemory: PostRepository {
             }
             else {throw PostNotFoundException("Пост не найден")}
     }
-
-    override fun filterPost(id: Int): List<Post>
-    = posts.filter {it.id==id}
 
 }

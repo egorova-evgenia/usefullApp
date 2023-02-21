@@ -2,13 +2,15 @@ package ru.netology.myapp.viewmodel
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
+
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import ru.netology.myapp.db.AppDb
 import ru.netology.myapp.dto.Post
 import ru.netology.myapp.repository.PostRepository
-//import ru.netology.myapp.repository.PostRepositoryFileImpl
-import ru.netology.myapp.repository.PostRepositoryInMemory
-val newPostId=-1
+import ru.netology.myapp.repository.PostRepositoryImp
+
+val newPostId=0
 val empty = Post(
     newPostId,
     "Mary",
@@ -21,13 +23,11 @@ val empty = Post(
     0,
     false
 )
-//
-//class PostViewModel: ViewModel() {
+
+class PostViewModel(application: Application) : AndroidViewModel(application){
 //    private val repository: PostRepository = PostRepositoryInMemory()
-class PostViewModel(application: Application) : AndroidViewModel(application) {
-        private val repository: PostRepository = PostRepositoryInMemory()
 
-
+    private val repository: PostRepository = PostRepositoryImp(AppDb.getInstance(context = application).postDao())
     val data=repository.getAll()
     fun likeById(id: Int)=repository.likeById(id)
     fun shareById(id: Int)=repository.shareById(id)
@@ -58,6 +58,5 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     fun findPost(id: Int): Post = repository.findPost(id)
-    fun filterPost(id: Int): List<Post> = repository.filterPost(id)
 
 }
