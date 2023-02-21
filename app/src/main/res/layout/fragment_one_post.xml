@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     tools:context=".OnePostFragment">
 
     <ImageView
@@ -26,7 +25,6 @@
         app:layout_constraintBottom_toTopOf="@+id/published"
         app:layout_constraintStart_toEndOf="@+id/avatar"
         app:layout_constraintTop_toTopOf="@+id/avatar"
-        tools:ignore="MissingConstraints"
         tools:text="@sample/posts.json/data/autor" />
 
     <TextView
@@ -39,7 +37,6 @@
         app:layout_constraintBottom_toBottomOf="@+id/avatar"
         app:layout_constraintStart_toEndOf="@+id/avatar"
         app:layout_constraintTop_toBottomOf="@+id/autor"
-        tools:ignore="MissingConstraints"
         tools:text="@sample/posts.json/data/published" />
 
     <com.google.android.material.button.MaterialButton
@@ -60,15 +57,13 @@
         app:barrierDirection="bottom"
         app:constraint_referenced_ids="avatar,published" />
 
-
     <ScrollView
         android:id="@+id/scrol"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
-        app:layout_constraintTop_toBottomOf="@+id/barrier1"
         app:layout_constraintBottom_toTopOf="@+id/url"
         app:layout_constraintStart_toStartOf="parent"
-        >
+        app:layout_constraintTop_toBottomOf="@+id/barrier1">
 
         <TextView
             android:id="@+id/content"
@@ -87,18 +82,11 @@
         android:id="@+id/url"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="#144BED"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/barrier2"
         android:layout_marginBottom="16dp"
+        android:textColor="#144BED"
+        app:layout_constraintBottom_toTopOf="@id/buttonLikes"
+        app:layout_constraintStart_toStartOf="parent"
         tools:text="@sample/posts.json/data/url" />
-
-    <androidx.constraintlayout.widget.Barrier
-        android:id="@+id/barrier2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:barrierDirection="bottom"
-        app:constraint_referenced_ids="scrol" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/buttonLikes"
@@ -110,8 +98,8 @@
         android:contentDescription="@string/like_description"
         app:icon="@drawable/ic_like"
         app:iconTint="@color/like_check_tint"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/url"
         tools:isChecked="@sample/posts.json/data/iLiked"
         tools:text="@sample/posts.json/data/likes" />
 
