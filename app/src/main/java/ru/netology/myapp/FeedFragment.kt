@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -69,19 +70,29 @@ class FeedFragment : Fragment() {
                         { textArg = post.id.toString() }
                     )
                 }
+
+                override fun refresh() {
+                    viewModel.refresh()
+                }
             }
         )
 
         binding.list.adapter=adapter
 
-        val observe = viewModel.data.observe(viewLifecycleOwner) { posts ->
-            posts.map { post ->
-                adapter.submitList(posts)
-            }
-        }
+        viewModel.data.observe(viewLifecycleOwner, { state ->
+            adapter.submitList(state.posts)
+            binding.progress.isVisible = state.loading
+            binding.errorGroup.isVisible = state.error
+            binding.emptyText.isVisible = state.empty
+            binding.swiprefresh.isVisible = state.swiprefresh
+        })
 
         binding.plus.setOnClickListener{
             findNavController().navigate(R.id.action_feedFragment_to_editFragment)
+        }
+
+        binding.retryButton.setOnClickListener{
+            viewModel.loadPosts()
         }
         return binding.root
     }

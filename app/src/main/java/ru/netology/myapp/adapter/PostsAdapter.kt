@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import android.widget.PopupMenu
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import ru.netology.myapp.R
 //import ru.netology.myapp.databinding.ActivityMainBinding
 import ru.netology.myapp.databinding.CardPostBinding
@@ -48,6 +49,10 @@ class PostsAdapter(private val listener: PostEventListener
 
                 content.setOnClickListener {
                     listener.onShowOnePost(post)
+                }
+
+                SwipeRefreshLayout.OnRefreshListener{
+                    listener.refresh()
                 }
 
                 menu.setOnClickListener {

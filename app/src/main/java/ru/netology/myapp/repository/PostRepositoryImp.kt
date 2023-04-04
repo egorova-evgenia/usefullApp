@@ -9,55 +9,99 @@ import com.google.gson.reflect.TypeToken
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.Request
+import okhttp3.RequestBody.Companion.toRequestBody
 import ru.netology.myapp.dao.PostDao
 import ru.netology.myapp.dto.Post
 import ru.netology.myapp.entity.PostEntity
 import ru.netology.myapp.exceptions.PostNotFoundException
 import ru.netology.myapp.viewmodel.newPostId
+import java.util.concurrent.TimeUnit
 
-class PostRepositoryImp(private val dao: PostDao
-):PostRepository {
+class PostRepositoryImp:PostRepository {
 
     private val client=OkHttpClient.Builder()
+        .connectTimeout(30, TimeUnit.SECONDS)
+        .build()
     private val gson= Gson()
     private val typeToken = object : TypeToken<List<Post>>(){}
 
     companion object {
-        private const val BASE_URL ="Http://10.0.2.2:9999"
+        private const val BASE_URL ="Http://10.0.2.2:9999" // это и есть сервер
         private val jsonType = "application/json".toMediaType()
     }
 
 
     override fun getAll(): List<Post> {
         val request: Request = Request.Builder()
-            .url("${BASE_URL}/api/slow/posts")
+            .url("${BASE_URL}/api/posts")
             .build()
 
         return client.newCall(request)
             .execute()
-            .let { it.body?.toString() ?:throw RuntimeException("body is null") }
+            .let { it.body?.string() ?:throw RuntimeException("body is null") }
             .let {
                 gson.fromJson(it, typeToken.type)
             }
     }
 
     override fun likeById(id: Int) {
-        dao.likeById(id)
-//            data.value=posts
+        val request: Request = Request.Builder()
+            .post(gson.toJson(id).toRequestBody(jsonType))
+            .url("${BASE_URL}/api/posts/{$id}/likes")
+            .build()
+        client.newCall(request)
+            .execute()
+            .close()
+    }
+    override fun unLikeById(id: Int) {
+        val request: Request = Request.Builder()
+            .delete()
+            .url("${BASE_URL}/api/posts/{$id}/likes")
+            .build()
+        client.newCall(request)
+            .execute()
+            .close()
     }
 
     override fun shareById(id: Int) {
-        dao.shareById(id)
-//            data.value=posts
     }
-
     override fun removeById(id: Int) {
-        dao.removeById(id)
+        val request: Request = Request.Builder()
+            .delete()
+            .url("${BASE_URL}/api/posts/$id")
+            .build()
+        client.newCall(request)
+            .execute()
+            .close()
     }
 
     override fun save(post: Post) {
-        val saved = dao.save(PostEntity.fromDto(post))
+        val request: Request = Request.Builder()
+            .post(gson.toJson(post).toRequestBody(jsonType))
+            .url("${BASE_URL}/api/posts")
+            .build()
+        client.newCall(request)
+            .execute()
+            .close()    }
+
+//    override fun findPost(id: Int): Post {
+//        val request: Request = Request.Builder()
+//            .post(gson.toJson(id).toRequestBody(jsonType))
+//            .url("${BASE_URL}/api/posts/$id")
+//            .build()
+//
+//        return client.newCall(request)
+//            .execute()
+//            .let { it.body?.string() ?:throw RuntimeException("body is null") }
+//            .let {
+//                gson.fromJson(it, typeToken.type)
+//            }
+//    }
+
+    override fun findPost(id: Int): Post {
+        return getAll().find {it.id==id}!!
     }
 
-    override fun findPost(id: Int): Post = dao.findPost(id).toDto()
+
+
 }

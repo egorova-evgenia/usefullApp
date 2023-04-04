@@ -14,4 +14,5 @@ interface PostEventListener{
     fun onEdit(post: Post)
     fun onCancelEdit(post: Post)
     fun onShowOnePost(post: Post)
+    fun refresh()
 }
