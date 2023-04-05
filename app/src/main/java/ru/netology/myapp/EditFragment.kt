@@ -33,10 +33,16 @@ class EditFragment : Fragment() {
         }
 
         binding.save.setOnClickListener {
-            viewModel.editContent(binding.content.text.toString())
-            viewModel.save()
-//            AndroidUtils.hideKeyboard((requireView()))
+            if (binding.content.text.isNullOrBlank()) {
+                Toast.makeText(it.context, getString(R.string.empty_post), Toast.LENGTH_SHORT)
+                    .show()
+            } else {
+                viewModel.editContent(binding.content.text.toString())
+                viewModel.save()
+            }
+            findNavController().navigateUp()
         }
+
         viewModel.postCreated.observe(viewLifecycleOwner){
             viewModel.loadPosts()
             findNavController().navigateUp()

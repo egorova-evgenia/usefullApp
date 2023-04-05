@@ -84,23 +84,23 @@ class PostRepositoryImp:PostRepository {
             .execute()
             .close()    }
 
-//    override fun findPost(id: Int): Post {
-//        val request: Request = Request.Builder()
-//            .post(gson.toJson(id).toRequestBody(jsonType))
-//            .url("${BASE_URL}/api/posts/$id")
-//            .build()
-//
-//        return client.newCall(request)
-//            .execute()
-//            .let { it.body?.string() ?:throw RuntimeException("body is null") }
-//            .let {
-//                gson.fromJson(it, typeToken.type)
-//            }
-//    }
+    override fun getById(id: Int): Post {
+        val request: Request = Request.Builder()
+            .post(gson.toJson(id).toRequestBody(jsonType))
+            .url("${BASE_URL}/api/posts/$id") // найти пост
+            .build()
 
-    override fun findPost(id: Int): Post {
-        return getAll().find {it.id==id}!!
+        return client.newCall(request)
+            .execute()
+            .let { it.body?.string() ?:throw RuntimeException("body is null") }
+            .let {
+                gson.fromJson(it, typeToken.type)
+            }
     }
+
+//    override fun findPost(id: Int): Post {
+//        return getAll().find {it.id==id}!!
+//    }
 
 
 

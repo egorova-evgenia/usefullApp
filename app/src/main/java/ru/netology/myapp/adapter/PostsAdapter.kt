@@ -51,9 +51,9 @@ class PostsAdapter(private val listener: PostEventListener
                     listener.onShowOnePost(post)
                 }
 
-                SwipeRefreshLayout.OnRefreshListener{
-                    listener.refresh()
-                }
+//                SwipeRefreshLayout.OnRefreshListener{
+//                    listener.refresh()
+//                }
 
                 menu.setOnClickListener {
                     PopupMenu(it.context, it).apply {

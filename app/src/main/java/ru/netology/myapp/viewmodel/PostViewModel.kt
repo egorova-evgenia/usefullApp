@@ -64,7 +64,7 @@ class PostViewModel(application: Application) : AndroidViewModel(application){
 
             _data.postValue(
                 _data.value?.copy(posts = _data.value?.posts.orEmpty()
-                    .map { if (it.id == id) it.copy(iLiked = true, likes = +1) else it }
+                    .map { if (it.id == id) it.copy(iLiked = true, likes = it.likes+1) else it }
                 )
             )
             try {
@@ -75,6 +75,25 @@ class PostViewModel(application: Application) : AndroidViewModel(application){
 
         }
     }
+
+    fun unLikeById(id: Int) {
+        thread {
+            val old = _data.value?.posts.orEmpty()
+            _data.postValue(
+                _data.value?.copy(posts = _data.value?.posts.orEmpty()
+                    .map { if (it.id == id) it.copy(iLiked = false, likes = it.likes-1) else it }
+                )
+            )
+            try {
+                repository.likeById(id)
+            } catch (e: IOException) {
+                _data.postValue(_data.value?.copy(posts = old))
+            }
+
+        }
+    }
+
+
     fun shareById(id: Int) {
         thread{repository.shareById(id)}
     }
@@ -127,10 +146,16 @@ class PostViewModel(application: Application) : AndroidViewModel(application){
 //    fun findPost(id: Int): Post {
 //
 //        thread {
-//            return@thread repository.findPost(id)
+//            try {
+//                return@thread repository.getById(id)
+//            } catch (e: IOException) {
+//
+//            }
 //         }
 //    }
 
-    fun findPost(id: Int): Post = repository.findPost(id)
+    fun findPost(id: Int): Post =
+         repository.getById(id)
+
 
 }

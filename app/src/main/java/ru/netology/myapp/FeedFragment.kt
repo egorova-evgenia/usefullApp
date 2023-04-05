@@ -33,7 +33,8 @@ class FeedFragment : Fragment() {
 
             object : PostEventListener{
                 override fun onLike(post: Post) {
-                    viewModel.likeById(post.id)
+                    if (post.iLiked) viewModel.unLikeById(post.id)
+                    else viewModel.likeById(post.id)
                 }
 
                 override fun onShare(post: Post) {
@@ -71,9 +72,9 @@ class FeedFragment : Fragment() {
                     )
                 }
 
-                override fun refresh() {
-                    viewModel.refresh()
-                }
+//                override fun refresh() {
+//                    viewModel.refresh()
+//                }
             }
         )
 
@@ -84,7 +85,6 @@ class FeedFragment : Fragment() {
             binding.progress.isVisible = state.loading
             binding.errorGroup.isVisible = state.error
             binding.emptyText.isVisible = state.empty
-            binding.swiprefresh.isVisible = state.swiprefresh
         })
 
         binding.plus.setOnClickListener{
