@@ -79,6 +79,9 @@ class FeedFragment : Fragment() {
         )
 
         binding.list.adapter=adapter
+        binding.plus.setOnClickListener{
+            findNavController().navigate(R.id.action_feedFragment_to_editFragment)
+        }
 
         viewModel.data.observe(viewLifecycleOwner, { state ->
             adapter.submitList(state.posts)
@@ -87,9 +90,7 @@ class FeedFragment : Fragment() {
             binding.emptyText.isVisible = state.empty
         })
 
-        binding.plus.setOnClickListener{
-            findNavController().navigate(R.id.action_feedFragment_to_editFragment)
-        }
+
 
         binding.retryButton.setOnClickListener{
             viewModel.loadPosts()

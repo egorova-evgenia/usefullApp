@@ -59,9 +59,6 @@ class PostViewModel(application: Application) : AndroidViewModel(application){
     fun likeById(id: Int) {
         thread {
             val old = _data.value?.posts.orEmpty()
-//                .find { it.id != id }
-//            val new = old?.copy(likes = +1, iLiked = true)
-
             _data.postValue(
                 _data.value?.copy(posts = _data.value?.posts.orEmpty()
                     .map { if (it.id == id) it.copy(iLiked = true, likes = it.likes+1) else it }
@@ -144,12 +141,11 @@ class PostViewModel(application: Application) : AndroidViewModel(application){
     }
 
 //    fun findPost(id: Int): Post {
-//
 //        thread {
 //            try {
 //                return@thread repository.getById(id)
 //            } catch (e: IOException) {
-//
+//                // если не находится пост, ничего не делать
 //            }
 //         }
 //    }
