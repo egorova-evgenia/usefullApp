@@ -33,8 +33,17 @@ class FeedFragment : Fragment() {
 
             object : PostEventListener{
                 override fun onLike(post: Post) {
-                    if (post.iLiked) viewModel.unLikeById(post.id)
-                    else viewModel.likeById(post.id)
+                    if (post.iLiked)
+                    {
+                        println("1   "+post.iLiked+"   "+post.likes)
+                        viewModel.unLikeById(post.id)
+                        println("2   "+post.iLiked+"   "+post.likes)
+                    }
+                    else {
+                        println("3   "+post.iLiked+"   "+post.likes)
+                        viewModel.likeById(post.id)
+                        println("4   "+post.iLiked+"   "+post.likes)
+                    }
                 }
 
                 override fun onShare(post: Post) {

@@ -13,7 +13,7 @@ import androidx.navigation.fragment.findNavController
 import ru.netology.myapp.FeedFragment.Companion.textArg
 import ru.netology.myapp.OnePostFragment.Companion.textArg
 import ru.netology.myapp.adapter.PostEventListener
-import ru.netology.myapp.adapter.PostViewHolder
+//import ru.netology.myapp.adapter.PostViewHolder
 import ru.netology.myapp.adapter.PostsAdapter
 import ru.netology.myapp.databinding.CardPostBinding
 import ru.netology.myapp.databinding.FragmentFeedBinding

@@ -41,6 +41,7 @@ class PostViewModel(application: Application) : AndroidViewModel(application){
             _data.postValue(FeedModel(loading = true))
             try {
                 val posts = repository.getAll()
+                println(posts)
                 FeedModel(posts = posts, empty = posts.isEmpty())
             } catch (e: IOException) {
                 FeedModel(error = true)
@@ -58,6 +59,10 @@ class PostViewModel(application: Application) : AndroidViewModel(application){
 
     fun likeById(id: Int) {
         thread {
+//            val old = _data.value?.posts.orEmpty()
+//                .find { it.id ==id }
+//            val new = old
+
             val old = _data.value?.posts.orEmpty()
             _data.postValue(
                 _data.value?.copy(posts = _data.value?.posts.orEmpty()
@@ -78,11 +83,11 @@ class PostViewModel(application: Application) : AndroidViewModel(application){
             val old = _data.value?.posts.orEmpty()
             _data.postValue(
                 _data.value?.copy(posts = _data.value?.posts.orEmpty()
-                    .map { if (it.id == id) it.copy(iLiked = false, likes = it.likes-1) else it }
+                    .map { if (it.id == id) it.copy(iLiked = false, likes =it.likes-1) else it }
                 )
             )
             try {
-                repository.likeById(id)
+                repository.unLikeById(id)
             } catch (e: IOException) {
                 _data.postValue(_data.value?.copy(posts = old))
             }

@@ -10,6 +10,7 @@ import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.RequestBody.Companion.toRequestBody
+import okhttp3.internal.EMPTY_REQUEST
 import ru.netology.myapp.dao.PostDao
 import ru.netology.myapp.dto.Post
 import ru.netology.myapp.entity.PostEntity
@@ -46,7 +47,7 @@ class PostRepositoryImp:PostRepository {
 
     override fun likeById(id: Int) {
         val request: Request = Request.Builder()
-            .post(gson.toJson(id).toRequestBody(jsonType))
+            .post(EMPTY_REQUEST)
             .url("${BASE_URL}/api/posts/$id/likes")
             .build()
         client.newCall(request)
@@ -96,8 +97,5 @@ class PostRepositoryImp:PostRepository {
                 gson.fromJson(it, Post:: class.java)
             }
     }
-
-
-
 
 }
