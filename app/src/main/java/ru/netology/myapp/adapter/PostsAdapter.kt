@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import android.widget.PopupMenu
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+//import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import ru.netology.myapp.R
 //import ru.netology.myapp.databinding.ActivityMainBinding
 import ru.netology.myapp.databinding.CardPostBinding
@@ -30,14 +30,16 @@ class PostsAdapter(private val listener: PostEventListener
         fun bind(post: Post) {
             binding.apply {
                 content.text = post.content
-                autor.text = post.autor
-                published.text = post.published
+                autor.text = post.author
+                published.text = post.published.toString()
 
-                imageViewed.text = numberToString(post.viewes)
+                imageViewed.text = 1.toString()
+//                    numberToString(post.viewes)
 
-                buttonLikes.isChecked=post.iLiked
+                buttonLikes.isChecked=post.likedByMe
                 buttonLikes.text=numberToString(post.likes)
-                buttonShare.text=numberToString(post.shares)
+                buttonShare.text= 2.toString()
+//                    numberToString(post.shares)
 
                 buttonLikes.setOnClickListener {
                     listener.onLike(post)

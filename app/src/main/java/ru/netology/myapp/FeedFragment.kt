@@ -33,16 +33,12 @@ class FeedFragment : Fragment() {
 
             object : PostEventListener{
                 override fun onLike(post: Post) {
-                    if (post.iLiked)
+                    if (post.likedByMe)
                     {
-                        println("1   "+post.iLiked+"   "+post.likes)
                         viewModel.unLikeById(post.id)
-                        println("2   "+post.iLiked+"   "+post.likes)
                     }
                     else {
-                        println("3   "+post.iLiked+"   "+post.likes)
                         viewModel.likeById(post.id)
-                        println("4   "+post.iLiked+"   "+post.likes)
                     }
                 }
 
@@ -60,7 +56,6 @@ class FeedFragment : Fragment() {
                 }
 
                 override fun onEdit(post: Post) {
-
                     findNavController().navigate(
                         R.id.action_feedFragment_to_editFragment,
                     Bundle().apply
@@ -80,10 +75,6 @@ class FeedFragment : Fragment() {
                         { textArg = post.id.toString() }
                     )
                 }
-
-//                override fun refresh() {
-//                    viewModel.refresh()
-//                }
             }
         )
 
@@ -97,6 +88,7 @@ class FeedFragment : Fragment() {
             binding.progress.isVisible = state.loading
             binding.errorGroup.isVisible = state.error
             binding.emptyText.isVisible = state.empty
+            binding.swiprefresh.isRefreshing = state.loading
         })
 
 
@@ -104,6 +96,11 @@ class FeedFragment : Fragment() {
         binding.retryButton.setOnClickListener{
             viewModel.loadPosts()
         }
+
+        binding.swiprefresh.setOnRefreshListener {
+            viewModel.refresh()
+        }
+
         return binding.root
     }
 

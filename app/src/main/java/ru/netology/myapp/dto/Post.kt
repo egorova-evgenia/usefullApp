@@ -4,15 +4,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 
 data class Post(
-        val id: Int,
-        val autor: String,
-        val autorAvatar: String,
-        val published: String,
+        val id: Long,
+        val author: String,
         val content: String,
-        val url: String ,
-        var likes: Int,
-        var shares: Int ,
-        var viewes: Int ,
-        var iLiked: Boolean
+        val published: Long,
+        val likedByMe: Boolean,
+        val likes: Int = 0,
 )
 

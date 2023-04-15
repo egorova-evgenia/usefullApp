@@ -9,16 +9,11 @@ import android.widget.PopupMenu
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.map
 import androidx.navigation.fragment.findNavController
-import ru.netology.myapp.FeedFragment.Companion.textArg
-import ru.netology.myapp.OnePostFragment.Companion.textArg
-import ru.netology.myapp.adapter.PostEventListener
 //import ru.netology.myapp.adapter.PostViewHolder
-import ru.netology.myapp.adapter.PostsAdapter
 import ru.netology.myapp.databinding.CardPostBinding
-import ru.netology.myapp.databinding.FragmentFeedBinding
-import ru.netology.myapp.databinding.FragmentOnePostBinding
-import ru.netology.myapp.dto.Post
+import ru.netology.myapp.viewmodel.FeedModel
 import ru.netology.myapp.viewmodel.PostViewModel
 
 class OnePostFragment : Fragment() {
@@ -33,23 +28,27 @@ class OnePostFragment : Fragment() {
             false
         )
         val viewModel: PostViewModel by viewModels(ownerProducer = ::requireParentFragment)
-        val postId = arguments?.textArg?.toInt()
-        if (postId!=null) {
-            val post = viewModel.findPost(postId)
+        val postId = arguments?.textArg?.toLong()
 
-        binding.apply {
+//        val post=PostViewModel.findPost
+//        val post = posts.find { it.id == postId } ?:
+        val post = postId?.let { viewModel.findPost(it) }
+
+        if (postId!=null) {
+
+            binding.apply {
             content.text = post.content
-            autor.text = post.autor
+            autor.text = post.author
             published.text = post.published.toString()
 
-            imageViewed.text = numberToString(post.viewes)
+            imageViewed.text = numberToString(0)
 
-            buttonLikes.isChecked = post.iLiked
+            buttonLikes.isChecked = post.likedByMe
             buttonLikes.text = numberToString(post.likes)
-            buttonShare.text = numberToString(post.shares)
+            buttonShare.text = numberToString(2)
 
             buttonLikes.setOnClickListener {
-                viewModel.likeById(post.id)
+                viewModel.run { likeById(post.id) }
             }
 
             buttonShare.setOnClickListener {
@@ -67,7 +66,7 @@ class OnePostFragment : Fragment() {
                         setOnMenuItemClickListener {menuItem ->
                             when (menuItem.itemId){
                                 R.id.remove -> {
-                                    viewModel.removeById(post.id)
+                                    viewModel.removeById(post!!.id)
                                     findNavController().navigateUp()
 
 //                                        R.id.action_onePostFragment_to_FeedFragment)
@@ -95,17 +94,15 @@ class OnePostFragment : Fragment() {
 //            binding.progress.isVisible = state.loading
 //            binding.errorGroup.isVisible = state.error
 //            binding.emptyText.isVisible = state.empty
+//            binding.swiprefresh.isRefreshing = state.loading
 //        })
 
-//        val observe = viewModel.data.observe(viewLifecycleOwner) { posts ->
-//
-//            val post = posts.find { it.id == postId } ?:
-//            return@observe
-//            binding.buttonLikes.text = numberToString(post.likes)
-//            binding.buttonShare.text = numberToString(post.shares)
-//
-//
-//        }
+        val observe = viewModel.data.observe(viewLifecycleOwner, {
+            val post = it.posts.find { it.id == postId } ?:
+            return@observe
+            binding.buttonLikes.text = numberToString(post.likes)
+        })
+
         return binding.root
     }
     companion object {

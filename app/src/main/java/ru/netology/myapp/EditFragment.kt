@@ -40,7 +40,6 @@ class EditFragment : Fragment() {
                 viewModel.editContent(binding.content.text.toString())
                 viewModel.save()
             }
-            findNavController().navigateUp()
         }
 
         viewModel.postCreated.observe(viewLifecycleOwner){

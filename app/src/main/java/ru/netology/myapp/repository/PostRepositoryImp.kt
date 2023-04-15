@@ -1,9 +1,5 @@
 package ru.netology.myapp.repository
 
-import android.content.ContentProviderOperation.newCall
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.map
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import okhttp3.MediaType.Companion.toMediaType
@@ -11,11 +7,7 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.RequestBody.Companion.toRequestBody
 import okhttp3.internal.EMPTY_REQUEST
-import ru.netology.myapp.dao.PostDao
 import ru.netology.myapp.dto.Post
-import ru.netology.myapp.entity.PostEntity
-import ru.netology.myapp.exceptions.PostNotFoundException
-import ru.netology.myapp.viewmodel.newPostId
 import java.util.concurrent.TimeUnit
 
 class PostRepositoryImp:PostRepository {
@@ -45,7 +37,7 @@ class PostRepositoryImp:PostRepository {
             }
     }
 
-    override fun likeById(id: Int) {
+    override fun likeById(id: Long) {
         val request: Request = Request.Builder()
             .post(EMPTY_REQUEST)
             .url("${BASE_URL}/api/posts/$id/likes")
@@ -54,7 +46,7 @@ class PostRepositoryImp:PostRepository {
             .execute()
             .close()
     }
-    override fun unLikeById(id: Int) {
+    override fun unLikeById(id: Long) {
         val request: Request = Request.Builder()
             .delete()
             .url("${BASE_URL}/api/posts/$id/likes")
@@ -64,9 +56,9 @@ class PostRepositoryImp:PostRepository {
             .close()
     }
 
-    override fun shareById(id: Int) {
-    }
-    override fun removeById(id: Int) {
+//    override fun shareById(id: Long) {
+//    }
+    override fun removeById(id: Long) {
         val request: Request = Request.Builder()
             .delete()
             .url("${BASE_URL}/api/posts/$id")
@@ -85,7 +77,7 @@ class PostRepositoryImp:PostRepository {
             .execute()
             .close()    }
 
-    override fun getById(id: Int): Post {
+    override fun getById(id: Long): Post {
         val request: Request = Request.Builder()
             .url("${BASE_URL}/api/posts/$id") // найти пост
             .build()
