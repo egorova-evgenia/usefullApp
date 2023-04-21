@@ -4,10 +4,27 @@ import ru.netology.myapp.dto.Post
 
 
 interface PostRepository {
-    fun getAll(): List<Post>
-    fun likeById(id: Long)
-    fun unLikeById(id: Long)
-    fun removeById(id: Long)
-    fun save(post: Post)
-    fun getById(id: Long): Post
+//    fun getAll(): List<Post>
+    fun likeById(id: Long, callback: NothingCallback)
+    fun unLikeById(id: Long, callback: NothingCallback)
+    fun removeById(id: Long, callback: NothingCallback)
+    fun save(post: Post, callback: NothingCallback)
+    fun getById(id: Long, callback: PostCallback)
+    fun getAllAsync(callback: GetAllCallback)
+    interface GetAllCallback {
+        fun onSuccess(posts: List<Post>){}
+        fun onError(e: Exception){}
+    }// клб возвращает список постов
+
+    interface PostCallback {
+        fun onSuccess(post: Post){}
+        fun onError(e: Exception){}
+    }// клб возвращает 1 пост
+
+    interface NothingCallback {
+        fun onSuccess(){}
+        fun onError(e: Exception){}
+    }// клб возвращает ничего
+//    стр 31
+
 }
