@@ -165,7 +165,10 @@ class PostViewModel(application: Application) : AndroidViewModel(application){
 //         }
 //    }
 
-    fun findPost(id: Long): Post = repository.getById(id)
-
+    fun findPost(id: Long): Post? {
+        return _data.value?.posts?.find {
+            it.id==id
+        }
+    }
 
 }
