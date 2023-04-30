@@ -41,16 +41,11 @@ class PostViewModel(application: Application) : AndroidViewModel(application){
         })
     }
 
-    fun findPost(id: Long) {
-//            _data.postValue(FeedModel(loading = true))
-                repository.getById(id, object : PostRepository.PostCallback {
-                    override fun onSuccess(post: Post) {
-                        val post: Post = post
-                    }
-                    override fun onError(e: Exception){
-                        _data.postValue(FeedModel(error = true))
-                    }
-                })
+    fun findPost(id: Long): Post? {
+        return _data.value?.posts?.find {
+            it.id==id
+        }
+
     }
 
     private val _postCreated = SingleLiveEvent<Unit>()
@@ -157,6 +152,7 @@ class PostViewModel(application: Application) : AndroidViewModel(application){
 //    }
 
 //    fun findPost(id: Long): Post = repository.getById(id)
+
 
 
 }
