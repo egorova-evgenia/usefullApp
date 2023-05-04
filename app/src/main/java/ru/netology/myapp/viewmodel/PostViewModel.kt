@@ -17,6 +17,7 @@ val empty = Post(
     newPostId,
     "Mary",
     "  ",
+    " ",
     1,
     false,
     0

@@ -128,18 +128,18 @@ class PostRepositoryImp:PostRepository {
     }
 
     override fun getById(id: Long, callback: PostRepository.PostCallback) {
-        val request: Request = Request.Builder()
-            .url("${BASE_URL}/api/posts/$id") // найти пост
-            .build()
-            client.newCall(request)
-            .enqueue(object : Callback{
-                override fun onFailure(call: Call, e: IOException) {
-                    callback.onError(e)
-                }
-                override fun onResponse(call: Call, response: Response) {
-                    callback.onSuccess(gson.fromJson(response.body?.string(), Post::class.java))
-                }
-            })
+//        val request: Request = Request.Builder()
+//            .url("${BASE_URL}/api/posts/$id") // найти пост
+//            .build()
+//            client.newCall(request)
+//            .enqueue(object : Callback{
+//                override fun onFailure(call: Call, e: IOException) {
+//                    callback.onError(e)
+//                }
+//                override fun onResponse(call: Call, response: Response) {
+//                    callback.onSuccess(gson.fromJson(response.body?.string(), Post::class.java))
+//                }
+//            })
     }
 
 }

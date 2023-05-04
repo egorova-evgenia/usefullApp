@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import android.widget.PopupMenu
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 //import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import ru.netology.myapp.R
 //import ru.netology.myapp.databinding.ActivityMainBinding
@@ -27,7 +28,23 @@ class PostsAdapter(private val listener: PostEventListener
     class PostViewHolder(val binding: CardPostBinding,
                          val listener: PostEventListener
                          ): RecyclerView.ViewHolder(binding.root){
+        // стр. 30
+        fun setAvatar(post: Post){
+            val BASE_URL ="Http://10.0.2.2:9999"
+            val url="$BASE_URL/avatars/${post.authorAvatar}"
+            Glide.with(binding.avatar)
+                .load(url)
+                .placeholder(R.drawable.baseline_downloading_100)
+                .error(R.drawable.baseline_font_download_off_24)
+                .circleCrop()
+//                .transform(new fitCenter(), new .circleCrop())
+//                .fitCenter()
+//                .centerCrop()
+                .timeout(10_000)
+                .into(binding.avatar)
+        }
         fun bind(post: Post) {
+            setAvatar(post)
             binding.apply {
                 content.text = post.content
                 autor.text = post.author
@@ -75,5 +92,7 @@ class PostsAdapter(private val listener: PostEventListener
                 }
             }
         }
+
+
     }
 }
