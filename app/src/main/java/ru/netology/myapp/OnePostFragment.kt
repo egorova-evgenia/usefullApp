@@ -35,6 +35,12 @@ class OnePostFragment : Fragment() {
 //        val post = postId?.let { viewModel.findPost(it) }
 
         if (postId!=null) {
+
+            viewModel.data.observe(viewLifecycleOwner, {
+                val post = it.posts.find { it.id == postId } ?:
+                return@observe
+                binding.buttonLikes.text = numberToString(post.likes)
+            })
             val post =viewModel.findPost(postId)
 
             binding.apply {
@@ -95,11 +101,7 @@ class OnePostFragment : Fragment() {
             }
         }
 
-        viewModel.data.observe(viewLifecycleOwner, {
-            val post = it.posts.find { it.id == postId } ?:
-            return@observe
-            binding.buttonLikes.text = numberToString(post.likes)
-        })
+
 
         return binding.root
     }
