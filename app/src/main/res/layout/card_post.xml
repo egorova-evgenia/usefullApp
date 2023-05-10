@@ -76,12 +76,19 @@
         app:layout_constraintTop_toBottomOf="@+id/content"
         tools:text="@sample/posts.json/data/url" />
 
+    <ImageView
+        android:id="@+id/attachImage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/url"
+        tools:src="@tools:sample/avatars"/>
+
     <androidx.constraintlayout.widget.Barrier
         android:id="@+id/barrier2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:barrierDirection="bottom"
-        app:constraint_referenced_ids="url,content" />
+        app:constraint_referenced_ids="url,content,attachImage" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/buttonLikes"

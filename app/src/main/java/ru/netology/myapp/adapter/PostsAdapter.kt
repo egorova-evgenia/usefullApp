@@ -28,9 +28,21 @@ class PostsAdapter(private val listener: PostEventListener
     class PostViewHolder(val binding: CardPostBinding,
                          val listener: PostEventListener
                          ): RecyclerView.ViewHolder(binding.root){
+
+        fun attach(post: Post){
+            val BASE_URL ="http://10.0.2.2:9999"
+            val url="$BASE_URL/avatars/${post.authorAvatar}"
+
+            Glide.with(binding.attachImage)
+                .load("$BASE_URL/images/${post.attachment?.url}")
+                .error(R.drawable.baseline_font_download_off_24)
+                .timeout(10_000)
+                .into(binding.attachImage)
+        }
+
         // стр. 30
         fun setAvatar(post: Post){
-            val BASE_URL ="Http://10.0.2.2:9999"
+            val BASE_URL ="http://10.0.2.2:9999"
             val url="$BASE_URL/avatars/${post.authorAvatar}"
             Glide.with(binding.avatar)
                 .load(url)
@@ -44,6 +56,7 @@ class PostsAdapter(private val listener: PostEventListener
                 .into(binding.avatar)
         }
         fun bind(post: Post) {
+            if(post.attachment!=null) {attach(post)}
             setAvatar(post)
             binding.apply {
                 content.text = post.content
