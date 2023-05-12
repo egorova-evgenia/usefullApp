@@ -9,8 +9,7 @@ import ru.netology.myapp.dto.Post
 import ru.netology.myapp.eventsAndOther.SingleLiveEvent
 import ru.netology.myapp.repository.PostRepository
 import ru.netology.myapp.repository.PostRepositoryImp
-import java.io.IOException
-import kotlin.concurrent.thread
+import java.security.AccessController.getContext
 
 val newPostId=0L
 val empty = Post(
@@ -39,7 +38,7 @@ class PostViewModel(application: Application) : AndroidViewModel(application){
             override fun onError(e: Exception){
                 _data.postValue(FeedModel(error = true))
             }
-        })
+        }, getApplication() )
     }
 
     fun findPost(id: Long): Post? {

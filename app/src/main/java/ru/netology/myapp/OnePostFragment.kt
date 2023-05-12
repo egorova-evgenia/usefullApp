@@ -32,16 +32,15 @@ class OnePostFragment : Fragment() {
         val viewModel: PostViewModel by viewModels(ownerProducer = ::requireParentFragment)
         val postId = arguments?.textArg?.toLong()
 
-
-//        val post = posts.find { it.id == postId } ?:
-//        val post=empty
-//        val post=viewModel.findPost(postId)
-
-
         if (postId!=null) {
+
+            viewModel.data.observe(viewLifecycleOwner, {
+                val post = it.posts.find { it.id == postId } ?:
+                return@observe
+                binding.buttonLikes.text = numberToString(post.likes)
+            })
             val post =viewModel.findPost(postId)
-//            val post = viewModel.data.
-//                viewModel.findPost(postId)
+
             binding.apply {
             content.text = post!!.content
             autor.text = post.author
@@ -100,19 +99,13 @@ class OnePostFragment : Fragment() {
             }
         }
 
-        viewModel.data.observe(viewLifecycleOwner, {
-            val post = it.posts.find { it.id == postId } ?:
-            return@observe
-            binding.buttonLikes.text = numberToString(post.likes)
-
-        })
-//        viewModel.data.observe(viewLifecycleOwner, { state ->
-////            adapter.submitList(state.posts)
-//            binding.progress.isVisible = state.loading
-//            binding.errorGroup.isVisible = state.error
-//            binding.emptyText.isVisible = state.empty
-//            binding.swiprefresh.isRefreshing = state.loading
+//        viewModel.data.observe(viewLifecycleOwner, {
+//            val post = it.posts.find { it.id == postId } ?:
+//            return@observe
+//            binding.buttonLikes.text = numberToString(post.likes)
+//
 //        })
+
 
         return binding.root
     }

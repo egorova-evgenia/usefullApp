@@ -40,7 +40,6 @@ class PostsAdapter(private val listener: PostEventListener
                 .into(binding.attachImage)
         }
 
-        // стр. 30
         fun setAvatar(post: Post){
             val BASE_URL ="http://10.0.2.2:9999"
             val url="$BASE_URL/avatars/${post.authorAvatar}"
@@ -49,9 +48,6 @@ class PostsAdapter(private val listener: PostEventListener
                 .placeholder(R.drawable.baseline_downloading_100)
                 .error(R.drawable.baseline_font_download_off_24)
                 .circleCrop()
-//                .transform(new fitCenter(), new .circleCrop())
-//                .fitCenter()
-//                .centerCrop()
                 .timeout(10_000)
                 .into(binding.avatar)
         }
@@ -64,12 +60,10 @@ class PostsAdapter(private val listener: PostEventListener
                 published.text = post.published.toString()
 
                 imageViewed.text = 1.toString()
-//                    numberToString(post.viewes)
 
                 buttonLikes.isChecked=post.likedByMe
                 buttonLikes.text=numberToString(post.likes)
                 buttonShare.text= 2.toString()
-//                    numberToString(post.shares)
 
                 buttonLikes.setOnClickListener {
                     listener.onLike(post)
@@ -82,10 +76,6 @@ class PostsAdapter(private val listener: PostEventListener
                 content.setOnClickListener {
                     listener.onShowOnePost(post)
                 }
-
-//                SwipeRefreshLayout.OnRefreshListener{
-//                    listener.refresh()
-//                }
 
                 menu.setOnClickListener {
                     PopupMenu(it.context, it).apply {

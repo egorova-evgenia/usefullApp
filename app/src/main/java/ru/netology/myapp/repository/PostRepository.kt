@@ -1,6 +1,8 @@
 package ru.netology.myapp.repository
 
+import android.content.Context
 import ru.netology.myapp.dto.Post
+import java.security.AccessControlContext
 
 
 interface PostRepository {
@@ -10,7 +12,7 @@ interface PostRepository {
     fun removeById(id: Long, callback: NothingCallback)
     fun save(post: Post, callback: NothingCallback)
     fun getById(id: Long, callback: PostCallback)
-    fun getAllAsync(callback: GetAllCallback)
+    fun getAllAsync(callback: GetAllCallback, context: Context)
     interface GetAllCallback {
         fun onSuccess(posts: List<Post>){}
         fun onError(e: Exception){}
