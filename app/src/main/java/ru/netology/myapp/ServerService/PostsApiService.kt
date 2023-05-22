@@ -10,7 +10,7 @@ import retrofit2.http.*
 import ru.netology.myapp.BuildConfig
 import ru.netology.myapp.dto.Post
 
-private const val BASE_URL = "${BuildConfig.BASE_URL}/api/"
+private const val BASE_URL = "${BuildConfig.BASE_URL}api/"
 
 interface PostApiService {
     @GET("posts")

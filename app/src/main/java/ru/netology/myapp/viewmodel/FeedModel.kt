@@ -1,5 +1,6 @@
 package ru.netology.myapp.viewmodel
 
+import retrofit2.http.Body
 import ru.netology.myapp.dto.Post
 
 data class FeedModel(
@@ -9,4 +10,6 @@ data class FeedModel(
     val error: Boolean = false,
     val empty: Boolean = false,
     val swiprefresh: Boolean = false,
+    val code: Int = 200,
+    val errorBody: String = ""
 )

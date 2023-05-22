@@ -1,14 +1,17 @@
 package ru.netology.myapp.viewmodel
 
 import android.app.Application
+import android.view.View
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 
 import androidx.lifecycle.MutableLiveData
+import com.google.android.material.snackbar.Snackbar
 import ru.netology.myapp.dto.Post
 import ru.netology.myapp.eventsAndOther.SingleLiveEvent
 import ru.netology.myapp.repository.PostRepository
 import ru.netology.myapp.repository.PostRepositoryImp
+import java.lang.Error
 import java.security.AccessController.getContext
 
 val newPostId=0L
@@ -35,17 +38,16 @@ class PostViewModel(application: Application) : AndroidViewModel(application){
             override fun onSuccess(posts: List<Post>) {
                 _data.postValue(FeedModel(posts = posts, empty = posts.isEmpty()))
             }
-            override fun onError(e: Exception){
-                _data.postValue(FeedModel(error = true))
+            override fun onError(e: Exception, code: Int, errorBody: String) {
+                _data.postValue(FeedModel(error = true, code=code, errorBody =errorBody))
             }
-        }, getApplication() )
+        } )
     }
 
     fun findPost(id: Long): Post? {
         return _data.value?.posts?.find {
             it.id==id
         }
-
     }
 
     private val _postCreated = SingleLiveEvent<Unit>()
@@ -141,17 +143,13 @@ class PostViewModel(application: Application) : AndroidViewModel(application){
         loadPosts()
     }
 
-//    fun findPost(id: Long?): Post {
-//        thread {
-//            try {
-//                return@thread repository.getById(id)
-//            } catch (e: IOException) {
-//                // если не находится пост, ничего не делать
-//            }
-//         }
+//    fun problemMessage(code: Int, msg: String, view: View) {
+//        if (code!=200) {
+//            Snackbar.make(view, msg, Snackbar.LENGTH_LONG)
+//                .setAction(android.R.string.ok){
+//                    finish()}.show()
+//        }
 //    }
-
-//    fun findPost(id: Long): Post = repository.getById(id)
 
 
 

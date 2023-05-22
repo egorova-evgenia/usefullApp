@@ -12,10 +12,10 @@ interface PostRepository {
     fun removeById(id: Long, callback: NothingCallback)
     fun save(post: Post, callback: NothingCallback)
     fun getById(id: Long, callback: PostCallback)
-    fun getAllAsync(callback: GetAllCallback, context: Context)
+    fun getAllAsync(callback: GetAllCallback)
     interface GetAllCallback {
         fun onSuccess(posts: List<Post>){}
-        fun onError(e: Exception){}
+        fun onError(e: Exception, code: Int, errorBody: String){}
     }// клб возвращает список постов
 
     interface PostCallback {
