@@ -87,15 +87,15 @@ class FeedFragment : Fragment() {
             findNavController().navigate(R.id.action_feedFragment_to_editFragment)
         }
 
-        viewModel.data.observe(viewLifecycleOwner, { state ->
+        viewModel.data.observe(viewLifecycleOwner) { state ->
             adapter.submitList(state.posts)
             binding.progress.isVisible = state.loading
             binding.errorGroup.isVisible = state.error
             binding.emptyText.isVisible = state.empty
             binding.swiprefresh.isRefreshing = state.loading
+            problemMessage(binding.root,state.code, state.errorBody)
 
-
-        })
+        }
 
 
 
@@ -107,20 +107,32 @@ class FeedFragment : Fragment() {
             viewModel.refresh()
         }
 
-        fun problemMessage(code: Int, msg: String) {
-            if (code!=200) {
-                Snackbar.make(binding.root, msg, Snackbar.LENGTH_LONG)
-                    .setAction(android.R.string.ok){
-                        }.show()
-                Toast.makeText(context, msg,Toast.LENGTH_LONG ).show()
-
-            }
-        }
+//        fun problemMessage(code: Int, msg: String) {
+//            if (code!=200) {
+//                Snackbar.make(binding.root, msg, Snackbar.LENGTH_LONG)
+//                    .setAction(android.R.string.ok){
+//                        }.show()
+//                Toast.makeText(context, msg,Toast.LENGTH_LONG ).show()
+//
+//            }
+//        }
 
 
 
 
         return binding.root
+    }
+
+    private fun problemMessage(view: View, code: Int, errorBody: String) {
+        fun problemMessage(code: Int, msg: String) {
+            if (code != 200) {
+                Snackbar.make(view, msg, Snackbar.LENGTH_LONG)
+                    .setAction(android.R.string.ok) {
+                    }.show()
+                Toast.makeText(context, msg, Toast.LENGTH_LONG).show()
+
+            }
+        }
     }
 
     companion object {
