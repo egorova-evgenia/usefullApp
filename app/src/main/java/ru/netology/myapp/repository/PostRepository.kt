@@ -25,7 +25,7 @@ interface PostRepository {
 
     interface NothingCallback {
         fun onSuccess(){}
-        fun onError(e: Exception){}
+        fun onError(e: Exception, code: Int, errorBody: String){}
     }// клб возвращает ничего
 //    стр 31
 

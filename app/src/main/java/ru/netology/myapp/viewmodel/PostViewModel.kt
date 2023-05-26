@@ -67,8 +67,8 @@ class PostViewModel(application: Application) : AndroidViewModel(application){
                 }
                 _data.postValue(FeedModel(posts=new))
             }
-            override fun onError (e: Exception) {
-                _data.postValue(FeedModel(error = true))
+            override fun onError (e: Exception, code: Int, errorBody: String) {
+                _data.postValue(FeedModel(error = true, code=code, errorBody =errorBody))
             }
         })
     }
@@ -82,8 +82,8 @@ class PostViewModel(application: Application) : AndroidViewModel(application){
                 }
                 _data.postValue(FeedModel(posts = new))
             }
-            override fun onError (e: Exception) {
-                _data.postValue(FeedModel(error = true))
+            override fun onError (e: Exception, code: Int, errorBody: String) {
+                _data.postValue(FeedModel(error = true, code=code, errorBody =errorBody))
             }
         })
 
@@ -99,7 +99,8 @@ class PostViewModel(application: Application) : AndroidViewModel(application){
             override fun onSuccess(){
                 _data.postValue(FeedModel(old.filter { it.id != id }))
             }
-            override fun onError (e: Exception) {
+            override fun onError (e: Exception, code: Int, errorBody: String) {
+                _data.postValue(FeedModel(error = true, code=code, errorBody =errorBody))
                 _data.postValue(_data.value?.copy(posts = old)) // если не получилось, возвращаем бекап
             }
         })
@@ -122,8 +123,8 @@ class PostViewModel(application: Application) : AndroidViewModel(application){
 //
                 }
 
-                override fun onError(e: Exception) {
-                    _data.postValue(FeedModel(error = true))
+                override fun onError(e: Exception, code: Int, errorBody: String) {
+                    _data.postValue(FeedModel(error = true, code=code, errorBody =errorBody))
                 }
             })
             edited.value = empty
@@ -142,15 +143,5 @@ class PostViewModel(application: Application) : AndroidViewModel(application){
     fun refresh(){
         loadPosts()
     }
-
-//    fun problemMessage(code: Int, msg: String, view: View) {
-//        if (code!=200) {
-//            Snackbar.make(view, msg, Snackbar.LENGTH_LONG)
-//                .setAction(android.R.string.ok){
-//                    finish()}.show()
-//        }
-//    }
-
-
 
 }

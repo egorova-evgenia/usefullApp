@@ -53,7 +53,3 @@ private val okhttp = OkHttpClient.Builder()
     .addInterceptor(logging)
     .build()
 
-//interface Callback<T> {
-//    fun onResponse(Call<T> call, Res) {}
-//    fun onFailure(e: Exception) {}
-//}

@@ -39,97 +39,96 @@ class PostRepositoryImp:PostRepository {
                 }
 
                 override fun onFailure(call: Call<List<Post>>, t: Throwable) {
-                    callback.onError(RuntimeException(t),500,"")
+                    callback.onError(RuntimeException(t),500,"ошибка сервера")
                 }
             })
     }
     override fun likeById(id: Long, callback: PostRepository.NothingCallback) {
-//        PostApi.service.likeById(id)
-//            .enqueue(object : Callback<Post> {
-//                override fun onResponse(call: Call<Post>, response: Response<Post>) {
-//                    if (!response.isSuccessful) {
-//
-//                        callback.onError(RuntimeException(response.message()))
-//                        return
-//                    }
-//                    callback.onSuccess()
-//                }
-//
-//                override fun onFailure(call: Call<Post>, t: Throwable) {
-//                    callback.onError(RuntimeException(t))
-//                }
-//
-//            })
+        PostApi.service.likeById(id)
+            .enqueue(object : Callback<Post> {
+                override fun onResponse(call: Call<Post>, response: Response<Post>) {
+                    if (!response.isSuccessful) {
+                        callback.onError(RuntimeException(response.message()),response.code(),response.errorBody().toString())
+                        return
+                    }
+                    callback.onSuccess()
+                }
+
+                override fun onFailure(call: Call<Post>, t: Throwable) {
+                    callback.onError(RuntimeException(t),500,"ошибка сервера")
+                }
+
+            })
     }
 
     override fun unLikeById(id: Long, callback: PostRepository.NothingCallback) {
-//        PostApi.service.dislikeById(id)
-//            .enqueue(object : Callback<Post> {
-//                override fun onResponse(call: Call<Post>, response: Response<Post>) {
-//                    if (!response.isSuccessful) {
-//                        callback.onError(RuntimeException(response.message()))
-//                        return
-//                    }
-//                    callback.onSuccess()
-//                }
-//
-//                override fun onFailure(call: Call<Post>, t: Throwable) {
-//                    callback.onError(RuntimeException(t))
-//                }
-//
-//            })
+        PostApi.service.dislikeById(id)
+            .enqueue(object : Callback<Post> {
+                override fun onResponse(call: Call<Post>, response: Response<Post>) {
+                    if (!response.isSuccessful) {
+                        callback.onError(RuntimeException(response.message()),response.code(),response.errorBody().toString())
+                        return
+                    }
+                    callback.onSuccess()
+                }
+
+                override fun onFailure(call: Call<Post>, t: Throwable) {
+                    callback.onError(RuntimeException(t),500,"ошибка сервера")
+                }
+
+            })
     }
 
 //    override fun shareById(id: Long) {
 //    }
     override fun removeById(id: Long, callback: PostRepository.NothingCallback) {
-//        PostApi.service.removeById(id)
-//            .enqueue(object : Callback<Unit> {
-//                override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
-//                    if (!response.isSuccessful) {
-//                        callback.onError(RuntimeException(response.message()))
-//                        return
-//                    }
-//                    callback.onSuccess()
-//                }
-//
-//                override fun onFailure(call: Call<Unit>, t: Throwable) {
-//                    callback.onError(RuntimeException(t))
-//                }
-//            })
+        PostApi.service.removeById(id)
+            .enqueue(object : Callback<Unit> {
+                override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
+                    if (!response.isSuccessful) {
+                        callback.onError(RuntimeException(response.message()),response.code(),response.errorBody().toString())
+                        return
+                    }
+                    callback.onSuccess()
+                }
+
+                override fun onFailure(call: Call<Unit>, t: Throwable) {
+                    callback.onError(RuntimeException(t),500,"ошибка сервера")
+                }
+            })
     }
 
     override fun save(post: Post, callback: PostRepository.NothingCallback) {
-//        PostApi.service.save(post)
-//            .enqueue(object : Callback<Post> {
-//                override fun onResponse(call: Call<Post>, response: Response<Post>) {
-//                    if (!response.isSuccessful) {
-//                        callback.onError(RuntimeException(response.message()))
-//                        return
-//                    }
-//                    callback.onSuccess()                }
-//
-//                override fun onFailure(call: Call<Post>, t: Throwable) {
-//                    callback.onError(RuntimeException(t))
-//                }
-//            })
+        PostApi.service.save(post)
+            .enqueue(object : Callback<Post> {
+                override fun onResponse(call: Call<Post>, response: Response<Post>) {
+                    if (!response.isSuccessful) {
+                        callback.onError(RuntimeException(response.message()),response.code(),response.errorBody().toString())
+                        return
+                    }
+                    callback.onSuccess()                }
+
+                override fun onFailure(call: Call<Post>, t: Throwable) {
+                    callback.onError(RuntimeException(t),500,"ошибка сервера")
+                }
+            })
     }
 
     override fun getById(id: Long, callback: PostRepository.PostCallback) {
-//        PostApi.service.getById(id)
-//            .enqueue(object : Callback<Post>{
-//                override fun onResponse(call: Call<Post>, response: Response<Post>) {
-//                    if (!response.isSuccessful) {
-//                        callback.onError(RuntimeException(response.message()))
-//                        return
-//                    }
-//                    callback.onSuccess(response.body()?: throw RuntimeException("body is null"))
-//                }
-//
-//                override fun onFailure(call: Call<Post>, t: Throwable) {
-//                    callback.onError(RuntimeException(t))
-//                }
-//            })
+        PostApi.service.getById(id)
+            .enqueue(object : Callback<Post>{
+                override fun onResponse(call: Call<Post>, response: Response<Post>) {
+                    if (!response.isSuccessful) {
+                        callback.onError(RuntimeException(response.message()))
+                        return
+                    }
+                    callback.onSuccess(response.body()?: throw RuntimeException("body is null"))
+                }
+
+                override fun onFailure(call: Call<Post>, t: Throwable) {
+                    callback.onError(RuntimeException(t))
+                }
+            })
     }
 
 }

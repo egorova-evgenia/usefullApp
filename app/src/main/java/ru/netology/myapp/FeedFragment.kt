@@ -107,19 +107,6 @@ class FeedFragment : Fragment() {
             viewModel.refresh()
         }
 
-//        fun problemMessage(code: Int, msg: String) {
-//            if (code!=200) {
-//                Snackbar.make(binding.root, msg, Snackbar.LENGTH_LONG)
-//                    .setAction(android.R.string.ok){
-//                        }.show()
-//                Toast.makeText(context, msg,Toast.LENGTH_LONG ).show()
-//
-//            }
-//        }
-
-
-
-
         return binding.root
     }
 
@@ -129,7 +116,7 @@ class FeedFragment : Fragment() {
                 Snackbar.make(view, msg, Snackbar.LENGTH_LONG)
                     .setAction(android.R.string.ok) {
                     }.show()
-                Toast.makeText(context, msg, Toast.LENGTH_LONG).show()
+//                Toast.makeText(context, msg, Toast.LENGTH_LONG).show()
 
             }
         }
