@@ -5,10 +5,11 @@ plugins {
 }
 
 android {
+    namespace "ru.netology.myapp"
     compileSdkVersion 33
     buildToolsVersion "30.0.3"
 
-    namespace "ru.netology.myapp"
+
 
     defaultConfig {
         applicationId "ru.netology.myapp"
