@@ -93,11 +93,16 @@ class FeedFragment : Fragment() {
             binding.errorGroup.isVisible = state.error
             binding.emptyText.isVisible = state.empty
             binding.swiprefresh.isRefreshing = state.loading
-            problemMessage(binding.root,state.code, state.errorBody)
+//            problemMessage(binding.root,state.code, state.errorBody)
+            if (state.code != 200) {
+                Snackbar.make(binding.root, state.errorBody, Snackbar.LENGTH_LONG)
+                    .setAction(android.R.string.ok) {
+                    }.show()
+//                Toast.makeText(context, msg, Toast.LENGTH_LONG).show()
+
+            }
 
         }
-
-
 
         binding.retryButton.setOnClickListener{
             viewModel.loadPosts()
@@ -110,17 +115,17 @@ class FeedFragment : Fragment() {
         return binding.root
     }
 
-    private fun problemMessage(view: View, code: Int, errorBody: String) {
-        fun problemMessage(code: Int, msg: String) {
-            if (code != 200) {
-                Snackbar.make(view, msg, Snackbar.LENGTH_LONG)
-                    .setAction(android.R.string.ok) {
-                    }.show()
-//                Toast.makeText(context, msg, Toast.LENGTH_LONG).show()
-
-            }
-        }
-    }
+//    private fun problemMessage(view: View, code: Int, errorBody: String) {
+//        fun problemMessage(code: Int, msg: String) {
+//            if (code != 200) {
+//                Snackbar.make(view, msg, Snackbar.LENGTH_LONG)
+//                    .setAction(android.R.string.ok) {
+//                    }.show()
+////                Toast.makeText(context, msg, Toast.LENGTH_LONG).show()
+//
+//            }
+//        }
+//    }
 
     companion object {
         var Bundle.textArg: String? by StringArg
