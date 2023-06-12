@@ -60,10 +60,10 @@ class PostViewModel(application: Application) : AndroidViewModel(application){
     }
 
 
-    override fun onCleared() {
-        super.onCleared()
-        scope.cancel()
-    }
+//    override fun onCleared() {
+//        super.onCleared()
+//        scope.cancel()
+//    }
 
 
     fun findPost(id: Long): Post? {
@@ -79,32 +79,37 @@ class PostViewModel(application: Application) : AndroidViewModel(application){
     val edited = MutableLiveData(empty)
 
     fun likeById(id: Long) {
-//        val old = _data.value?.posts.orEmpty()
-//        repository.likeById(id, object : PostRepository.NothingCallback{
-//            override fun onSuccess(){
-//                val new=old.map {
-//                    if (it.id != id) it else it.copy(likedByMe = true, likes = it.likes + 1)
-//                }
-//                _data.postValue(FeedModel(posts=new))
-//            }
-//            override fun onError (e: Exception, code: Int, errorBody: String) {
-//                _data.postValue(FeedModel(error = true, code=code, errorBody =errorBody))
-//            }
-//        })
+        scope.launch {
+            try {
+                repository.likeById(id)
+                _dataState.value = FeedModelState()
+            } catch (e: Exception) {
+                _dataState.value = FeedModelState(error = true)
+            }
+        }
+    }
+
+    fun disLikeById(id: Long) {
+        scope.launch {
+            try {
+                repository.disLikeById(id)
+                _dataState.value = FeedModelState()
+            } catch (e: Exception) {
+                _dataState.value = FeedModelState(error = true)
+            }
+        }
     }
         fun shareById(id: Long) {
     }
     fun removeById(id: Long) {
-//        val old = _data.value?.posts.orEmpty()
-//        repository.removeById(id, object : PostRepository.NothingCallback{
-//            override fun onSuccess(){
-//                _data.postValue(FeedModel(old.filter { it.id != id }))
-//            }
-//            override fun onError (e: Exception, code: Int, errorBody: String) {
-//                _data.postValue(FeedModel(error = true, code=code, errorBody =errorBody))
-//                _data.postValue(_data.value?.copy(posts = old)) // если не получилось, возвращаем бекап
-//            }
-//        })
+        scope.launch {
+            try {
+                repository.removeById(id)
+                _dataState.value = FeedModelState()
+            } catch (e: Exception) {
+                _dataState.value = FeedModelState(error = true)
+            }
+        }
     }
 
     fun editContent(content: String) {
@@ -117,19 +122,17 @@ class PostViewModel(application: Application) : AndroidViewModel(application){
     }
 
     fun save() {
-//        edited.value?.let {
-//            repository.save(it, object : PostRepository.NothingCallback{
-//                override fun onSuccess() {
-//                    _postCreated.postValue(Unit) //  используем метод, потому что в thread
-////
-//                }
-//
-//                override fun onError(e: Exception, code: Int, errorBody: String) {
-//                    _data.postValue(FeedModel(error = true, code=code, errorBody =errorBody))
-//                }
-//            })
-//            edited.value = empty
-//        }
+        edited.value?.let {
+            _postCreated.value = Unit
+            scope.launch {
+                try {
+                    repository.save(it)
+                    _dataState.value = FeedModelState()
+                } catch (e: Exception) {
+                    _dataState.value = FeedModelState(error = true)
+                }
+            }
+        }
     }
 
 

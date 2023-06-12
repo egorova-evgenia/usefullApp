@@ -36,15 +36,71 @@ class PostRepositoryImp(private val postDao: PostDao):PostRepository {
 //        }
     }
     override suspend fun likeById(id: Long) {
-        TODO("Not yet implemented")
+            postDao.likeById(id)
+            try {
+                val response = PostApi.service.likeById(id)
+                if (!response.isSuccessful) {
+                    throw ApiError(response.code(), response.message())
+                }
+                val body = response.body() ?: throw ApiError(response.code(), response.message())
+                postDao.insert(PostEntity.fromDto(body))//один
+
+            }catch (e: IOException) {
+                throw NetworkError
+            } catch (e: Exception) {
+                throw UnknownError
+            }
+
+        }
+
+    override suspend fun disLikeById(id: Long) {
+        postDao.likeById(id)
+        try {
+            val response = PostApi.service.dislikeById(id)
+            if (!response.isSuccessful) {
+                throw ApiError(response.code(), response.message())
+            }
+            val body = response.body() ?: throw ApiError(response.code(), response.message())
+            postDao.insert(PostEntity.fromDto(body))//один
+
+        }catch (e: IOException) {
+            throw NetworkError
+        } catch (e: Exception) {
+            throw UnknownError
+        }
+
     }
 
+
     override suspend fun removeById(id: Long) {
-        TODO("Not yet implemented")
+        postDao.removeById(id)
+        try {
+            val response = PostApi.service.removeById(id)
+            if (!response.isSuccessful) {
+                throw ApiError(response.code(), response.message())
+            }
+        } catch (e: IOException) {
+            throw NetworkError
+        } catch (e: Exception) {
+            throw UnknownError
+        }
+
     }
 
     override suspend fun save(post: Post) {
-        TODO("Not yet implemented")
+        postDao.insert(PostEntity.fromDto(post))
+        try {
+            val response = PostApi.service.save(post)
+            if (!response.isSuccessful) {
+                throw ApiError(response.code(), response.message())
+            }
+            val body = response.body() ?: throw ApiError(response.code(), response.message())
+            postDao.insert(PostEntity.fromDto(body).copy(isRemoteSaved = true))
+        } catch (e: IOException) {
+            throw NetworkError
+        } catch (e: Exception) {
+            throw UnknownError
+        }
     }
 
 

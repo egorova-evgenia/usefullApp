@@ -35,16 +35,15 @@ class FeedFragment : Fragment() {
 
             object : PostEventListener{
                 override fun onLike(post: Post) {
-                    viewModel.likeById(post.id)
-//                    if (post.likedByMe)
-//                    {
-//                        println(post.likedByMe)
-//                        viewModel.unLikeById(post.id)
-//                    }
-//                    else {
-//                        println(post.likedByMe)
-//                        viewModel.likeById(post.id)
-//                    }
+                    if (post.likedByMe)
+                    {
+                        println(post.likedByMe)
+                        viewModel.disLikeById(post.id)
+                    }
+                    else {
+                        println(post.likedByMe)
+                        viewModel.likeById(post.id)
+                    }
                 }
 
                 override fun onShare(post: Post) {
@@ -97,18 +96,19 @@ class FeedFragment : Fragment() {
             binding.progress.isVisible = state.loading
 //            binding.errorGroup.isVisible = state.error
             binding.swiprefresh.isRefreshing = state.loading
-//            problemMessage(binding.root,state.code, state.errorBody)
-//            if (state.code != 200) {
-//                Snackbar.make(binding.root, state.errorBody, Snackbar.LENGTH_LONG)
-//                    .setAction(android.R.string.ok) {
-//                    }.show()
-//            }
+            if (state.error) {
+                Snackbar.make(binding.root, "ошибка", Snackbar.LENGTH_LONG)
+                    .setAction("Retry") {viewModel.loadPosts()}
+                    .show()
+            }
+
+
 
         }
 
-        binding.retryButton.setOnClickListener{
-            viewModel.loadPosts()
-        }
+//        binding.retryButton.setOnClickListener{
+//            viewModel.loadPosts()
+//        }
 
         binding.swiprefresh.setOnRefreshListener {
             viewModel.refresh()

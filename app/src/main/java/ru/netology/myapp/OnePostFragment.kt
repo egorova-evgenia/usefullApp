@@ -31,6 +31,7 @@ class OnePostFragment : Fragment() {
         )
         val viewModel: PostViewModel by viewModels(ownerProducer = ::requireParentFragment)
         val postId = arguments?.textArg?.toLong()
+        println(postId)
 
         if (postId!=null) {
 
@@ -42,33 +43,34 @@ class OnePostFragment : Fragment() {
             val post =viewModel.findPost(postId)
 
             binding.apply {
-            content.text = post!!.content
-            autor.text = post.author
-            published.text = post.published.toString()
 
-            imageViewed.text = numberToString(0)
+                content.text = post!!.content
+                autor.text = post.author
+                published.text = post.published.toString()
 
-            buttonLikes.isChecked = post!!.likedByMe
-            buttonLikes.text = numberToString(post.likes)
-            buttonShare.text = numberToString(2)
+                imageViewed.text = numberToString(0)
 
-            buttonLikes.setOnClickListener {
-//                viewModel.run {
-//                    if (post.likedByMe) { viewModel.unLikeById(post.id)
-//                }
-//                else {
-                    viewModel.likeById(post.id)
-//                } }
-            }
+                buttonLikes.isChecked = post!!.likedByMe
+                buttonLikes.text = numberToString(post.likes)
+                buttonShare.text = numberToString(2)
 
-            buttonShare.setOnClickListener {
-                val intent = Intent()
-                    .setAction(Intent.ACTION_SEND)
-                    .setType("text/plain")
-                val createChooser = Intent.createChooser(intent, "Choose app")
-                startActivity(createChooser)
-                viewModel.shareById(post.id)
-            }
+                buttonLikes.setOnClickListener {
+                    viewModel.run {
+                        if (post.likedByMe) { viewModel.disLikeById(post.id)
+                    }
+                    else {
+                        viewModel.likeById(post.id)
+                    } }
+                }
+
+                buttonShare.setOnClickListener {
+                    val intent = Intent()
+                        .setAction(Intent.ACTION_SEND)
+                        .setType("text/plain")
+                    val createChooser = Intent.createChooser(intent, "Choose app")
+                    startActivity(createChooser)
+                    viewModel.shareById(post.id)
+                }
 
                 menu.setOnClickListener {
                     PopupMenu(it.context, it).apply {
@@ -98,15 +100,6 @@ class OnePostFragment : Fragment() {
                 }
             }
         }
-
-//        viewModel.data.observe(viewLifecycleOwner, {
-//            val post = it.posts.find { it.id == postId } ?:
-//            return@observe
-//            binding.buttonLikes.text = numberToString(post.likes)
-//
-//        })
-
-
         return binding.root
     }
     companion object {
