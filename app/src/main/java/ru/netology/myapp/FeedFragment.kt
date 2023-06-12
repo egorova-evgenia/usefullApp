@@ -35,15 +35,16 @@ class FeedFragment : Fragment() {
 
             object : PostEventListener{
                 override fun onLike(post: Post) {
-                    if (post.likedByMe)
-                    {
-                        println(post.likedByMe)
-                        viewModel.unLikeById(post.id)
-                    }
-                    else {
-                        println(post.likedByMe)
-                        viewModel.likeById(post.id)
-                    }
+                    viewModel.likeById(post.id)
+//                    if (post.likedByMe)
+//                    {
+//                        println(post.likedByMe)
+//                        viewModel.unLikeById(post.id)
+//                    }
+//                    else {
+//                        println(post.likedByMe)
+//                        viewModel.likeById(post.id)
+//                    }
                 }
 
                 override fun onShare(post: Post) {
@@ -87,20 +88,21 @@ class FeedFragment : Fragment() {
             findNavController().navigate(R.id.action_feedFragment_to_editFragment)
         }
 
-        viewModel.data.observe(viewLifecycleOwner) { state ->
-            adapter.submitList(state.posts)
+        viewModel.data.observe(viewLifecycleOwner) {
+            adapter.submitList(it.posts)
+            binding.emptyText.isVisible = it.empty
+        }
+
+        viewModel.dataState.observe(viewLifecycleOwner) { state ->
             binding.progress.isVisible = state.loading
-            binding.errorGroup.isVisible = state.error
-            binding.emptyText.isVisible = state.empty
+//            binding.errorGroup.isVisible = state.error
             binding.swiprefresh.isRefreshing = state.loading
 //            problemMessage(binding.root,state.code, state.errorBody)
-            if (state.code != 200) {
-                Snackbar.make(binding.root, state.errorBody, Snackbar.LENGTH_LONG)
-                    .setAction(android.R.string.ok) {
-                    }.show()
-//                Toast.makeText(context, msg, Toast.LENGTH_LONG).show()
-
-            }
+//            if (state.code != 200) {
+//                Snackbar.make(binding.root, state.errorBody, Snackbar.LENGTH_LONG)
+//                    .setAction(android.R.string.ok) {
+//                    }.show()
+//            }
 
         }
 
@@ -114,18 +116,6 @@ class FeedFragment : Fragment() {
 
         return binding.root
     }
-
-//    private fun problemMessage(view: View, code: Int, errorBody: String) {
-//        fun problemMessage(code: Int, msg: String) {
-//            if (code != 200) {
-//                Snackbar.make(view, msg, Snackbar.LENGTH_LONG)
-//                    .setAction(android.R.string.ok) {
-//                    }.show()
-////                Toast.makeText(context, msg, Toast.LENGTH_LONG).show()
-//
-//            }
-//        }
-//    }
 
     companion object {
         var Bundle.textArg: String? by StringArg

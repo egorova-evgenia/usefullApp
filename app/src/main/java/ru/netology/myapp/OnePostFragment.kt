@@ -53,12 +53,12 @@ class OnePostFragment : Fragment() {
             buttonShare.text = numberToString(2)
 
             buttonLikes.setOnClickListener {
-                viewModel.run {
-                    if (post.likedByMe) { viewModel.unLikeById(post.id)
-                }
-                else {
+//                viewModel.run {
+//                    if (post.likedByMe) { viewModel.unLikeById(post.id)
+//                }
+//                else {
                     viewModel.likeById(post.id)
-                } }
+//                } }
             }
 
             buttonShare.setOnClickListener {

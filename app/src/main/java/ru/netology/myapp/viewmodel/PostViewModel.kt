@@ -1,12 +1,19 @@
 package ru.netology.myapp.viewmodel
 
 import android.app.Application
+import android.os.Parcel
+import android.os.Parcelable
 import android.view.View
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.map
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.launch
+import ru.netology.myapp.db.AppDb
 import ru.netology.myapp.dto.Post
 import ru.netology.myapp.eventsAndOther.SingleLiveEvent
 import ru.netology.myapp.repository.PostRepository
@@ -27,22 +34,37 @@ val empty = Post(
 
 class PostViewModel(application: Application) : AndroidViewModel(application){
 
-    private val repository: PostRepository = PostRepositoryImp()
+    private val repository: PostRepository = PostRepositoryImp(AppDb.getInstance(context = application).postDao())
+
+    private val scope = MainScope()//page 14
+
     private val _data = MutableLiveData(FeedModel())
-    val data: LiveData<FeedModel>
-        get() = _data
-    val edited = MutableLiveData(empty)
-    fun loadPosts() {
-        _data.value = FeedModel(loading = true)
-        repository.getAllAsync(object : PostRepository.GetAllCallback {
-            override fun onSuccess(posts: List<Post>) {
-                _data.postValue(FeedModel(posts = posts, empty = posts.isEmpty()))
-            }
-            override fun onError(e: Exception, code: Int, errorBody: String) {
-                _data.postValue(FeedModel(error = true, code=code, errorBody =errorBody))
-            }
-        } )
+    val data: LiveData<FeedModel> = repository.data.map (::FeedModel)
+
+    private val _dataState =MutableLiveData(FeedModelState())
+    val dataState: LiveData<FeedModelState>
+        get() = _dataState
+
+    init {
+        loadPosts()
     }
+
+    fun loadPosts() = scope.launch {// корутина
+        try {
+            _dataState.value = FeedModelState(loading = true)
+            repository.getAll()
+            _dataState.value = FeedModelState()// обновляем MutableLiveData
+        } catch (e: Exception) {
+            _dataState.value = FeedModelState(error = true)
+        }
+    }
+
+
+    override fun onCleared() {
+        super.onCleared()
+        scope.cancel()
+    }
+
 
     fun findPost(id: Long): Post? {
         return _data.value?.posts?.find {
@@ -54,56 +76,35 @@ class PostViewModel(application: Application) : AndroidViewModel(application){
     val postCreated: LiveData<Unit>
         get() = _postCreated
 
-    init {
-        loadPosts()
-    }
+    val edited = MutableLiveData(empty)
 
     fun likeById(id: Long) {
-        val old = _data.value?.posts.orEmpty()
-        repository.likeById(id, object : PostRepository.NothingCallback{
-            override fun onSuccess(){
-                val new=old.map {
-                    if (it.id != id) it else it.copy(likedByMe = true, likes = it.likes + 1)
-                }
-                _data.postValue(FeedModel(posts=new))
-            }
-            override fun onError (e: Exception, code: Int, errorBody: String) {
-                _data.postValue(FeedModel(error = true, code=code, errorBody =errorBody))
-            }
-        })
+//        val old = _data.value?.posts.orEmpty()
+//        repository.likeById(id, object : PostRepository.NothingCallback{
+//            override fun onSuccess(){
+//                val new=old.map {
+//                    if (it.id != id) it else it.copy(likedByMe = true, likes = it.likes + 1)
+//                }
+//                _data.postValue(FeedModel(posts=new))
+//            }
+//            override fun onError (e: Exception, code: Int, errorBody: String) {
+//                _data.postValue(FeedModel(error = true, code=code, errorBody =errorBody))
+//            }
+//        })
     }
-
-    fun unLikeById(id: Long) {
-        val old = _data.value?.posts.orEmpty()
-        repository.unLikeById(id, object : PostRepository.NothingCallback{
-            override fun onSuccess(){
-                val new = old.map {
-                    if (it.id != id) it else it.copy(likedByMe = false, likes = it.likes - 1)
-                }
-                _data.postValue(FeedModel(posts = new))
-            }
-            override fun onError (e: Exception, code: Int, errorBody: String) {
-                _data.postValue(FeedModel(error = true, code=code, errorBody =errorBody))
-            }
-        })
-
-    }
-
-
-    fun shareById(id: Long) {
-
+        fun shareById(id: Long) {
     }
     fun removeById(id: Long) {
-        val old = _data.value?.posts.orEmpty()
-        repository.removeById(id, object : PostRepository.NothingCallback{
-            override fun onSuccess(){
-                _data.postValue(FeedModel(old.filter { it.id != id }))
-            }
-            override fun onError (e: Exception, code: Int, errorBody: String) {
-                _data.postValue(FeedModel(error = true, code=code, errorBody =errorBody))
-                _data.postValue(_data.value?.copy(posts = old)) // если не получилось, возвращаем бекап
-            }
-        })
+//        val old = _data.value?.posts.orEmpty()
+//        repository.removeById(id, object : PostRepository.NothingCallback{
+//            override fun onSuccess(){
+//                _data.postValue(FeedModel(old.filter { it.id != id }))
+//            }
+//            override fun onError (e: Exception, code: Int, errorBody: String) {
+//                _data.postValue(FeedModel(error = true, code=code, errorBody =errorBody))
+//                _data.postValue(_data.value?.copy(posts = old)) // если не получилось, возвращаем бекап
+//            }
+//        })
     }
 
     fun editContent(content: String) {
@@ -116,19 +117,19 @@ class PostViewModel(application: Application) : AndroidViewModel(application){
     }
 
     fun save() {
-        edited.value?.let {
-            repository.save(it, object : PostRepository.NothingCallback{
-                override fun onSuccess() {
-                    _postCreated.postValue(Unit) //  используем метод, потому что в thread
+//        edited.value?.let {
+//            repository.save(it, object : PostRepository.NothingCallback{
+//                override fun onSuccess() {
+//                    _postCreated.postValue(Unit) //  используем метод, потому что в thread
+////
+//                }
 //
-                }
-
-                override fun onError(e: Exception, code: Int, errorBody: String) {
-                    _data.postValue(FeedModel(error = true, code=code, errorBody =errorBody))
-                }
-            })
-            edited.value = empty
-        }
+//                override fun onError(e: Exception, code: Int, errorBody: String) {
+//                    _data.postValue(FeedModel(error = true, code=code, errorBody =errorBody))
+//                }
+//            })
+//            edited.value = empty
+//        }
     }
 
 
@@ -143,5 +144,4 @@ class PostViewModel(application: Application) : AndroidViewModel(application){
     fun refresh(){
         loadPosts()
     }
-
 }
