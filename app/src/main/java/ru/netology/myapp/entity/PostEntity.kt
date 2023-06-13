@@ -17,8 +17,8 @@ data class PostEntity(
     val likes: Int = 0,
     @Embedded
     val attachment: Attachment? = null,
-    val isRemoteSaved: Boolean = false
-//    var hidden: Boolean = false,
+    val isRemoteSaved: Boolean = false,
+    var toShow: Boolean?=null,//по умолчанию не видно
 
     ){
     fun toDto() = Post(id, author, authorAvatar, content, published, likedByMe, likes, attachment )
@@ -32,3 +32,4 @@ data class PostEntity(
 
 fun List<PostEntity>.toDto(): List<Post> = map(PostEntity::toDto)
 fun List<Post>.toEntity(): List<PostEntity> = map(PostEntity::fromDto)
+

@@ -8,10 +8,14 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.map
+import androidx.lifecycle.switchMap
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.cancel
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import ru.netology.myapp.db.AppDb
 import ru.netology.myapp.dto.Post
@@ -39,7 +43,7 @@ class PostViewModel(application: Application) : AndroidViewModel(application){
     private val scope = MainScope()//page 14
 
     private val _data = MutableLiveData(FeedModel())
-    val data: LiveData<FeedModel> = repository.data.map (::FeedModel)
+    val data: LiveData<FeedModel> = repository.data.map (::FeedModel).asLiveData(Dispatchers.Default)
 
     private val _dataState =MutableLiveData(FeedModelState())
     val dataState: LiveData<FeedModelState>
@@ -60,10 +64,10 @@ class PostViewModel(application: Application) : AndroidViewModel(application){
     }
 
 
-//    override fun onCleared() {
-//        super.onCleared()
-//        scope.cancel()
-//    }
+    override fun onCleared() {
+        super.onCleared()
+        scope.cancel()
+    }
 
 
     fun findPost(id: Long): Post? {
@@ -75,6 +79,13 @@ class PostViewModel(application: Application) : AndroidViewModel(application){
     private val _postCreated = SingleLiveEvent<Unit>()
     val postCreated: LiveData<Unit>
         get() = _postCreated
+
+    val newerCount: LiveData<Int> = data.switchMap {
+        val id=it.posts.firstOrNull()?.id ?: 0L
+        repository.getNewer(id)
+            .asLiveData(Dispatchers.Default)
+    }
+
 
     val edited = MutableLiveData(empty)
 
@@ -109,6 +120,18 @@ class PostViewModel(application: Application) : AndroidViewModel(application){
             } catch (e: Exception) {
                 _dataState.value = FeedModelState(error = true)
             }
+        }
+    }
+
+    fun changeHidden() {
+        scope.launch {
+            try {
+                repository.changeHidden()
+                _dataState.value = FeedModelState()
+            } catch (e: Exception) {
+                _dataState.value = FeedModelState(error = true)
+            }
+
         }
     }
 
@@ -147,4 +170,6 @@ class PostViewModel(application: Application) : AndroidViewModel(application){
     fun refresh(){
         loadPosts()
     }
+
+
 }

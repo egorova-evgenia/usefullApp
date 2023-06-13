@@ -10,6 +10,7 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import ru.netology.myapp.adapter.PostEventListener
 import ru.netology.myapp.adapter.PostsAdapter
@@ -87,6 +88,14 @@ class FeedFragment : Fragment() {
             findNavController().navigate(R.id.action_feedFragment_to_editFragment)
         }
 
+        adapter.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver(){
+            override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
+                if (positionStart==0) {
+                    binding.list.smoothScrollToPosition(0)
+                }
+            }
+        })
+
         viewModel.data.observe(viewLifecycleOwner) {
             adapter.submitList(it.posts)
             binding.emptyText.isVisible = it.empty
@@ -101,9 +110,23 @@ class FeedFragment : Fragment() {
                     .setAction("Retry") {viewModel.loadPosts()}
                     .show()
             }
+        }
 
+        viewModel.newerCount.observe(viewLifecycleOwner){
+            println("Newer cout: $it")
+            if (it != 0) {
+                binding.showNewPost.visibility = View.VISIBLE
+//                Snackbar.make(binding.root, "Новые", Snackbar.LENGTH_LONG)
+//                    .setAction(android.R.string.ok) {
+//                        viewModel.loadPosts()
+//                        viewModel.changeHidden()
+//                    }.show()
+            }
+        }
 
-
+        binding.showNewPost.setOnClickListener {
+            viewModel.changeHidden()
+            binding.showNewPost.visibility = View.GONE
         }
 
 //        binding.retryButton.setOnClickListener{

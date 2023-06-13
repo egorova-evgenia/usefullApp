@@ -31,6 +31,19 @@
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
+    <Button
+        android:id="@+id/showNewPost"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Показать новые"
+        android:visibility="gone"
+        tools:visibility="visible"
+        android:layout_marginTop="4dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:contentDescription="Новые записи"/>
+
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/plus"
         android:layout_width="wrap_content"
