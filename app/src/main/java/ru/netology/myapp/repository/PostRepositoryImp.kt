@@ -1,7 +1,5 @@
 package ru.netology.myapp.repository
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.map
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -9,15 +7,21 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
+import okhttp3.MultipartBody
+import okhttp3.RequestBody.Companion.asRequestBody
 import ru.netology.myapp.ServerService.PostApi
 import ru.netology.myapp.dto.Post
 import ru.netology.myapp.appError.ApiError
 import ru.netology.myapp.appError.NetworkError
 import ru.netology.myapp.appError.UnknownError
 import ru.netology.myapp.dao.PostDao
+import ru.netology.myapp.dto.Attachment
+import ru.netology.myapp.dto.AttachmentType
+import ru.netology.myapp.dto.Media
 import ru.netology.myapp.entity.PostEntity
 import ru.netology.myapp.entity.toDto
 import ru.netology.myapp.entity.toEntity
+import ru.netology.myapp.viewmodel.PhotoModel
 import java.io.IOException
 class PostRepositoryImp(private val postDao: PostDao):PostRepository {
     override val data = postDao.getAll()
@@ -68,7 +72,6 @@ class PostRepositoryImp(private val postDao: PostDao):PostRepository {
         } catch (e: Exception) {
             throw UnknownError
         }
-
     }
 
     override suspend fun disLikeById(id: Long) {
@@ -119,10 +122,52 @@ class PostRepositoryImp(private val postDao: PostDao):PostRepository {
         }
     }
 
+    override suspend fun saveWithAttachment(post: Post, photo: PhotoModel) {
+        try {
+            val media = upload(photo)
+            val response =  PostApi.service.save(
+                post.copy(
+                    attachment = Attachment(media.id, "фото",AttachmentType.IMAGE)
+                )
+            )
+            if (!response.isSuccessful) {
+                throw ApiError(response.code(), response.message())
+            }
+            val body = response.body() ?: throw ApiError(response.code(), response.message())
+            postDao.insert(PostEntity.fromDto(body))
+        } catch (e: IOException) {
+            throw NetworkError
+        } catch (e: Exception) {
+            throw UnknownError
+        }
+    }
+
+    private suspend fun upload(photo: PhotoModel): Media {
+        try {
+            val media = photo.file?.let {
+                MultipartBody.Part.createFormData(
+                    "file", photo.file?.name, it.asRequestBody()
+                )
+            }
+            val response = media?.let { PostApi.service.uploadPhoto(it) }
+            if (!response?.isSuccessful!!){
+                throw ApiError(response.code(), response.message())
+            }
+            return response.body() ?: throw ApiError(response.code(), response.message())
+
+        } catch (e: IOException) {
+            throw NetworkError
+        } catch (e: Exception) {
+            throw UnknownError
+        }
+    }
     override suspend fun changeHidden() {
         postDao.toShowAll()
     }
-
-
 }
+
+
+
+
+
 

@@ -80,6 +80,15 @@ class FeedFragment : Fragment() {
                         { textArg = post.id.toString() }
                     )
                 }
+
+                override fun onShowOneImage(post: Post){
+                    findNavController().navigate(
+                        R.id.action_feedFragment_to_imageFragment,
+                        Bundle().apply
+                        { textArg = post.id.toString() }
+                    )
+                }
+
             }
         )
 

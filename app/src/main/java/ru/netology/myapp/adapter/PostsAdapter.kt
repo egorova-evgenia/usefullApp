@@ -32,10 +32,8 @@ class PostsAdapter(private val listener: PostEventListener
         fun attach(post: Post){
             val BASE_URL ="http://10.0.2.2:9999"
             val url="$BASE_URL/images/${post.attachment?.url}"
-//            $BASE_URL/avatars/${post.authorAvatar}"
-
             Glide.with(binding.attachImage)
-                .load(url)
+                .load(post.attachment?.url)
                 .error(R.drawable.baseline_font_download_off_24)
                 .timeout(10_000)
                 .into(binding.attachImage)
@@ -94,9 +92,14 @@ class PostsAdapter(private val listener: PostEventListener
                         show()
                     }
                 }
-            }
-        }
 
+                attachImage.setOnClickListener {
+                    listener.onShowOneImage(post)
+                }
+
+            }
+
+        }
 
     }
 }

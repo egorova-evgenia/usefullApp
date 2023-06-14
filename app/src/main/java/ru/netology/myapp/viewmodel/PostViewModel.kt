@@ -144,17 +144,31 @@ class PostViewModel(application: Application) : AndroidViewModel(application){
         }
     }
 
+    private val _photoState = MutableLiveData<PhotoModel?>()
+    val photoState: LiveData<PhotoModel?>
+        get()=_photoState
+    fun changePhoto(photoModel: PhotoModel?) {
+        _photoState.value=photoModel
+    }
+
     fun save() {
-        edited.value?.let {
+        edited.value?.let { post ->
             _postCreated.value = Unit
             scope.launch {
                 try {
-                    repository.save(it)
+                    when(_photoState.value) {
+                        null -> repository.save(post)
+                        else -> _photoState.value?.file.let{file ->
+                            repository.saveWithAttachment(post, _photoState.value!!)}
+
+                    }
                     _dataState.value = FeedModelState()
                 } catch (e: Exception) {
                     _dataState.value = FeedModelState(error = true)
                 }
             }
+
+            edited.value = empty
         }
     }
 

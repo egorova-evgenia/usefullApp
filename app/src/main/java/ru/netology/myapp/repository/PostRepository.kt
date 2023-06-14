@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.lifecycle.LiveData
 import kotlinx.coroutines.flow.Flow
 import ru.netology.myapp.dto.Post
+import ru.netology.myapp.viewmodel.PhotoModel
 import java.security.AccessControlContext
 
 
@@ -16,6 +17,7 @@ interface PostRepository {
     suspend fun disLikeById(id: Long)
     suspend fun removeById(id: Long)
     suspend fun save(post: Post)
+    suspend fun saveWithAttachment(post: Post, photo: PhotoModel)
     suspend fun changeHidden()
 
 }

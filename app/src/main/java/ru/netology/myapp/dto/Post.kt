@@ -1,9 +1,5 @@
 package ru.netology.myapp.dto
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import ru.netology.myapp.enumeration.AttachmentType
-
 data class Post(
         val id: Long,
         val author: String,

@@ -1,5 +1,6 @@
 package ru.netology.myapp.ServerService
 
+import okhttp3.MultipartBody
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Response
@@ -8,6 +9,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.create
 import retrofit2.http.*
 import ru.netology.myapp.BuildConfig
+import ru.netology.myapp.dto.Media
 import ru.netology.myapp.dto.Post
 
 private const val BASE_URL = "${BuildConfig.BASE_URL}api/"
@@ -33,6 +35,10 @@ interface PostApiService {
 
     @POST("posts")
     suspend fun save(@Body post: Post): Response<Post>
+
+    @Multipart
+    @POST("media")
+    suspend fun uploadPhoto(@Part media: MultipartBody.Part): Response<Media>
 }
 
 

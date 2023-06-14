@@ -16,12 +16,12 @@ buildscript {
     }
 }
 
-allprojects {
-    repositories {
-        google()
-        jcenter()
-    }
-}
+//allprojects {
+//    repositories {
+//        google()
+//        jcenter()
+//    }
+//}
 subprojects {
     tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile) {
         kotlinOptions.jvmTarget = "1.8"
