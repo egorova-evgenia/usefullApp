@@ -38,6 +38,24 @@
             app:popExitAnim="@android:anim/fade_out"
             />
 
+        <action
+            android:id="@+id/action_feedFragment_to_signInFragment"
+            app:destination="@id/signInGroup"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out"
+            />
+
+<!--        <action-->
+<!--            android:id="@+id/action_feedFragment_to_regFragment"-->
+<!--            app:destination="@id/RegFragment"-->
+<!--            app:enterAnim="@android:anim/fade_in"-->
+<!--            app:exitAnim="@android:anim/fade_out"-->
+<!--            app:popEnterAnim="@android:anim/fade_in"-->
+<!--            app:popExitAnim="@android:anim/fade_out"-->
+<!--            />-->
+
     </fragment>
 
     <fragment
@@ -65,14 +83,26 @@
         app:popEnterAnim="@android:anim/fade_in"
         app:popExitAnim="@android:anim/fade_out"
         />
-        <action
-            android:id="@+id/action_onePostFragment_to_FeedFragment"
-            app:destination="@id/feedFragment"
-            app:enterAnim="@android:anim/fade_in"
-            app:exitAnim="@android:anim/fade_out"
-            app:popEnterAnim="@android:anim/fade_in"
-            app:popExitAnim="@android:anim/fade_out"
-            />
+    <action
+        android:id="@+id/action_onePostFragment_to_FeedFragment"
+        app:destination="@id/feedFragment"
+        app:enterAnim="@android:anim/fade_in"
+        app:exitAnim="@android:anim/fade_out"
+        app:popEnterAnim="@android:anim/fade_in"
+        app:popExitAnim="@android:anim/fade_out"
+        />
     </fragment>
+
+    <fragment
+        android:id="@+id/signInGroup"
+        android:name="ru.netology.myapp.SignInFragment"
+        android:label="fragment_signIn"
+        tools:layout="@layout/fragment_sign_in" />
+
+<!--    <fragment-->
+<!--        android:id="@+id/RegFragment"-->
+<!--        android:name="ru.netology.myapp.RegFragment"-->
+<!--        android:label="fragment_reg"-->
+<!--        tools:layout="@layout/fragment_reg" />-->
 
 </navigation>

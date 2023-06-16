@@ -14,6 +14,7 @@ import ru.netology.myapp.dto.Post
 import ru.netology.myapp.appError.ApiError
 import ru.netology.myapp.appError.NetworkError
 import ru.netology.myapp.appError.UnknownError
+import ru.netology.myapp.auth.AppAuth
 import ru.netology.myapp.dao.PostDao
 import ru.netology.myapp.dto.Attachment
 import ru.netology.myapp.dto.AttachmentType
@@ -164,6 +165,25 @@ class PostRepositoryImp(private val postDao: PostDao):PostRepository {
     override suspend fun changeHidden() {
         postDao.toShowAll()
     }
+
+    override suspend fun updateUser(login: String, password: String) {
+        try {
+            val response =PostApi.service.updateUser(login,password)
+            // получили AuthState         var id:Long =0Lvar token:String? = null
+                if (!response.isSuccessful){
+                    throw ApiError(response.code(), response.message())
+                }
+            val body =response.body() ?: throw ApiError(response.code(), response.message())
+            body.token?.let { AppAuth.getInstance().setAuth(body.id, it) }
+//
+        } catch (e: IOException) {
+            throw NetworkError
+        } catch (e: Exception) {
+            throw UnknownError
+        }
+    }
+
+
 }
 
 

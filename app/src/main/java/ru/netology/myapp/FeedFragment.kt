@@ -3,9 +3,12 @@ package ru.netology.myapp
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+import androidx.core.view.MenuProvider
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -14,16 +17,17 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import ru.netology.myapp.adapter.PostEventListener
 import ru.netology.myapp.adapter.PostsAdapter
+import ru.netology.myapp.auth.AppAuth
 import ru.netology.myapp.databinding.FragmentFeedBinding
 import ru.netology.myapp.dto.Post
+import ru.netology.myapp.viewmodel.AuthViewModel
 import ru.netology.myapp.viewmodel.PostViewModel
 
-/*@Suppress("IMPLICIT_NOTHING_TYPE_ARGUMENT_IN_RETURN_POSITION")*/
 class FeedFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?): View? {
+        savedInstanceState: Bundle?): View {
         val binding = FragmentFeedBinding.inflate(
             inflater,
             container,
@@ -31,6 +35,7 @@ class FeedFragment : Fragment() {
         )
 
         val viewModel: PostViewModel by viewModels(ownerProducer = ::requireParentFragment)
+        val authViewModel: AuthViewModel by viewModels()
 
         val adapter = PostsAdapter (
 
@@ -125,11 +130,6 @@ class FeedFragment : Fragment() {
             println("Newer cout: $it")
             if (it != 0) {
                 binding.showNewPost.visibility = View.VISIBLE
-//                Snackbar.make(binding.root, "Новые", Snackbar.LENGTH_LONG)
-//                    .setAction(android.R.string.ok) {
-//                        viewModel.loadPosts()
-//                        viewModel.changeHidden()
-//                    }.show()
             }
         }
 
@@ -138,12 +138,47 @@ class FeedFragment : Fragment() {
             binding.showNewPost.visibility = View.GONE
         }
 
-//        binding.retryButton.setOnClickListener{
-//            viewModel.loadPosts()
-//        }
 
         binding.swiprefresh.setOnRefreshListener {
             viewModel.refresh()
+        }
+
+        var menuProvider: MenuProvider? = null
+
+        authViewModel.state.observe(viewLifecycleOwner) { authState ->
+            requireActivity().addMenuProvider(object : MenuProvider {
+                override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                    menuProvider?.let {
+                        requireActivity().removeMenuProvider(it)
+                    }
+                    menuInflater.inflate(R.menu.main_menu, menu)
+                    menu.setGroupVisible(R.id.authorized, authViewModel.authorized)
+                    menu.setGroupVisible(R.id.unauthorized, !authViewModel.authorized)
+                }
+
+                override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                    return when (menuItem.itemId) {
+                        R.id.signout -> {
+                            AppAuth.getInstance().clear()
+                            true
+                        }
+
+                        R.id.signin -> {
+                            findNavController().navigate(R.id.action_feedFragment_to_signInFragment)
+//                            AppAuth.getInstance().setAuth(5, "x-token")
+                            true
+                        }
+
+                        R.id.signup -> {
+//                            findNavController().navigate(R.id.action_feedFragment_to_regFragment)
+                            AppAuth.getInstance().setAuth(5, "x-token")
+                            true
+                        }
+
+                        else -> false
+                    }
+                }
+            }.apply { menuProvider = this })
         }
 
         return binding.root
@@ -154,3 +189,4 @@ class FeedFragment : Fragment() {
     }
 
 }
+

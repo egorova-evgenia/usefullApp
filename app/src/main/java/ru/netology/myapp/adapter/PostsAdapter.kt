@@ -3,6 +3,7 @@ package ru.netology.myapp.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.PopupMenu
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -76,6 +77,7 @@ class PostsAdapter(private val listener: PostEventListener
                     listener.onShowOnePost(post)
                 }
 
+                menu.isVisible = post.ownedByMe
                 menu.setOnClickListener {
                     PopupMenu(it.context, it).apply {
                         inflate(R.menu.post_menu)

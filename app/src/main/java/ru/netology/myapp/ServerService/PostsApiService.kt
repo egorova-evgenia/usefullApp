@@ -9,6 +9,8 @@ import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.create
 import retrofit2.http.*
 import ru.netology.myapp.BuildConfig
+import ru.netology.myapp.auth.AppAuth
+import ru.netology.myapp.auth.AuthState
 import ru.netology.myapp.dto.Media
 import ru.netology.myapp.dto.Post
 
@@ -39,8 +41,20 @@ interface PostApiService {
     @Multipart
     @POST("media")
     suspend fun uploadPhoto(@Part media: MultipartBody.Part): Response<Media>
-}
 
+//    POST http://localhost:9999/api/users/authentication
+//    Content-Type: application/x-www-form-urlencoded
+
+    @FormUrlEncoded
+    @POST("users/authentication")
+    suspend fun updateUser(@Field("login")   login: String, @Field("password") password: String): Response<AuthState>
+    //@Part @Body @Path
+
+//    @FormUrlEncoded
+//    @POST("user/edit")
+//    Call<User> updateUser(@Field("first_name") String first, @Field("last_name") String last);
+
+}
 
 object PostApi {
     private val retrofit = Retrofit.Builder()
@@ -60,5 +74,18 @@ private val logging = HttpLoggingInterceptor().apply {
 
 private val okhttp = OkHttpClient.Builder()
     .addInterceptor(logging)
-    .build()
+    .addInterceptor { chain ->
+        AppAuth.getInstance().authStateFlow.value.token?.let { token ->
+            chain
+                .request()
+                .newBuilder()
+                .addHeader("Autorization", token)
+                .build()
+                .apply { return@addInterceptor chain.proceed(this) }
+        }
+        return@addInterceptor chain.proceed(chain.request())
+        }.build()
+
+
+
 

@@ -15,8 +15,10 @@ import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.cancel
+import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
+import ru.netology.myapp.auth.AppAuth
 import ru.netology.myapp.db.AppDb
 import ru.netology.myapp.dto.Post
 import ru.netology.myapp.eventsAndOther.SingleLiveEvent
@@ -33,7 +35,8 @@ val empty = Post(
     " ",
     1,
     false,
-    0
+    0,
+    authorId = 0L
 )
 
 class PostViewModel(application: Application) : AndroidViewModel(application){
@@ -43,7 +46,15 @@ class PostViewModel(application: Application) : AndroidViewModel(application){
     private val scope = MainScope()//page 14
 
     private val _data = MutableLiveData(FeedModel())
-    val data: LiveData<FeedModel> = repository.data.map (::FeedModel).asLiveData(Dispatchers.Default)
+    val data: LiveData<FeedModel> = AppAuth.getInstance()
+        .authStateFlow.flatMapLatest {(myId,_) ->
+        repository.data.map{ posts->
+            FeedModel(posts.map { post ->
+                post.copy(ownedByMe = post.authorId==myId) },posts.isEmpty())
+        }
+//        (::FeedModel)
+    }.asLiveData(Dispatchers.Default)
+
 
     private val _dataState =MutableLiveData(FeedModelState())
     val dataState: LiveData<FeedModelState>
