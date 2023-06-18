@@ -46,7 +46,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/putPassword"
          />
-
+<!--    student и паролем secret-->
     <com.google.android.material.button.MaterialButton
         android:id="@+id/toReg"
         android:layout_width="wrap_content"
@@ -55,7 +55,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         android:text="Еще нет аккаунта?"
-        android:textSize="36sp"
+        android:textSize="24sp"
         android:layout_marginBottom="24dp"
         />
 

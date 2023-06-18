@@ -2,6 +2,7 @@ package ru.netology.myapp.ServerService
 
 import okhttp3.MultipartBody
 import okhttp3.OkHttpClient
+import okhttp3.RequestBody
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Response
 import retrofit2.Retrofit
@@ -42,17 +43,22 @@ interface PostApiService {
     @POST("media")
     suspend fun uploadPhoto(@Part media: MultipartBody.Part): Response<Media>
 
-//    POST http://localhost:9999/api/users/authentication
-//    Content-Type: application/x-www-form-urlencoded
-
     @FormUrlEncoded
     @POST("users/authentication")
     suspend fun updateUser(@Field("login")   login: String, @Field("password") password: String): Response<AuthState>
-    //@Part @Body @Path
 
-//    @FormUrlEncoded
-//    @POST("user/edit")
-//    Call<User> updateUser(@Field("first_name") String first, @Field("last_name") String last);
+    @FormUrlEncoded
+    @POST("users/registration")
+    suspend fun registerUser(@Field("login") login: String, @Field("pass") pass: String, @Field("name") name: String): Response<AuthState>
+
+    @Multipart
+    @POST("users/registration")
+    suspend fun registerWithPhoto(
+        @Part("login") login: RequestBody,
+        @Part("pass") pass: RequestBody,
+        @Part("name") name: RequestBody,
+        @Part media: MultipartBody.Part,
+    ): Response<AuthState>
 
 }
 

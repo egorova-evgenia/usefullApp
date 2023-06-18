@@ -1,16 +1,20 @@
 package ru.netology.myapp
 
+import android.app.Activity
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.net.toFile
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import ru.netology.myapp.databinding.FragmentSignInBinding
 import androidx.navigation.fragment.findNavController
+import com.github.dhaval2404.imagepicker.ImagePicker
 import ru.netology.myapp.databinding.FragmentRegBinding
-import ru.netology.myapp.viewmodel.AuthViewModel
+import ru.netology.myapp.viewmodel.PhotoModel
+import ru.netology.myapp.viewmodel.RegViewModel
 
 class RegFragment: Fragment() {
     override fun onCreateView(
@@ -24,30 +28,51 @@ class RegFragment: Fragment() {
             false
         )
 
-        val viewModel: AuthViewModel by viewModels(ownerProducer = ::requireParentFragment)
+        val viewModel: RegViewModel by viewModels(ownerProducer = ::requireParentFragment)
 
         binding.okButton.setOnClickListener {
-            val  login = binding.putLogin.text.trim().toString()
-            val password = binding.putPassword.text.trim().toString()
-            // to do login,password отправить на сервер?????
-
-
-
             if (binding.putLogin.text.isNullOrBlank()||binding.putPassword.text.isNullOrBlank()) {
-                val message = if (binding.putLogin.text.isNullOrBlank()) "введите логин" else "введите пароль"
-                Toast.makeText(binding.root.context, message, Toast.LENGTH_SHORT)
+                Toast.makeText(binding.root.context, "введите все", Toast.LENGTH_SHORT)
                     .show()
             } else {
                 val  login = binding.putLogin.text.trim().toString()
                 val password = binding.putPassword.text.trim().toString()
-//                viewModel.autorization(login,password)//вьюмодель для
-                 findNavController().navigateUp()
+                val name = binding.putName.text.trim().toString()
+                viewModel.registerUser(login,password,name)
+                findNavController().navigateUp()
             }
 
         }
 
+        val photoLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
+            when(it.resultCode){
+                ImagePicker.RESULT_ERROR ->{
+                    Toast.makeText(requireContext(),"ошибка загрузки", Toast.LENGTH_LONG)
+                        .show()
+                }
+                Activity.RESULT_OK -> {
+                    val uri = it.data?.data ?: return@registerForActivityResult
+                    val file =uri.toFile()
+                    viewModel.changePhoto(PhotoModel(uri, file) )
+                }
+            }
+        }
 
+        binding.pickAvatar.setOnClickListener {
+            ImagePicker.with(this)
+                .crop()
+                .galleryOnly()
+                .compress(512)
+                .createIntent(photoLauncher::launch)
+        }
 
+        binding.takeAvatar.setOnClickListener {
+            ImagePicker.with(this)
+                .crop()
+                .cameraOnly()
+                .compress(2048)
+                .createIntent(photoLauncher::launch)
+        }
 
         binding.toSignIn.setOnClickListener{
 //            go to the reg fragment

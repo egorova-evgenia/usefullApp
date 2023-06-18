@@ -146,11 +146,11 @@ class FeedFragment : Fragment() {
         var menuProvider: MenuProvider? = null
 
         authViewModel.state.observe(viewLifecycleOwner) { authState ->
+            menuProvider?.let {
+            requireActivity().removeMenuProvider(it)
+        }
             requireActivity().addMenuProvider(object : MenuProvider {
                 override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-                    menuProvider?.let {
-                        requireActivity().removeMenuProvider(it)
-                    }
                     menuInflater.inflate(R.menu.main_menu, menu)
                     menu.setGroupVisible(R.id.authorized, authViewModel.authorized)
                     menu.setGroupVisible(R.id.unauthorized, !authViewModel.authorized)
@@ -162,25 +162,21 @@ class FeedFragment : Fragment() {
                             AppAuth.getInstance().clear()
                             true
                         }
-
                         R.id.signin -> {
                             findNavController().navigate(R.id.action_feedFragment_to_signInFragment)
-//                            AppAuth.getInstance().setAuth(5, "x-token")
                             true
                         }
-
                         R.id.signup -> {
-//                            findNavController().navigate(R.id.action_feedFragment_to_regFragment)
-                            AppAuth.getInstance().setAuth(5, "x-token")
+                            findNavController().navigate(R.id.action_feedFragment_to_regFragment)
+//                            AppAuth.getInstance().setAuth(5, "x-token")
                             true
                         }
 
                         else -> false
                     }
                 }
-            }.apply { menuProvider = this })
+            }.apply { menuProvider = this },viewLifecycleOwner)
         }
-
         return binding.root
     }
 
