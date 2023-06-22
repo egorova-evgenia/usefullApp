@@ -20,15 +20,28 @@ data class PostEntity(
     val attachment: Attachment? = null,
     val isRemoteSaved: Boolean = false,
     var toShow: Boolean?=null,//по умолчанию не видно
-    ){
-    fun toDto() = Post(id, author, authorAvatar, content, published, likedByMe, likes, attachment, authorId )
+    ) {
+    fun toDto() =
+        Post(id, author, authorAvatar, content, published, likedByMe, likes,attachment, authorId, )
 
     //    attachment,, isRemoteSaved
     companion object {
         fun fromDto(dto: Post) =
-            PostEntity(dto.id, dto.author, dto.authorAvatar, dto.content, dto.published, dto.likedByMe, dto.likes, dto.authorId, dto.attachment)
+            PostEntity(
+                dto.id,
+                dto.author,
+                dto.authorAvatar,
+                dto.content,
+                dto.published,
+                dto.likedByMe,
+                dto.likes,
+                dto.authorId,
+                dto.attachment,
+
+            )
     }
 }
+//},
 
 fun List<PostEntity>.toDto(): List<Post> = map(PostEntity::toDto)
 fun List<Post>.toEntity(): List<PostEntity> = map(PostEntity::fromDto)

@@ -34,7 +34,7 @@ class OneImageFragment : Fragment() {
                 val post = it.posts.find { it.id == postId } ?: return@observe
 //                post.attachment?.
                 val BASE_URL ="http://10.0.2.2:9999"
-                val url="$BASE_URL/images/${post.attachment?.url}"
+                val url="$BASE_URL/media/${post.attachment?.url}"
                 Glide.with(binding.oneImage)
                     .load(url)
                     .error(R.drawable.baseline_font_download_off_24)

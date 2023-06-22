@@ -14,10 +14,11 @@ import ru.netology.myapp.auth.AppAuth
 import ru.netology.myapp.auth.AuthState
 import ru.netology.myapp.dto.Media
 import ru.netology.myapp.dto.Post
+import ru.netology.myapp.fcm.PushToken
 
 private const val BASE_URL = "${BuildConfig.BASE_URL}api/"
 
-interface PostApiService {
+interface ApiService {
     @GET("posts")
     suspend fun getAll(): Response<List<Post>>
 
@@ -60,15 +61,25 @@ interface PostApiService {
         @Part media: MultipartBody.Part,
     ): Response<AuthState>
 
+    @POST("users/push-tokens")
+    suspend fun saveToken(@Body token: PushToken) : Response<Unit>
+
+
+    // 14_token
+//    interface ApiService {
+//        @POST("users/push-tokens")
+//        suspend fun sendPushToken(@Body token: PushToken): Response<Unit>
+
+
 }
 
-object PostApi {
+object Api {
     private val retrofit = Retrofit.Builder()
         .addConverterFactory(GsonConverterFactory.create())
         .baseUrl(BASE_URL)
         .client(okhttp)
         .build()
-    val service: PostApiService by lazy{
+    val service: ApiService by lazy{
         retrofit.create()
     }
 }
@@ -85,7 +96,7 @@ private val okhttp = OkHttpClient.Builder()
             chain
                 .request()
                 .newBuilder()
-                .addHeader("Autorization", token)
+                .addHeader("Authorization", token)
                 .build()
                 .apply { return@addInterceptor chain.proceed(this) }
         }

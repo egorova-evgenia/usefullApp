@@ -11,7 +11,7 @@ import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
-import ru.netology.myapp.ServerService.PostApi
+import ru.netology.myapp.ServerService.Api
 import ru.netology.myapp.dto.Post
 import ru.netology.myapp.appError.ApiError
 import ru.netology.myapp.appError.NetworkError
@@ -36,7 +36,7 @@ class PostRepositoryImp(private val postDao: PostDao):PostRepository {
                 while (true) {
                     try {
                         delay(10_000L)
-                        val response = PostApi.service.getNewer(id)
+                        val response = Api.service.getNewer(id)
                         val posts = response.body().orEmpty()
                         emit(posts.size)
 
@@ -51,7 +51,7 @@ class PostRepositoryImp(private val postDao: PostDao):PostRepository {
         .flowOn(Dispatchers.Default)
 
     override suspend fun getAll() {
-        val response = PostApi.service.getAll()
+        val response = Api.service.getAll()
         if (!response.isSuccessful) throw ApiError(response.code(), response.message())
         val body = response.body() ?: throw ApiError(response.code(), response.message())
         val bodyEntity: List<PostEntity> = body.toEntity()
@@ -63,7 +63,7 @@ class PostRepositoryImp(private val postDao: PostDao):PostRepository {
     override suspend fun likeById(id: Long) {
         postDao.likeById(id)
         try {
-            val response = PostApi.service.likeById(id)
+            val response = Api.service.likeById(id)
             if (!response.isSuccessful) {
                 throw ApiError(response.code(), response.message())
             }
@@ -80,7 +80,7 @@ class PostRepositoryImp(private val postDao: PostDao):PostRepository {
     override suspend fun disLikeById(id: Long) {
         postDao.likeById(id)
         try {
-            val response = PostApi.service.dislikeById(id)
+            val response = Api.service.dislikeById(id)
             if (!response.isSuccessful) {
                 throw ApiError(response.code(), response.message())
             }
@@ -97,7 +97,7 @@ class PostRepositoryImp(private val postDao: PostDao):PostRepository {
     override suspend fun removeById(id: Long) {
         postDao.removeById(id)
         try {
-            val response = PostApi.service.removeById(id)
+            val response = Api.service.removeById(id)
             if (!response.isSuccessful) {
                 throw ApiError(response.code(), response.message())
             }
@@ -112,7 +112,7 @@ class PostRepositoryImp(private val postDao: PostDao):PostRepository {
     override suspend fun save(post: Post) {
         postDao.insert(PostEntity.fromDto(post))
         try {
-            val response = PostApi.service.save(post)
+            val response = Api.service.save(post)
             if (!response.isSuccessful) {
                 throw ApiError(response.code(), response.message())
             }
@@ -128,7 +128,7 @@ class PostRepositoryImp(private val postDao: PostDao):PostRepository {
     override suspend fun saveWithAttachment(post: Post, photo: PhotoModel) {
         try {
             val media = upload(photo)
-            val response =  PostApi.service.save(
+            val response =  Api.service.save(
                 post.copy(
                     attachment = Attachment(media.id, "фото",AttachmentType.IMAGE)
                 )
@@ -152,7 +152,7 @@ class PostRepositoryImp(private val postDao: PostDao):PostRepository {
                     "file", photo.file.name, it.asRequestBody()
                 )
             }
-            val response = media?.let { PostApi.service.uploadPhoto(it) }
+            val response = media?.let { Api.service.uploadPhoto(it) }
             if (!response?.isSuccessful!!){
                 throw ApiError(response.code(), response.message())
             }
@@ -170,7 +170,7 @@ class PostRepositoryImp(private val postDao: PostDao):PostRepository {
 
     override suspend fun updateUser(login: String, password: String) {
         try {
-            val response =PostApi.service.updateUser(login,password)
+            val response =Api.service.updateUser(login,password)
             // получили AuthState         var id:Long =0Lvar token:String? = null
                 if (!response.isSuccessful){
                     throw ApiError(response.code(), response.message())
@@ -192,7 +192,7 @@ class PostRepositoryImp(private val postDao: PostDao):PostRepository {
 
     override suspend fun registerUser(login: String, password: String, name: String) {
         try {
-            val response =PostApi.service.registerUser(login,password,name)
+            val response =Api.service.registerUser(login,password,name)
             if (!response.isSuccessful){
                 throw ApiError(response.code(), response.message())
             }
@@ -221,7 +221,7 @@ class PostRepositoryImp(private val postDao: PostDao):PostRepository {
         }
         try {
             val response = media?.let {
-                PostApi.service.registerWithPhoto(
+                Api.service.registerWithPhoto(
                     login.toRequestBody("text/plain".toMediaType()),
                     password.toRequestBody("text/plain".toMediaType()),
                     name.toRequestBody("text/plain".toMediaType()),
@@ -244,8 +244,6 @@ class PostRepositoryImp(private val postDao: PostDao):PostRepository {
             throw UnknownError
         }
     }
-
-
 }
 
 

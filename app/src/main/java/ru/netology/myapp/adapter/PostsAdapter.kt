@@ -29,12 +29,13 @@ class PostsAdapter(private val listener: PostEventListener
     class PostViewHolder(val binding: CardPostBinding,
                          val listener: PostEventListener
                          ): RecyclerView.ViewHolder(binding.root){
-
+//        "$BASE_URL/media/${post.attachment?.url}"
         fun attach(post: Post){
             val BASE_URL ="http://10.0.2.2:9999"
-            val url="$BASE_URL/images/${post.attachment?.url}"
+            val url="$BASE_URL/media/${post.attachment?.url}"
             Glide.with(binding.attachImage)
-                .load(post.attachment?.url)
+                .load(url)
+                .placeholder(R.drawable.baseline_downloading_100)
                 .error(R.drawable.baseline_font_download_off_24)
                 .timeout(10_000)
                 .into(binding.attachImage)
@@ -45,9 +46,7 @@ class PostsAdapter(private val listener: PostEventListener
             val url="$BASE_URL/avatars/${post.authorAvatar}"
             Glide.with(binding.avatar)
                 .load(url)
-                .placeholder(R.drawable.baseline_downloading_100)
                 .error(R.drawable.baseline_font_download_off_24)
-                .circleCrop()
                 .timeout(10_000)
                 .into(binding.avatar)
         }
