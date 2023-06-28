@@ -14,7 +14,7 @@ import ru.netology.myapp.auth.AppAuth
 import ru.netology.myapp.auth.AuthState
 import ru.netology.myapp.dto.Media
 import ru.netology.myapp.dto.Post
-import ru.netology.myapp.fcm.PushToken
+import ru.netology.myapp.service.PushToken
 
 private const val BASE_URL = "${BuildConfig.BASE_URL}api/"
 
@@ -46,7 +46,7 @@ interface ApiService {
 
     @FormUrlEncoded
     @POST("users/authentication")
-    suspend fun updateUser(@Field("login")   login: String, @Field("password") password: String): Response<AuthState>
+    suspend fun updateUser(@Field("login")   login: String, @Field("pass") pass: String): Response<AuthState>
 
     @FormUrlEncoded
     @POST("users/registration")
@@ -66,9 +66,10 @@ interface ApiService {
 
 
     // 14_token
-//    interface ApiService {
-//        @POST("users/push-tokens")
-//        suspend fun sendPushToken(@Body token: PushToken): Response<Unit>
+    interface ApiService {
+        @POST("users/push-tokens")
+        suspend fun sendPushToken(@Body token: PushToken): Response<Unit>
+    }
 
 
 }
@@ -102,6 +103,7 @@ private val okhttp = OkHttpClient.Builder()
         }
         return@addInterceptor chain.proceed(chain.request())
         }.build()
+
 
 
 

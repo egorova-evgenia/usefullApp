@@ -13,6 +13,8 @@ class SignInViewModel(application: Application): AndroidViewModel(application) {
     private val repository: PostRepository =
         PostRepositoryImp(AppDb.getInstance(context = application).postDao())
 
+
+
     fun updateUser(login: String, pass: String){
         viewModelScope.launch {
             try {

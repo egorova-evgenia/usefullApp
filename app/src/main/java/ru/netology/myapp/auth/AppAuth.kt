@@ -2,15 +2,9 @@ package ru.netology.myapp.auth
 
 import android.content.Context
 import androidx.core.content.edit
-import com.google.firebase.messaging.FirebaseMessaging
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.tasks.await
-import ru.netology.myapp.ServerService.Api
-import ru.netology.myapp.fcm.PushToken
+import ru.netology.myapp.service.PushToken
 
 class AppAuth private constructor(context: Context){
     private val prefs = context.getSharedPreferences("auth", Context.MODE_PRIVATE)

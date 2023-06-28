@@ -42,7 +42,6 @@ class OneImageFragment : Fragment() {
                     .into(binding.oneImage)
             }
         }
-
         return binding.root
     }
 }

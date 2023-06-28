@@ -1,4 +1,4 @@
-package ru.netology.myapp.fcm
+package ru.netology.myapp.service
 
 data class PushToken(val token:String)
 //FromGson

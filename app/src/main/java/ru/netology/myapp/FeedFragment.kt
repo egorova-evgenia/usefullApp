@@ -1,5 +1,6 @@
 package ru.netology.myapp
 
+import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -20,6 +21,7 @@ import ru.netology.myapp.adapter.PostsAdapter
 import ru.netology.myapp.auth.AppAuth
 import ru.netology.myapp.databinding.FragmentFeedBinding
 import ru.netology.myapp.dto.Post
+import ru.netology.myapp.viewmodel.AuthDialogFragment
 import ru.netology.myapp.viewmodel.AuthViewModel
 import ru.netology.myapp.viewmodel.PostViewModel
 
@@ -99,7 +101,14 @@ class FeedFragment : Fragment() {
 
         binding.list.adapter=adapter
         binding.plus.setOnClickListener{
-            findNavController().navigate(R.id.action_feedFragment_to_editFragment)
+            if (AppAuth.getInstance().authStateFlow.value.id != 0L)
+            {
+                findNavController().navigate(R.id.action_feedFragment_to_editFragment)
+            } else {
+//                val dialog = AuthDialogFragment()
+                findNavController().navigate(R.id.action_feedFragment_to_AuthDialog)
+            }
+
         }
 
         adapter.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver(){
@@ -164,6 +173,7 @@ class FeedFragment : Fragment() {
                         }
                         R.id.signin -> {
                             findNavController().navigate(R.id.action_feedFragment_to_signInFragment)
+                            //                           AppAuth.getInstance().setAuth(5, "x-token")
                             true
                         }
                         R.id.signup -> {

@@ -35,7 +35,7 @@ class PostsAdapter(private val listener: PostEventListener
             val url="$BASE_URL/media/${post.attachment?.url}"
             Glide.with(binding.attachImage)
                 .load(url)
-                .placeholder(R.drawable.baseline_downloading_100)
+//                .placeholder(R.drawable.baseline_downloading_100)
                 .error(R.drawable.baseline_font_download_off_24)
                 .timeout(10_000)
                 .into(binding.attachImage)

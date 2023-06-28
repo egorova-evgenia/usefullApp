@@ -40,6 +40,7 @@ class SignInFragment  : Fragment() {
             } else {
                 val  login = binding.putLogin.text.trim().toString()
                 val password = binding.putPassword.text.trim().toString()
+                println("trim password, login")
                 viewModel.updateUser(login,password)//вьюмодель для
 //                updateUser  передаст параметры в AppAuth.getInstance().setAuth
                 findNavController().navigateUp()

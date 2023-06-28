@@ -1,4 +1,4 @@
-package ru.netology.nmedia.service
+package ru.netology.myapp.service
 
 import android.app.NotificationChannel
 import android.app.NotificationManager
@@ -9,7 +9,7 @@ import com.google.firebase.messaging.RemoteMessage
 import com.google.gson.Gson
 import ru.netology.myapp.R
 import ru.netology.myapp.auth.AppAuth
-import ru.netology.myapp.fcm.Msg
+import ru.netology.myapp.service.Msg
 
 class FCMService : FirebaseMessagingService() {
     private val content = "content"

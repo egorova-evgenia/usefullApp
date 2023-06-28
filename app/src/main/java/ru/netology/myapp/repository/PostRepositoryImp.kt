@@ -237,10 +237,8 @@ class PostRepositoryImp(private val postDao: PostDao):PostRepository {
 
             body.token?.let { AppAuth.getInstance().setAuth(body.id, it) }
         } catch (e: IOException) {
-            println("e1")
             throw NetworkError
         } catch (e: Exception) {
-            println("e2")
             throw UnknownError
         }
     }
