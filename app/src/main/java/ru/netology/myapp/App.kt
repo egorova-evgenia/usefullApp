@@ -1,11 +1,13 @@
 package ru.netology.myapp
 
 import android.app.Application
-import ru.netology.myapp.auth.AppAuth
+import dagger.hilt.android.AndroidEntryPoint
+import dagger.hilt.android.HiltAndroidApp
 
+@HiltAndroidApp
+@AndroidEntryPoint
 class App: Application() {
     override fun onCreate() {
         super.onCreate()
-        AppAuth.init(this)
     }
 }

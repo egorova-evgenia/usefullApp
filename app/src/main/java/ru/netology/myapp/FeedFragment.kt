@@ -16,6 +16,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
+import dagger.hilt.android.AndroidEntryPoint
 import ru.netology.myapp.adapter.PostEventListener
 import ru.netology.myapp.adapter.PostsAdapter
 import ru.netology.myapp.auth.AppAuth
@@ -24,8 +25,15 @@ import ru.netology.myapp.dto.Post
 import ru.netology.myapp.viewmodel.AuthDialogFragment
 import ru.netology.myapp.viewmodel.AuthViewModel
 import ru.netology.myapp.viewmodel.PostViewModel
+import javax.inject.Inject
 
-class FeedFragment : Fragment() {
+@AndroidEntryPoint
+class FeedFragment : Fragment(
+
+) {
+
+    @Inject
+    lateinit var appAuth: AppAuth
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -101,7 +109,7 @@ class FeedFragment : Fragment() {
 
         binding.list.adapter=adapter
         binding.plus.setOnClickListener{
-            if (AppAuth.getInstance().authStateFlow.value.id != 0L)
+            if (appAuth.authStateFlow.value.id != 0L)
             {
                 findNavController().navigate(R.id.action_feedFragment_to_editFragment)
             } else {
@@ -154,7 +162,7 @@ class FeedFragment : Fragment() {
 
         var menuProvider: MenuProvider? = null
 
-        authViewModel.state.observe(viewLifecycleOwner) { authState ->
+        authViewModel.state.observe(viewLifecycleOwner) { _ ->
             menuProvider?.let {
             requireActivity().removeMenuProvider(it)
         }
@@ -168,7 +176,7 @@ class FeedFragment : Fragment() {
                 override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
                     return when (menuItem.itemId) {
                         R.id.signout -> {
-                            AppAuth.getInstance().clear()
+                            appAuth.clear()
                             true
                         }
                         R.id.signin -> {

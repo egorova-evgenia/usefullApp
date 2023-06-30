@@ -2,11 +2,15 @@ package ru.netology.myapp.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
+import dagger.hilt.android.lifecycle.HiltViewModel
 import ru.netology.myapp.auth.AppAuth
-
-class AuthViewModel: ViewModel() {
-    val state = AppAuth.getInstance().authStateFlow.asLiveData()
+import javax.inject.Inject
+@HiltViewModel
+class AuthViewModel @Inject constructor(
+    private val appAuth: AppAuth,
+): ViewModel() {
+    val state = appAuth.authStateFlow.asLiveData()
     val authorized : Boolean
-        get() = AppAuth.getInstance().authStateFlow.value.id != 0L
+        get() = appAuth.authStateFlow.value.id != 0L
 }
 

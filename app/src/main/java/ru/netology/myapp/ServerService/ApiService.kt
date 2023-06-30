@@ -70,39 +70,37 @@ interface ApiService {
         @POST("users/push-tokens")
         suspend fun sendPushToken(@Body token: PushToken): Response<Unit>
     }
-
-
 }
 
-object Api {
-    private val retrofit = Retrofit.Builder()
-        .addConverterFactory(GsonConverterFactory.create())
-        .baseUrl(BASE_URL)
-        .client(okhttp)
-        .build()
-    val service: ApiService by lazy{
-        retrofit.create()
-    }
-}
-private val logging = HttpLoggingInterceptor().apply {
-    if (BuildConfig.DEBUG) {
-        level = HttpLoggingInterceptor.Level.BODY
-    }
-}
-
-private val okhttp = OkHttpClient.Builder()
-    .addInterceptor(logging)
-    .addInterceptor { chain ->
-        AppAuth.getInstance().authStateFlow.value.token?.let { token ->
-            chain
-                .request()
-                .newBuilder()
-                .addHeader("Authorization", token)
-                .build()
-                .apply { return@addInterceptor chain.proceed(this) }
-        }
-        return@addInterceptor chain.proceed(chain.request())
-        }.build()
+//object Api {
+//    private val retrofit = Retrofit.Builder()
+//        .addConverterFactory(GsonConverterFactory.create())
+//        .baseUrl(BASE_URL)
+//        .client(okhttp)
+//        .build()
+//    val service: ApiService by lazy{
+//        retrofit.create()
+//    }
+//}
+//private val logging = HttpLoggingInterceptor().apply {
+//    if (BuildConfig.DEBUG) {
+//        level = HttpLoggingInterceptor.Level.BODY
+//    }
+//}
+//
+//private val okhttp = OkHttpClient.Builder()
+//    .addInterceptor(logging)
+//    .addInterceptor { chain ->
+//        appAuth.authStateFlow.value.token?.let { token ->
+//            chain
+//                .request()
+//                .newBuilder()
+//                .addHeader("Authorization", token)
+//                .build()
+//                .apply { return@addInterceptor chain.proceed(this) }
+//        }
+//        return@addInterceptor chain.proceed(chain.request())
+//        }.build()
 
 
 

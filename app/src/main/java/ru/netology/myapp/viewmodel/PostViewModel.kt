@@ -8,11 +8,15 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.map
 import androidx.lifecycle.switchMap
 import com.google.android.material.snackbar.Snackbar
+import dagger.hilt.android.AndroidEntryPoint
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.flatMapLatest
@@ -26,6 +30,7 @@ import ru.netology.myapp.repository.PostRepository
 import ru.netology.myapp.repository.PostRepositoryImp
 import java.lang.Error
 import java.security.AccessController.getContext
+import javax.inject.Inject
 
 val newPostId=0L
 val empty = Post(
@@ -39,14 +44,19 @@ val empty = Post(
     authorId = 0L
 )
 
-class PostViewModel(application: Application) : AndroidViewModel(application){
+@AndroidEntryPoint
+@HiltViewModel
+class PostViewModel @Inject constructor(
+    private val repository: PostRepository,
+    appAuth: AppAuth,
+) : ViewModel(){
 
-    private val repository: PostRepository = PostRepositoryImp(AppDb.getInstance(context = application).postDao())
+//    private val repository: PostRepository = PostRepositoryImp(AppDb.getInstance(context = application).postDao())
 
     private val scope = MainScope()//page 14
 
     private val _data = MutableLiveData(FeedModel())
-    val data: LiveData<FeedModel> = AppAuth.getInstance()
+    val data: LiveData<FeedModel> = appAuth
         .authStateFlow.flatMapLatest {(myId,_) ->
         repository.data.map{ posts->
             FeedModel(posts.map { post ->

@@ -1,19 +1,20 @@
 package ru.netology.myapp.viewmodel
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.ViewModel
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
-import ru.netology.myapp.db.AppDb
-import ru.netology.myapp.dto.Media
+import ru.netology.myapp.auth.AppAuth
 import ru.netology.myapp.repository.PostRepository
-import ru.netology.myapp.repository.PostRepositoryImp
+import javax.inject.Inject
 
-class RegViewModel (application: Application): AndroidViewModel(application) {
-    private val repository: PostRepository =
-        PostRepositoryImp(AppDb.getInstance(context = application).postDao())
+@HiltViewModel
+class RegViewModel @Inject constructor(
+    private val repository: PostRepository,
+) : ViewModel(){
+    private val scope = MainScope()
 
     private val _avatarState = MutableLiveData<PhotoModel?>()
     val photoState: LiveData<PhotoModel?>
@@ -23,7 +24,7 @@ class RegViewModel (application: Application): AndroidViewModel(application) {
     }
 //
     fun registerUser(login: String, password: String, name: String){
-        viewModelScope.launch {
+    scope.launch {
             try {
                 when (_avatarState.value) {
                     null -> repository.registerUser(login,password,name)
