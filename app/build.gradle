@@ -2,7 +2,7 @@ plugins {
     id 'com.android.application'
     id 'kotlin-android'
     id 'kotlin-kapt'
-//    id 'com.google.gms.google-services'
+    id 'com.google.gms.google-services'
 }
 
 android {
@@ -53,13 +53,13 @@ android {
 }
 
 dependencies {
-    implementation "androidx.room:room-runtime:2.5.1"
-    implementation 'androidx.room:room-common:2.5.1'
-    implementation "androidx.room:room-ktx:2.5.1"
-    kapt "androidx.room:room-compiler:2.5.1"
+    implementation "androidx.room:room-runtime:2.5.2"
+    implementation 'androidx.room:room-common:2.5.2'
+    implementation "androidx.room:room-ktx:2.5.2"
+    kapt "androidx.room:room-compiler:2.5.2"
     implementation "org.jetbrains.kotlin:kotlin-stdlib:1.8.21"
     implementation 'androidx.core:core-ktx:1.10.1'
-    implementation 'androidx.appcompat:appcompat:1.4.1'
+    implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'com.google.android.material:material:1.6.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     testImplementation 'junit:junit:4+'
@@ -85,5 +85,5 @@ dependencies {
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.7.0"
     implementation platform('com.google.firebase:firebase-bom:30.3.2')
     implementation "com.google.firebase:firebase-messaging-ktx"
-//    implementation "com.google.android.gms:play-services-base:18.2.0"
+    implementation "com.google.android.gms:play-services-base:18.2.0"
 }
