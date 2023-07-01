@@ -1,18 +1,10 @@
 package ru.netology.myapp.viewmodel
 
-import android.app.Application
-import android.os.Parcel
-import android.os.Parcelable
-import android.view.View
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
-
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
-import androidx.lifecycle.map
 import androidx.lifecycle.switchMap
-import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -23,13 +15,9 @@ import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import ru.netology.myapp.auth.AppAuth
-import ru.netology.myapp.db.AppDb
 import ru.netology.myapp.dto.Post
 import ru.netology.myapp.eventsAndOther.SingleLiveEvent
 import ru.netology.myapp.repository.PostRepository
-import ru.netology.myapp.repository.PostRepositoryImp
-import java.lang.Error
-import java.security.AccessController.getContext
 import javax.inject.Inject
 
 val newPostId=0L

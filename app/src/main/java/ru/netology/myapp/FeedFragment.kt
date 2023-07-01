@@ -27,7 +27,7 @@ import ru.netology.myapp.viewmodel.AuthViewModel
 import ru.netology.myapp.viewmodel.PostViewModel
 import javax.inject.Inject
 
-@AndroidEntryPoint
+//@AndroidEntryPoint
 class FeedFragment : Fragment(
 
 ) {

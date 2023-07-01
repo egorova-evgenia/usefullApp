@@ -27,7 +27,7 @@ class EditFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         super.onCreate(savedInstanceState)
         val binding = FragmentEditBinding.inflate(
             inflater,
