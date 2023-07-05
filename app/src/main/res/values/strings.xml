@@ -14,5 +14,6 @@
     <string name="save">save</string>
     <string name="channel_remote_description">Notifications from remote server</string>
     <string name="channel_remote_name">Server notifications</string>
+    <string name="google_play_unavailable">unavailable</string>
 
 </resources>
