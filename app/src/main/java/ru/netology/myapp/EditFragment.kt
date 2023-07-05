@@ -14,6 +14,7 @@ import androidx.core.net.toFile
 import androidx.core.view.MenuProvider
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.github.dhaval2404.imagepicker.ImagePicker
@@ -35,7 +36,7 @@ class EditFragment : Fragment() {
             false
         )
 
-        val viewModel: PostViewModel by viewModels(ownerProducer = ::requireParentFragment)
+        val viewModel: PostViewModel by activityViewModels()
 
         arguments?.textArg?.let {
             binding.editGroup.visibility= View.VISIBLE

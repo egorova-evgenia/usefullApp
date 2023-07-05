@@ -32,7 +32,7 @@ val empty = Post(
     authorId = 0L
 )
 
-@AndroidEntryPoint
+//@AndroidEntryPoint
 @HiltViewModel
 class PostViewModel @Inject constructor(
     private val repository: PostRepository,

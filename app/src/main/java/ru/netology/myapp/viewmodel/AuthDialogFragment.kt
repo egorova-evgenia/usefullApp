@@ -14,13 +14,13 @@ class AuthDialogFragment : DialogFragment() {
         return requireContext().let {
             val builder = AlertDialog.Builder(it)
             builder
-                .setMessage("Доступно только авторизованным пользователям")
+                .setMessage(getString(R.string.authDialogTitle))
                 .setIcon(R.drawable.baseline_priority_high_24)
                 .setCancelable(true)
-                .setPositiveButton("Войти") { _, _ ->
+                .setPositiveButton(getString(R.string.singIn)) { _, _ ->
                     findNavController().navigate(R.id.action_dialog_to_signInFragment)
                 }
-                .setNegativeButton("Отмена") {
+                .setNegativeButton(getString(R.string.dialogCancel)) {
                     dialog, id ->  dialog.cancel()
                 }
             builder.create()

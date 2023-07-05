@@ -14,5 +14,13 @@
     <string name="save">save</string>
     <string name="channel_remote_description">Notifications from remote server</string>
     <string name="channel_remote_name">Server notifications</string>
+    <string name="google_play_unavailable">сервис недоступен</string>
+    <string name="authDialogTitle">Доступно только авторизованным пользователям</string>
+    <string name="singIn">Войти</string>
+    <string name="dialogCancel">Отмена</string>
+    <string name="login">LOGIN</string>
+    <string name="password">PASSWORD</string>
+    <string name="ok">OK</string>
+    <string name="noAccount">Еще нет аккаунта?</string>
 
 </resources>

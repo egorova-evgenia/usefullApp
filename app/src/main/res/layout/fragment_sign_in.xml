@@ -1,52 +1,72 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/signInGroup"
     android:background="@color/purple_200">
 
+<!--    <LinearLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:orientation="vertical">-->
+
     <EditText
         android:id="@+id/putLogin"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:layout_marginTop="24dp"
         android:layout_marginEnd="24dp"
         android:textSize="48sp"
-        android:hint="LOGIN"
+        android:hint="@string/login"
         android:inputType="text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/putPassword"
         android:background="@color/white"/>
 
-    <EditText
-        android:id="@+id/putPassword"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="24dp"
-        android:hint="PASSWORD"
-        android:textSize="48sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/putLogin"
-        android:background="@color/white"/>
+<!--    <com.google.android.material.textfield.TextInputLayout-->
+<!--        android:id="@+id/textInput"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        app:endIconMode="password_toggle"-->
+<!--        app:layoutconstraintEnd_toEndOf="parent"-->
+<!--        app:layoutconstraintStart_toStartOf="parent"-->
+<!--        app:layoutconstraintTop_toBottomOf="@+id/putLogin"-->
+<!--        >-->
+
+
+        <EditText
+            android:id="@+id/putPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="24dp"
+            android:background="@color/white"
+            android:hint="@string/password"
+            android:inputType="textPassword"
+            android:labelFor="@id/putPassword"
+            app:layout_constraintTop_toBottomOf="@id/putLogin"
+            android:textSize="48sp" />
+<!--    </com.google.android.material.textfield.TextInputLayout>-->
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/okButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="48sp"
-        android:text="OK"
+        android:text="@string/ok"
+        android:layout_marginTop="24dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/putPassword"
-         />
-<!--    student и паролем secret-->
+    />
+
     <com.google.android.material.button.MaterialButton
         android:id="@+id/toReg"
         android:layout_width="wrap_content"
@@ -54,24 +74,11 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:text="Еще нет аккаунта?"
+        android:text="@string/noAccount"
         android:textSize="24sp"
         android:layout_marginBottom="24dp"
         android:visibility="gone"
         />
+<!--    </LinearLayout>-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>
-    <!--    <EditText-->
-    <!--        android:id="@+id/content"-->
-    <!--        android:inputType="textMultiLine"-->
-    <!--        android:background="@android:color/transparent"-->
-    <!--        android:layout_width="match_parent"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        android:padding="8dp"-->
-    <!--        android:hint="@string/write_your_text_input"-->
-    <!--        android:importantForAutofill="no"-->
-
-    <!--        app:layout_constraintEnd_toEndOf="parent"-->
-    <!--        app:layout_constraintStart_toStartOf="parent"-->
-    <!--        app:layout_constraintTop_toBottomOf="@+id/editeModeText"-->
-    <!--        />-->
