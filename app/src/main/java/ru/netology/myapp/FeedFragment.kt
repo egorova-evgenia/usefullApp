@@ -28,7 +28,7 @@ import ru.netology.myapp.viewmodel.AuthViewModel
 import ru.netology.myapp.viewmodel.PostViewModel
 import javax.inject.Inject
 
-//@AndroidEntryPoint
+@AndroidEntryPoint
 class FeedFragment : Fragment(
 
 ) {
@@ -182,15 +182,12 @@ class FeedFragment : Fragment(
                         }
                         R.id.signin -> {
                             findNavController().navigate(R.id.action_feedFragment_to_signInFragment)
-                            //                           AppAuth.getInstance().setAuth(5, "x-token")
                             true
                         }
                         R.id.signup -> {
                             findNavController().navigate(R.id.action_feedFragment_to_regFragment)
-//                            AppAuth.getInstance().setAuth(5, "x-token")
                             true
                         }
-
                         else -> false
                     }
                 }
