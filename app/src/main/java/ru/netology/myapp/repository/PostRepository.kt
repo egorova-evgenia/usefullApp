@@ -2,6 +2,8 @@ package ru.netology.myapp.repository
 
 import android.content.Context
 import androidx.lifecycle.LiveData
+import androidx.paging.Pager
+import androidx.paging.PagingData
 import kotlinx.coroutines.flow.Flow
 import ru.netology.myapp.dto.Post
 import ru.netology.myapp.viewmodel.PhotoModel
@@ -10,6 +12,8 @@ import java.security.AccessControlContext
 
 interface PostRepository {
     val data: Flow<List<Post>>
+
+    val dataToShow: Flow<PagingData<Post>>
 
     fun getNewer(id: Long): Flow<Int>
     suspend fun getAll()

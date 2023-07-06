@@ -5,12 +5,15 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.switchMap
+import androidx.paging.PagingData
+import androidx.paging.map
 import dagger.hilt.android.AndroidEntryPoint
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.cancel
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
@@ -37,21 +40,27 @@ val empty = Post(
 class PostViewModel @Inject constructor(
     private val repository: PostRepository,
     appAuth: AppAuth,
-) : ViewModel(){
-
-//    private val repository: PostRepository = PostRepositoryImp(AppDb.getInstance(context = application).postDao())
-
+) : ViewModel() {
     private val scope = MainScope()//page 14
+
+    val dataToShow: Flow<PagingData<Post>> = appAuth
+        .authStateFlow.flatMapLatest { (myId, _) ->
+            repository.dataToShow.map { posts ->
+                posts.map { post ->
+                    post.copy(ownedByMe = (post.authorId == myId))
+                }
+            }
+        }.flowOn(Dispatchers.Default)
 
     private val _data = MutableLiveData(FeedModel())
     val data: LiveData<FeedModel> = appAuth
-        .authStateFlow.flatMapLatest {(myId,_) ->
-        repository.data.map{ posts->
-            FeedModel(posts.map { post ->
-                post.copy(ownedByMe = post.authorId==myId) },posts.isEmpty())
-        }
-//        (::FeedModel)
-    }.asLiveData(Dispatchers.Default)
+        .authStateFlow.flatMapLatest { (myId, _) ->
+            repository.data.map { posts ->
+                FeedModel(posts.map { post ->
+                    post.copy(ownedByMe = post.authorId == myId)
+                }, posts.isEmpty())
+            }
+        }.asLiveData(Dispatchers.Default)
 
 
     private val _dataState =MutableLiveData(FeedModelState())

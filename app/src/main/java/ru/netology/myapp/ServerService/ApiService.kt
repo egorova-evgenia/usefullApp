@@ -1,16 +1,10 @@
 package ru.netology.myapp.ServerService
 
 import okhttp3.MultipartBody
-import okhttp3.OkHttpClient
 import okhttp3.RequestBody
-import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.create
 import retrofit2.http.*
 import ru.netology.myapp.BuildConfig
-import ru.netology.myapp.auth.AppAuth
 import ru.netology.myapp.auth.AuthState
 import ru.netology.myapp.dto.Media
 import ru.netology.myapp.dto.Post
@@ -21,6 +15,16 @@ private const val BASE_URL = "${BuildConfig.BASE_URL}api/"
 interface ApiService {
     @GET("posts")
     suspend fun getAll(): Response<List<Post>>
+
+    @GET("posts/latest")
+    suspend fun getLatest(@Query("count") count: Int): Response<List<Post>>
+
+    @GET("posts/{id}/before")
+    suspend fun getBefore(@Path("id") id: Long, @Query("count") count: Int): Response<List<Post>>
+
+    @GET("posts/{id}/after")
+    suspend fun getAfter(@Path("id") id: Long, @Query("count") count: Int): Response<List<Post>>
+
 
     @GET("posts/{id}/newer")
     suspend fun getNewer(@Path("id") id: Long): Response<List<Post>>

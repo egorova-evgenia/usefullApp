@@ -14,10 +14,14 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.paging.LoadState
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import ru.netology.myapp.adapter.PostEventListener
 import ru.netology.myapp.adapter.PostsAdapter
 import ru.netology.myapp.auth.AppAuth
@@ -120,17 +124,22 @@ class FeedFragment : Fragment(
 
         }
 
-        adapter.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver(){
+        adapter.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
             override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
-                if (positionStart==0) {
+                if (positionStart == 0) {
                     binding.list.smoothScrollToPosition(0)
                 }
             }
         })
 
-        viewModel.data.observe(viewLifecycleOwner) {
-            adapter.submitList(it.posts)
-            binding.emptyText.isVisible = it.empty
+//        viewModel.data.observe(viewLifecycleOwner) {
+//            adapter.submitList(it.posts)
+//            binding.emptyText.isVisible = it.empty
+//        }
+        lifecycleScope.launch {
+            viewModel.dataToShow.collectLatest {
+                adapter.submitData(it)
+            }
         }
 
         viewModel.dataState.observe(viewLifecycleOwner) { state ->
@@ -139,7 +148,7 @@ class FeedFragment : Fragment(
             binding.swiprefresh.isRefreshing = state.loading
             if (state.error) {
                 Snackbar.make(binding.root, "ошибка", Snackbar.LENGTH_LONG)
-                    .setAction("Retry") {viewModel.loadPosts()}
+                    .setAction("Retry") { viewModel.loadPosts() }
                     .show()
             }
         }
@@ -156,9 +165,17 @@ class FeedFragment : Fragment(
             binding.showNewPost.visibility = View.GONE
         }
 
+        lifecycleScope.launch {
+            adapter.loadStateFlow.collectLatest {
+                binding.swiprefresh.isRefreshing = it.refresh is LoadState.Loading
+                        || it.append is LoadState.Loading
+                        || it.prepend is LoadState.Loading
+            }
+        }
+
 
         binding.swiprefresh.setOnRefreshListener {
-            viewModel.refresh()
+            adapter.refresh()
         }
 
         var menuProvider: MenuProvider? = null

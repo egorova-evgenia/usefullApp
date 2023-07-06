@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.PopupMenu
 import androidx.core.view.isVisible
+import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -15,16 +16,18 @@ import ru.netology.myapp.dto.Post
 import ru.netology.myapp.numberToString
 import java.util.Collections.emptyList
 
-class PostsAdapter(private val listener: PostEventListener
-                   ): ListAdapter<Post, PostsAdapter.PostViewHolder>(PostDiffCallback()) {
+class PostsAdapter(
+    private val listener: PostEventListener
+) : PagingDataAdapter<Post, PostsAdapter.PostViewHolder>(PostDiffCallback()) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostViewHolder {
-        val binding = CardPostBinding.inflate(LayoutInflater.from(parent.context),parent,false)
+        val binding = CardPostBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return PostViewHolder(binding, listener)
     }
 
     override fun onBindViewHolder(holder: PostViewHolder, position: Int) {
-        val post = getItem(position)
-        holder.bind(post)
+        val post = getItem(position)?.let {
+            holder.bind(it)
+        }
     }
     class PostViewHolder(val binding: CardPostBinding,
                          val listener: PostEventListener
