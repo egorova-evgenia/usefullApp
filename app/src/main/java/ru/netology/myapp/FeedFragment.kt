@@ -20,6 +20,7 @@ import androidx.paging.LoadState
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import ru.netology.myapp.adapter.PostEventListener
@@ -33,16 +34,20 @@ import ru.netology.myapp.viewmodel.PostViewModel
 import javax.inject.Inject
 
 @AndroidEntryPoint
+
 class FeedFragment : Fragment(
 
 ) {
 
     @Inject
     lateinit var appAuth: AppAuth
+
+    @OptIn(ExperimentalCoroutinesApi::class)
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?): View {
+        savedInstanceState: Bundle?
+    ): View {
         val binding = FragmentFeedBinding.inflate(
             inflater,
             container,
@@ -56,12 +61,10 @@ class FeedFragment : Fragment(
 
             object : PostEventListener{
                 override fun onLike(post: Post) {
-                    if (post.likedByMe)
-                    {
+                    if (post.likedByMe) {
                         println(post.likedByMe)
                         viewModel.disLikeById(post.id)
-                    }
-                    else {
+                    } else {
                         println(post.likedByMe)
                         viewModel.likeById(post.id)
                     }
@@ -83,8 +86,8 @@ class FeedFragment : Fragment(
                 override fun onEdit(post: Post) {
                     findNavController().navigate(
                         R.id.action_feedFragment_to_editFragment,
-                    Bundle().apply
-                     { textArg = post.content }
+                        Bundle().apply
+                        { textArg = post.content }
                     )
                     viewModel.edit(post)
                 }
@@ -114,8 +117,7 @@ class FeedFragment : Fragment(
 
         binding.list.adapter=adapter
         binding.plus.setOnClickListener{
-            if (appAuth.authStateFlow.value.id != 0L)
-            {
+            if (appAuth.authStateFlow.value.id != 0L) {
                 findNavController().navigate(R.id.action_feedFragment_to_editFragment)
             } else {
 //                val dialog = AuthDialogFragment()
@@ -182,8 +184,8 @@ class FeedFragment : Fragment(
 
         authViewModel.state.observe(viewLifecycleOwner) { _ ->
             menuProvider?.let {
-            requireActivity().removeMenuProvider(it)
-        }
+                requireActivity().removeMenuProvider(it)
+            }
             requireActivity().addMenuProvider(object : MenuProvider {
                 override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
                     menuInflater.inflate(R.menu.main_menu, menu)
@@ -197,14 +199,17 @@ class FeedFragment : Fragment(
                             appAuth.clear()
                             true
                         }
+
                         R.id.signin -> {
                             findNavController().navigate(R.id.action_feedFragment_to_signInFragment)
                             true
                         }
+
                         R.id.signup -> {
                             findNavController().navigate(R.id.action_feedFragment_to_regFragment)
                             true
                         }
+
                         else -> false
                     }
                 }

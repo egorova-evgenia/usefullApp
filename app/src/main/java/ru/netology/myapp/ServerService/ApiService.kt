@@ -10,7 +10,7 @@ import ru.netology.myapp.dto.Media
 import ru.netology.myapp.dto.Post
 import ru.netology.myapp.service.PushToken
 
-private const val BASE_URL = "${BuildConfig.BASE_URL}api/"
+//private const val BASE_URL = "${BuildConfig.BASE_URL}api/"
 
 interface ApiService {
     @GET("posts")
@@ -75,36 +75,6 @@ interface ApiService {
         suspend fun sendPushToken(@Body token: PushToken): Response<Unit>
     }
 }
-
-//object Api {
-//    private val retrofit = Retrofit.Builder()
-//        .addConverterFactory(GsonConverterFactory.create())
-//        .baseUrl(BASE_URL)
-//        .client(okhttp)
-//        .build()
-//    val service: ApiService by lazy{
-//        retrofit.create()
-//    }
-//}
-//private val logging = HttpLoggingInterceptor().apply {
-//    if (BuildConfig.DEBUG) {
-//        level = HttpLoggingInterceptor.Level.BODY
-//    }
-//}
-//
-//private val okhttp = OkHttpClient.Builder()
-//    .addInterceptor(logging)
-//    .addInterceptor { chain ->
-//        appAuth.authStateFlow.value.token?.let { token ->
-//            chain
-//                .request()
-//                .newBuilder()
-//                .addHeader("Authorization", token)
-//                .build()
-//                .apply { return@addInterceptor chain.proceed(this) }
-//        }
-//        return@addInterceptor chain.proceed(chain.request())
-//        }.build()
 
 
 

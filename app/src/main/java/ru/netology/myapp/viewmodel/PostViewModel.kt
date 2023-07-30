@@ -37,6 +37,7 @@ val empty = Post(
 
 //@AndroidEntryPoint
 @HiltViewModel
+@ExperimentalCoroutinesApi
 class PostViewModel @Inject constructor(
     private val repository: PostRepository,
     appAuth: AppAuth,
