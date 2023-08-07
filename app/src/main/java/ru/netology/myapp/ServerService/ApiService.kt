@@ -1,23 +1,14 @@
 package ru.netology.myapp.ServerService
 
 import okhttp3.MultipartBody
-import okhttp3.OkHttpClient
 import okhttp3.RequestBody
-import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.create
 import retrofit2.http.*
 import ru.netology.myapp.BuildConfig
-import ru.netology.myapp.auth.AppAuth
 import ru.netology.myapp.auth.AuthState
 import ru.netology.myapp.dto.Media
 import ru.netology.myapp.dto.Post
 import ru.netology.myapp.service.PushToken
-
-private const val BASE_URL = "${BuildConfig.BASE_URL}api/"
-
 interface ApiService {
     @GET("posts")
     suspend fun getAll(): Response<List<Post>>
@@ -64,45 +55,8 @@ interface ApiService {
     @POST("users/push-tokens")
     suspend fun saveToken(@Body token: PushToken) : Response<Unit>
 
-
-    // 14_token
     interface ApiService {
         @POST("users/push-tokens")
         suspend fun sendPushToken(@Body token: PushToken): Response<Unit>
     }
 }
-
-//object Api {
-//    private val retrofit = Retrofit.Builder()
-//        .addConverterFactory(GsonConverterFactory.create())
-//        .baseUrl(BASE_URL)
-//        .client(okhttp)
-//        .build()
-//    val service: ApiService by lazy{
-//        retrofit.create()
-//    }
-//}
-//private val logging = HttpLoggingInterceptor().apply {
-//    if (BuildConfig.DEBUG) {
-//        level = HttpLoggingInterceptor.Level.BODY
-//    }
-//}
-//
-//private val okhttp = OkHttpClient.Builder()
-//    .addInterceptor(logging)
-//    .addInterceptor { chain ->
-//        appAuth.authStateFlow.value.token?.let { token ->
-//            chain
-//                .request()
-//                .newBuilder()
-//                .addHeader("Authorization", token)
-//                .build()
-//                .apply { return@addInterceptor chain.proceed(this) }
-//        }
-//        return@addInterceptor chain.proceed(chain.request())
-//        }.build()
-
-
-
-
-

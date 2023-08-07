@@ -32,17 +32,13 @@ val empty = Post(
     authorId = 0L
 )
 
-//@AndroidEntryPoint
 @HiltViewModel
 class PostViewModel @Inject constructor(
     private val repository: PostRepository,
     appAuth: AppAuth,
 ) : ViewModel(){
 
-//    private val repository: PostRepository = PostRepositoryImp(AppDb.getInstance(context = application).postDao())
-
     private val scope = MainScope()//page 14
-
     private val _data = MutableLiveData(FeedModel())
     val data: LiveData<FeedModel> = appAuth
         .authStateFlow.flatMapLatest {(myId,_) ->
@@ -50,7 +46,6 @@ class PostViewModel @Inject constructor(
             FeedModel(posts.map { post ->
                 post.copy(ownedByMe = post.authorId==myId) },posts.isEmpty())
         }
-//        (::FeedModel)
     }.asLiveData(Dispatchers.Default)
 
 

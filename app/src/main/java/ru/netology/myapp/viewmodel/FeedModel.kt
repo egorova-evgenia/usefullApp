@@ -11,6 +11,4 @@ data class FeedModelState (
     val loading: Boolean = false,
     val error: Boolean = false,
     val swiprefresh: Boolean = false,
-//    val code: Int = 200,
-//    val errorBody: String = ""
 )

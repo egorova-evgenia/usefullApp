@@ -114,7 +114,6 @@ class FeedFragment : Fragment(
             {
                 findNavController().navigate(R.id.action_feedFragment_to_editFragment)
             } else {
-//                val dialog = AuthDialogFragment()
                 findNavController().navigate(R.id.action_feedFragment_to_AuthDialog)
             }
 
