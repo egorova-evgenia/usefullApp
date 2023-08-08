@@ -7,7 +7,7 @@ import androidx.lifecycle.asLiveData
 import androidx.lifecycle.switchMap
 import androidx.paging.PagingData
 import androidx.paging.map
-import dagger.hilt.android.AndroidEntryPoint
+ import dagger.hilt.android.AndroidEntryPoint
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -37,11 +37,10 @@ val empty = Post(
 
 //@AndroidEntryPoint
 @HiltViewModel
-@ExperimentalCoroutinesApi
 class PostViewModel @Inject constructor(
     private val repository: PostRepository,
     appAuth: AppAuth,
-) : ViewModel() {
+) : ViewModel(){
     private val scope = MainScope()//page 14
 
     val dataToShow: Flow<PagingData<Post>> = appAuth
@@ -55,6 +54,12 @@ class PostViewModel @Inject constructor(
 
     private val _data = MutableLiveData(FeedModel())
     val data: LiveData<FeedModel> = appAuth
+        .authStateFlow.flatMapLatest {(myId,_) ->
+        repository.data.map{ posts->
+            FeedModel(posts.map { post ->
+                post.copy(ownedByMe = post.authorId==myId) },posts.isEmpty())
+        }
+    }.asLiveData(Dispatchers.Default)
         .authStateFlow.flatMapLatest { (myId, _) ->
             repository.data.map { posts ->
                 FeedModel(posts.map { post ->

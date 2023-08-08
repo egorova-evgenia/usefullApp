@@ -23,8 +23,6 @@ data class PostEntity(
     ) {
     fun toDto() =
         Post(id, author, authorAvatar, content, published, likedByMe, likes,attachment, authorId, )
-
-    //    attachment,, isRemoteSaved
     companion object {
         fun fromDto(dto: Post) =
             PostEntity(
@@ -41,8 +39,6 @@ data class PostEntity(
             )
     }
 }
-//},
-
 fun List<PostEntity>.toDto(): List<Post> = map(PostEntity::toDto)
 fun List<Post>.toEntity(): List<PostEntity> = map(PostEntity::fromDto)
 

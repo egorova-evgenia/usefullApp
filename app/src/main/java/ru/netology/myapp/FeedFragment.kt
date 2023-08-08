@@ -120,7 +120,6 @@ class FeedFragment : Fragment(
             if (appAuth.authStateFlow.value.id != 0L) {
                 findNavController().navigate(R.id.action_feedFragment_to_editFragment)
             } else {
-//                val dialog = AuthDialogFragment()
                 findNavController().navigate(R.id.action_feedFragment_to_AuthDialog)
             }
 

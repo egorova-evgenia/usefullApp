@@ -9,22 +9,9 @@ import ru.netology.myapp.auth.AuthState
 import ru.netology.myapp.dto.Media
 import ru.netology.myapp.dto.Post
 import ru.netology.myapp.service.PushToken
-
-//private const val BASE_URL = "${BuildConfig.BASE_URL}api/"
-
 interface ApiService {
     @GET("posts")
     suspend fun getAll(): Response<List<Post>>
-
-    @GET("posts/latest")
-    suspend fun getLatest(@Query("count") count: Int): Response<List<Post>>
-
-    @GET("posts/{id}/before")
-    suspend fun getBefore(@Path("id") id: Long, @Query("count") count: Int): Response<List<Post>>
-
-    @GET("posts/{id}/after")
-    suspend fun getAfter(@Path("id") id: Long, @Query("count") count: Int): Response<List<Post>>
-
 
     @GET("posts/{id}/newer")
     suspend fun getNewer(@Path("id") id: Long): Response<List<Post>>
@@ -68,15 +55,8 @@ interface ApiService {
     @POST("users/push-tokens")
     suspend fun saveToken(@Body token: PushToken) : Response<Unit>
 
-
-    // 14_token
     interface ApiService {
         @POST("users/push-tokens")
         suspend fun sendPushToken(@Body token: PushToken): Response<Unit>
     }
 }
-
-
-
-
-
