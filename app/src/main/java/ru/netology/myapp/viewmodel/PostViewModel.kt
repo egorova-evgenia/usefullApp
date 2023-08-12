@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.switchMap
 import androidx.paging.PagingData
+import androidx.paging.cachedIn
 import androidx.paging.map
  import dagger.hilt.android.AndroidEntryPoint
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -40,16 +41,28 @@ val empty = Post(
 class PostViewModel @Inject constructor(
     private val repository: PostRepository,
     appAuth: AppAuth,
-) : ViewModel(){
+) : ViewModel() {
     private val scope = MainScope()//page 14
+
+    private val cached = repository.dataToShow.cachedIn(scope)
 
     val dataToShow: Flow<PagingData<Post>> = appAuth
         .authStateFlow.flatMapLatest { (myId, _) ->
+//            repository.dataToShow
+//            как в презентации. кэшируем
+//            cached.map { posts ->
+//                posts.map { post ->
+//                    post.copy(ownedByMe = (post.authorId == myId))
+//                }
+//            }
+
+//
             repository.dataToShow.map { posts ->
                 posts.map { post ->
                     post.copy(ownedByMe = (post.authorId == myId))
                 }
             }
+
         }.flowOn(Dispatchers.Default)
 
     private val _data = MutableLiveData(FeedModel())
@@ -60,14 +73,6 @@ class PostViewModel @Inject constructor(
                 post.copy(ownedByMe = post.authorId==myId) },posts.isEmpty())
         }
     }.asLiveData(Dispatchers.Default)
-        .authStateFlow.flatMapLatest { (myId, _) ->
-            repository.data.map { posts ->
-                FeedModel(posts.map { post ->
-                    post.copy(ownedByMe = post.authorId == myId)
-                }, posts.isEmpty())
-            }
-        }.asLiveData(Dispatchers.Default)
-
 
     private val _dataState =MutableLiveData(FeedModelState())
     val dataState: LiveData<FeedModelState>

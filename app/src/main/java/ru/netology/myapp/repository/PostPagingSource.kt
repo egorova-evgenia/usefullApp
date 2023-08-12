@@ -23,16 +23,13 @@ class PostPagingSource(private val service: ApiService) : PagingSource<Long, Pos
                 is LoadParams.Append -> service.getBefore(params.key, params.loadSize)
             }
             if (!result.isSuccessful) {
-//                throw ApiError(result.code(),result.message())
                 println("here")
                 throw HttpException(result)
             }
 
             val data = result.body().orEmpty()
             return LoadResult.Page(
-                data = data,
-                prevKey = params.key,
-                nextKey = data.lastOrNull()?.id,
+                data = data, prevKey = params.key, nextKey = data.lastOrNull()?.id,
             )
         } catch (e: IOException) {
             return LoadResult.Error(e)
