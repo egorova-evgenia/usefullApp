@@ -11,12 +11,13 @@ import java.security.AccessControlContext
 
 
 interface PostRepository {
-    val data: Flow<List<Post>>
+//    val data: Flow<List<Post>>
 
     val dataToShow: Flow<PagingData<Post>>
 
-    fun getNewer(id: Long): Flow<Int>
-    suspend fun getAll()
+    //    fun getNewer(id: Long): Flow<Int>
+//    suspend fun getAll()
+    fun getPostById(id: Long): LiveData<Post?>
     suspend fun likeById(id: Long)
     suspend fun disLikeById(id: Long)
     suspend fun removeById(id: Long)

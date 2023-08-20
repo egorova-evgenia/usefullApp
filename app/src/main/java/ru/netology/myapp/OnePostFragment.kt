@@ -10,8 +10,11 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.map
 import androidx.navigation.fragment.findNavController
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 //import ru.netology.myapp.adapter.PostViewHolder
 import ru.netology.myapp.databinding.CardPostBinding
 import ru.netology.myapp.dto.Post
@@ -35,10 +38,13 @@ class OnePostFragment : Fragment() {
         println(postId)
 
         if (postId!=null) {
+            val dataPost = viewModel.getPostById(postId)
 
-            viewModel.data.observe(viewLifecycleOwner) {
-                val post = it.posts.find { it.id == postId } ?: return@observe
-                binding.buttonLikes.text = numberToString(post.likes)
+            dataPost.observe(viewLifecycleOwner) {
+//                val post = it.post.find { it.id == postId } ?: return@observe
+                val post = dataPost.value
+
+                binding.buttonLikes.text = numberToString(post!!.likes)
                 binding.apply {
 
                     content.text = post.content

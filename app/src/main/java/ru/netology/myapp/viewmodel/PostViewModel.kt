@@ -65,16 +65,16 @@ class PostViewModel @Inject constructor(
 
         }.flowOn(Dispatchers.Default)
 
-    private val _data = MutableLiveData(FeedModel())
-    val data: LiveData<FeedModel> = appAuth
-        .authStateFlow.flatMapLatest {(myId,_) ->
-        repository.data.map{ posts->
-            FeedModel(posts.map { post ->
-                post.copy(ownedByMe = post.authorId==myId) },posts.isEmpty())
-        }
-    }.asLiveData(Dispatchers.Default)
+//    private val _data = MutableLiveData(FeedModel())
+//    val data: LiveData<FeedModel> = appAuth
+//        .authStateFlow.flatMapLatest {(myId,_) ->
+//        repository.data.map{ posts->
+//            FeedModel(posts.map { post ->
+//                post.copy(ownedByMe = post.authorId==myId) },posts.isEmpty())
+//        }
+//    }.asLiveData(Dispatchers.Default)
 
-    private val _dataState =MutableLiveData(FeedModelState())
+    private val _dataState = MutableLiveData(FeedModelState())
     val dataState: LiveData<FeedModelState>
         get() = _dataState
 
@@ -85,7 +85,7 @@ class PostViewModel @Inject constructor(
     fun loadPosts() = scope.launch {// корутина
         try {
             _dataState.value = FeedModelState(loading = true)
-            repository.getAll()
+//            repository.getAll()
             _dataState.value = FeedModelState()// обновляем MutableLiveData
         } catch (e: Exception) {
             _dataState.value = FeedModelState(error = true)
@@ -98,22 +98,24 @@ class PostViewModel @Inject constructor(
         scope.cancel()
     }
 
+    fun getPostById(id: Long): LiveData<Post?> = repository.getPostById(id)
 
-    fun findPost(id: Long): Post? {
-        return _data.value?.posts?.find {
-            it.id==id
-        }
-    }
+
+//    fun findPost(id: Long): Post? {
+//        return _data.value?.posts?.find {
+//            it.id==id
+//        }
+//    }
 
     private val _postCreated = SingleLiveEvent<Unit>()
     val postCreated: LiveData<Unit>
         get() = _postCreated
 
-    val newerCount: LiveData<Int> = data.switchMap {
-        val id=it.posts.firstOrNull()?.id ?: 0L
-        repository.getNewer(id)
-            .asLiveData(Dispatchers.Default)
-    }
+//    val newerCount: LiveData<Int> = data.switchMap {
+//        val id=it.posts.firstOrNull()?.id ?: 0L
+//        repository.getNewer(id)
+//            .asLiveData(Dispatchers.Default)
+//    }
 
 
     val edited = MutableLiveData(empty)
@@ -202,17 +204,17 @@ class PostViewModel @Inject constructor(
     }
 
 
-    fun edit(post: Post){
-        edited.value =post
+    fun edit(post: Post) {
+        edited.value = post
     }
 
-    fun  cancelEdit(){
-        edited.value =empty // сброс текста
+    fun cancelEdit() {
+        edited.value = empty // сброс текста
     }
 
-    fun refresh(){
-        loadPosts()
-    }
+//    fun refresh(){
+//        loadPosts()
+//    }
 
 
 }

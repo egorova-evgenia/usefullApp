@@ -1,6 +1,7 @@
 
 package ru.netology.myapp.dao
 
+import androidx.paging.PagingSource
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
@@ -12,9 +13,12 @@ import ru.netology.myapp.entity.PostEntity
 interface PostDao {
     @Query("SELECT * FROM PostEntity WHERE toShow=1 ORDER BY id DESC")
     fun getAll(): Flow<List<PostEntity>>
-    //условие на селектор WHERE toShow = 1
-//    @Query("SELECT * FROM PostEntity WHERE toShow=1 ORDER BY id DESC")
-//    fun getAll(): Flow<List<PostEntity>>
+
+    @Query("SELECT * FROM PostEntity WHERE id = :id")
+    fun getById(id: Long): Flow<PostEntity?>
+
+    @Query("SELECT * FROM PostEntity WHERE toShow=1 ORDER BY id DESC")
+    fun getPagingSource(): PagingSource<Int, PostEntity>
 
     @Query("SELECT COUNT(*) == 0 FROM PostEntity")
     suspend fun isEmpty(): Boolean
@@ -46,6 +50,10 @@ interface PostDao {
     """
     )
     suspend fun toShowAll()//true
+
     @Query("DELETE FROM PostEntity WHERE id = :id")
     suspend fun removeById(id: Long)
+
+    @Query("DELETE FROM PostEntity")
+    suspend fun clear()
 }

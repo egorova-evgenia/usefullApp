@@ -154,12 +154,12 @@ class FeedFragment : Fragment(
             }
         }
 
-        viewModel.newerCount.observe(viewLifecycleOwner){
-            println("Newer cout: $it")
-            if (it != 0) {
-                binding.showNewPost.visibility = View.VISIBLE
-            }
-        }
+//        viewModel.newerCount.observe(viewLifecycleOwner){
+//            println("Newer cout: $it")
+//            if (it != 0) {
+//                binding.showNewPost.visibility = View.VISIBLE
+//            }
+//        }
 
         binding.showNewPost.setOnClickListener {
             viewModel.changeHidden()

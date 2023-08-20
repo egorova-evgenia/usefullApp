@@ -1,8 +1,12 @@
 package ru.netology.myapp.repository
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.asLiveData
+import androidx.paging.ExperimentalPagingApi
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
+import androidx.paging.map
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -21,6 +25,8 @@ import ru.netology.myapp.appError.NetworkError
 import ru.netology.myapp.appError.UnknownError
 import ru.netology.myapp.auth.AppAuth
 import ru.netology.myapp.dao.PostDao
+import ru.netology.myapp.dao.PostRemoteKeyDao
+import ru.netology.myapp.db.AppDb
 import ru.netology.myapp.dto.Attachment
 import ru.netology.myapp.dto.AttachmentType
 import ru.netology.myapp.dto.Media
@@ -34,49 +40,67 @@ import javax.inject.Inject
 class PostRepositoryImp @Inject constructor(
     private val appAuth: AppAuth,
     private val postDao: PostDao,
-    private val apiService: ApiService, ):PostRepository {
-    override val data = postDao.getAll()
-        .map(List<PostEntity>::toDto)
-        .flowOn(Dispatchers.Default)
+    private val apiService: ApiService,
+    private val postRemoteKeyDao: PostRemoteKeyDao,
+    private val appDb: AppDb
+) : PostRepository {
+//    override val data = postDao.getAll()
+//        .map(List<PostEntity>::toDto)
+//        .flowOn(Dispatchers.Default)
+
+
+    @OptIn(ExperimentalPagingApi::class)
     override val dataToShow: Flow<PagingData<Post>> = Pager(
         config = PagingConfig(pageSize = 10, enablePlaceholders = false),
-        pagingSourceFactory = {
-            PostPagingSource(
-                apiService
-            )
+        pagingSourceFactory = { postDao.getPagingSource() },
+        remoteMediator = PostRemoteMediator(
+            service = apiService,
+            postDao = postDao,
+            postRemoteKeyDao = postRemoteKeyDao,
+            appDb = appDb
+        ),
+
+        ).flow
+        .map {
+            it.map { it.toDto() }
         }
-    ).flow
 
-    //page 26
-    override fun getNewer(id: Long): Flow<Int> =
-        flow {
-            while (true) {
-                try {
-                    delay(10_000L)
-                    val response = apiService.getNewer(id)
-                    val posts = response.body().orEmpty()
-                    emit(posts.size)
+//    override fun getNewer(id: Long): Flow<Int> =
+//        flow {
+//            while (true) {
+//                try {
+//                    delay(10_000L)
+//                    val response = apiService.getNewer(id)
+//                    val posts = response.body().orEmpty()
+//                    emit(posts.size)
+//
+//                        postDao.insert(posts.toEntity().map { it.copy(toShow = false) })
+//                    } catch (e: CancellationException) {
+//                        throw e
+//                    } catch (e: Exception) {
+//                        e.printStackTrace()
+//                    }
+//                }
+//            }
+//        .flowOn(Dispatchers.Default)
 
-                        postDao.insert(posts.toEntity().map { it.copy(toShow = false) })
-                    } catch (e: CancellationException) {
-                        throw e
-                    } catch (e: Exception) {
-                        e.printStackTrace()
-                    }
-                }
-            }
-        .flowOn(Dispatchers.Default)
+//    override suspend fun getAll() {
+//        val response = apiService.getAll()
+//        if (!response.isSuccessful) throw ApiError(response.code(), response.message())
+//        val body = response.body() ?: throw ApiError(response.code(), response.message())
+//        val bodyEntity: List<PostEntity> = body.toEntity()
+//            for (it in bodyEntity){
+//                it.toShow = true
+//            }
+//        postDao.insert(bodyEntity)
+//    }
 
-    override suspend fun getAll() {
-        val response = apiService.getAll()
-        if (!response.isSuccessful) throw ApiError(response.code(), response.message())
-        val body = response.body() ?: throw ApiError(response.code(), response.message())
-        val bodyEntity: List<PostEntity> = body.toEntity()
-            for (it in bodyEntity){
-                it.toShow = true
-            }
-        postDao.insert(bodyEntity)
-    }
+    override fun getPostById(id: Long): LiveData<Post?> =
+        postDao.getById(id).map {
+            it!!.toDto()
+        }.asLiveData()
+
+
     override suspend fun likeById(id: Long) {
         postDao.likeById(id)
         try {
