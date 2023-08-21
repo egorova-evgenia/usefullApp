@@ -133,10 +133,6 @@ class FeedFragment : Fragment(
             }
         })
 
-//        viewModel.data.observe(viewLifecycleOwner) {
-//            adapter.submitList(it.posts)
-//            binding.emptyText.isVisible = it.empty
-//        }
         lifecycleScope.launch {
             viewModel.dataToShow.collectLatest {
                 adapter.submitData(it)
@@ -169,8 +165,8 @@ class FeedFragment : Fragment(
         lifecycleScope.launch {
             adapter.loadStateFlow.collectLatest {
                 binding.swiprefresh.isRefreshing = it.refresh is LoadState.Loading
-                        || it.append is LoadState.Loading
-                        || it.prepend is LoadState.Loading
+//                        || it.append is LoadState.Loading
+//                        || it.prepend is LoadState.Loading
             }
         }
 

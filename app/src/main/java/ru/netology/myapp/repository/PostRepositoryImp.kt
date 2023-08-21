@@ -6,6 +6,7 @@ import androidx.paging.ExperimentalPagingApi
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
+import androidx.paging.insertSeparators
 import androidx.paging.map
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
@@ -27,8 +28,10 @@ import ru.netology.myapp.auth.AppAuth
 import ru.netology.myapp.dao.PostDao
 import ru.netology.myapp.dao.PostRemoteKeyDao
 import ru.netology.myapp.db.AppDb
+import ru.netology.myapp.dto.Ad
 import ru.netology.myapp.dto.Attachment
 import ru.netology.myapp.dto.AttachmentType
+import ru.netology.myapp.dto.FeedItem
 import ru.netology.myapp.dto.Media
 import ru.netology.myapp.entity.PostEntity
 import ru.netology.myapp.entity.toDto
@@ -36,6 +39,7 @@ import ru.netology.myapp.entity.toEntity
 import ru.netology.myapp.viewmodel.PhotoModel
 import java.io.IOException
 import javax.inject.Inject
+import kotlin.random.Random
 
 class PostRepositoryImp @Inject constructor(
     private val appAuth: AppAuth,
@@ -50,7 +54,7 @@ class PostRepositoryImp @Inject constructor(
 
 
     @OptIn(ExperimentalPagingApi::class)
-    override val dataToShow: Flow<PagingData<Post>> = Pager(
+    override val dataToShow: Flow<PagingData<FeedItem>> = Pager(
         config = PagingConfig(pageSize = 10, enablePlaceholders = false),
         pagingSourceFactory = { postDao.getPagingSource() },
         remoteMediator = PostRemoteMediator(
@@ -59,10 +63,16 @@ class PostRepositoryImp @Inject constructor(
             postRemoteKeyDao = postRemoteKeyDao,
             appDb = appDb
         ),
-
-        ).flow
+    ).flow
         .map {
             it.map { it.toDto() }
+                .insertSeparators { previous, _ ->
+                    if (previous?.id?.rem(5) == 0L) {
+                        Ad(Random.nextLong(), "figma.jpg")
+                    } else {
+                        null
+                    }
+                }
         }
 
 //    override fun getNewer(id: Long): Flow<Int> =
@@ -83,17 +93,6 @@ class PostRepositoryImp @Inject constructor(
 //                }
 //            }
 //        .flowOn(Dispatchers.Default)
-
-//    override suspend fun getAll() {
-//        val response = apiService.getAll()
-//        if (!response.isSuccessful) throw ApiError(response.code(), response.message())
-//        val body = response.body() ?: throw ApiError(response.code(), response.message())
-//        val bodyEntity: List<PostEntity> = body.toEntity()
-//            for (it in bodyEntity){
-//                it.toShow = true
-//            }
-//        postDao.insert(bodyEntity)
-//    }
 
     override fun getPostById(id: Long): LiveData<Post?> =
         postDao.getById(id).map {

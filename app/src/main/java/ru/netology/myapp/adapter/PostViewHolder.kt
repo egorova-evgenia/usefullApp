@@ -4,8 +4,12 @@ import android.widget.PopupMenu
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import ru.netology.myapp.BuildConfig
+import ru.netology.myapp.BuildConfig.BASE_URL
 import ru.netology.myapp.R
+import ru.netology.myapp.databinding.CardAdBinding
 import ru.netology.myapp.databinding.CardPostBinding
+import ru.netology.myapp.dto.Ad
 import ru.netology.myapp.dto.Post
 import ru.netology.myapp.numberToString
 
@@ -25,7 +29,6 @@ class PostViewHolder(
     }
 
     fun setAvatar(post: Post) {
-        val BASE_URL = "http://10.0.2.2:9999"
         val url = "$BASE_URL/avatars/${post.authorAvatar}"
         Glide.with(binding.avatar)
             .load(url)

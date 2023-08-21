@@ -22,5 +22,6 @@
     <string name="password">PASSWORD</string>
     <string name="ok">OK</string>
     <string name="noAccount">Еще нет аккаунта?</string>
+    <string name="ad_description">реклама</string>
 
 </resources>
