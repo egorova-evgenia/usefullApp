@@ -46,6 +46,19 @@ class PostRemoteMediator(
                 LoadType.APPEND -> {
                     val id = postRemoteKeyDao.min() ?: return MediatorResult.Success(false)
                     service.getAfter(id, state.config.pageSize)
+
+//                    val remoteKeys = getRemoteKeyForLastItem(state)
+//                    // If remoteKeys is null, that means the refresh result is not in the database yet.
+//                    // We can return Success with endOfPaginationReached = false because Paging
+//                    // will call this method again if RemoteKeys becomes non-null.
+//                    // If remoteKeys is NOT NULL but its nextKey is null, that means we've reached
+//                    // the end of pagination for append.
+//                    val nextKey = remoteKeys?.nextKey
+//                    if (nextKey == null) {
+//                        return MediatorResult.Success(endOfPaginationReached = remoteKeys != null)
+//                    }
+//                    nextKey
+
                 }
             }
             if (!result.isSuccessful) {
@@ -58,23 +71,34 @@ class PostRemoteMediator(
             )
 
             appDb.withTransaction {
-
                 when (loadType) {
                     LoadType.REFRESH -> {
 //                        postDao.clear() // затираем данные здесь
-// добавляем данные с новыми id
-                        postRemoteKeyDao.insert(
-                            listOf(
-                                PostRemoteKeyEntity(
-                                    PostRemoteKeyEntity.KeyType.AFTER,
-                                    body.first().id
-                                ),
-                                PostRemoteKeyEntity(
-                                    PostRemoteKeyEntity.KeyType.AFTER,
-                                    body.last().id
+                        //ключи как-то получили выше
+                        if (postDao.isEmpty()) {
+                            postRemoteKeyDao.insert(
+                                listOf(
+                                    PostRemoteKeyEntity(
+                                        type = PostRemoteKeyEntity.KeyType.AFTER,
+                                        key = body.first().id
+                                    ),
+                                    PostRemoteKeyEntity(
+                                        type = PostRemoteKeyEntity.KeyType.BEFORE,
+                                        key = body.last().id
+                                    )
                                 )
                             )
-                        )
+                        } else {
+// ели пуст, то работает как рефреш, если с данными, как препенд
+                            postRemoteKeyDao.insert(
+                                listOf(
+                                    PostRemoteKeyEntity(
+                                        type = PostRemoteKeyEntity.KeyType.AFTER,
+                                        key = body.first().id
+                                    ),
+                                )
+                            )
+                        }
                     }
 
                     LoadType.PREPEND -> {
