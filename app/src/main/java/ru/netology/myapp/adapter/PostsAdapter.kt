@@ -13,7 +13,7 @@ import ru.netology.myapp.R
 //import ru.netology.myapp.databinding.ActivityMainBinding
 import ru.netology.myapp.databinding.CardPostBinding
 import ru.netology.myapp.dto.Post
-import ru.netology.myapp.numberToString
+//import ru.netology.myapp.numberToString
 import java.util.Collections.emptyList
 
 class PostsAdapter(
