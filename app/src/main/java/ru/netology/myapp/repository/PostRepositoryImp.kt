@@ -6,13 +6,10 @@ import androidx.paging.ExperimentalPagingApi
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
+import androidx.paging.insertSeparators
 import androidx.paging.map
-import kotlinx.coroutines.CancellationException
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
+
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MultipartBody
@@ -26,17 +23,17 @@ import ru.netology.myapp.appError.UnknownError
 import ru.netology.myapp.auth.AppAuth
 import ru.netology.myapp.dao.PostDao
 import ru.netology.myapp.dao.PostRemoteKeyDao
-//import ru.netology.myapp.dao.PostRemoteKeyDao
 import ru.netology.myapp.db.AppDb
+import ru.netology.myapp.dto.Ad
 import ru.netology.myapp.dto.Attachment
 import ru.netology.myapp.dto.AttachmentType
+import ru.netology.myapp.dto.FeedItem
 import ru.netology.myapp.dto.Media
 import ru.netology.myapp.entity.PostEntity
-import ru.netology.myapp.entity.toDto
-import ru.netology.myapp.entity.toEntity
 import ru.netology.myapp.viewmodel.PhotoModel
 import java.io.IOException
 import javax.inject.Inject
+import kotlin.random.Random
 
 class PostRepositoryImp @Inject constructor(
     private val appAuth: AppAuth,
@@ -45,12 +42,9 @@ class PostRepositoryImp @Inject constructor(
     private val appDb: AppDb,
     private val postRemoteKeyDao: PostRemoteKeyDao,
 ) : PostRepository {
-//    override val data = postDao.getAll()
-//        .map(List<PostEntity>::toDto)
-//        .flowOn(Dispatchers.Default)
 
     @OptIn(ExperimentalPagingApi::class)
-    override val dataToShow: Flow<PagingData<Post>> = Pager(
+    override val dataToShow: Flow<PagingData<FeedItem>> = Pager(
         config = PagingConfig(pageSize = 10, enablePlaceholders = false),
         pagingSourceFactory = { postDao.getPagingSource() },
         remoteMediator = PostRemoteMediator(
@@ -62,6 +56,13 @@ class PostRepositoryImp @Inject constructor(
     ).flow
         .map {
             it.map(PostEntity::toDto)
+                .insertSeparators { previous, _ ->
+                    if (previous?.id?.rem(5) == 0L) {
+                        Ad(Random.nextLong(), "figma.jpg")
+                    } else {
+                        null
+                    }
+                }
         }
     override suspend fun likeById(id: Long) {
         postDao.likeById(id)

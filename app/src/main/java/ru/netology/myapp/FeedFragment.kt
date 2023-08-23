@@ -24,6 +24,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import ru.netology.myapp.adapter.PostEventListener
+import ru.netology.myapp.adapter.PostLoadingStateAdapter
 import ru.netology.myapp.adapter.PostsAdapter
 import ru.netology.myapp.auth.AppAuth
 import ru.netology.myapp.databinding.FragmentFeedBinding
@@ -34,7 +35,6 @@ import ru.netology.myapp.viewmodel.PostViewModel
 import javax.inject.Inject
 
 @AndroidEntryPoint
-
 class FeedFragment : Fragment(
 
 ) {
@@ -42,7 +42,6 @@ class FeedFragment : Fragment(
     @Inject
     lateinit var appAuth: AppAuth
 
-    @OptIn(ExperimentalCoroutinesApi::class)
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -115,8 +114,11 @@ class FeedFragment : Fragment(
             }
         )
 
-        binding.list.adapter=adapter
-        binding.plus.setOnClickListener{
+        binding.list.adapter = adapter.withLoadStateHeaderAndFooter(
+            header = PostLoadingStateAdapter { adapter.retry() },
+            footer = PostLoadingStateAdapter { adapter.retry() }
+        )
+        binding.plus.setOnClickListener {
             if (appAuth.authStateFlow.value.id != 0L) {
                 findNavController().navigate(R.id.action_feedFragment_to_editFragment)
             } else {
@@ -157,16 +159,16 @@ class FeedFragment : Fragment(
 //            }
 //        }
 
-        binding.showNewPost.setOnClickListener {
-            viewModel.changeHidden()
-            binding.showNewPost.visibility = View.GONE
-        }
+//        binding.showNewPost.setOnClickListener {
+//            viewModel.changeHidden()
+//            binding.showNewPost.visibility = View.GONE
+//        }
 
         lifecycleScope.launch {
             adapter.loadStateFlow.collectLatest {
                 binding.swiprefresh.isRefreshing = it.refresh is LoadState.Loading
-                        || it.append is LoadState.Loading
-                        || it.prepend is LoadState.Loading
+//                        || it.append is LoadState.Loading
+//                        || it.prepend is LoadState.Loading
             }
         }
 

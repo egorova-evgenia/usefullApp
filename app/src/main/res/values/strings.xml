@@ -22,5 +22,7 @@
     <string name="password">PASSWORD</string>
     <string name="ok">OK</string>
     <string name="noAccount">Еще нет аккаунта?</string>
+    <string name="ad">ad</string>
+    <string name="retry">Retry</string>
 
 </resources>

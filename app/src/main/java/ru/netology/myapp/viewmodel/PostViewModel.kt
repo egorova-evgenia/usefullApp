@@ -19,6 +19,7 @@ import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import ru.netology.myapp.auth.AppAuth
+import ru.netology.myapp.dto.FeedItem
 import ru.netology.myapp.dto.Post
 import ru.netology.myapp.eventsAndOther.SingleLiveEvent
 import ru.netology.myapp.repository.PostRepository
@@ -44,35 +45,22 @@ class PostViewModel @Inject constructor(
 ) : ViewModel() {
     private val scope = MainScope()//page 14
 
-    private val cached = repository.dataToShow.cachedIn(scope)
+//    private val cached = repository.dataToShow.cachedIn(scope)
 
-    val dataToShow: Flow<PagingData<Post>> = appAuth
+    val dataToShow: Flow<PagingData<FeedItem>> = appAuth
         .authStateFlow.flatMapLatest { (myId, _) ->
-//            repository.dataToShow
-//            как в презентации. кэшируем
-//            cached.map { posts ->
-//                posts.map { post ->
-//                    post.copy(ownedByMe = (post.authorId == myId))
-//                }
-//            }
-
-//
             repository.dataToShow.map { posts ->
                 posts.map { post ->
-                    post.copy(ownedByMe = (post.authorId == myId))
+                    if (post is Post) {
+                        post.copy(ownedByMe = (post.authorId == myId))
+                    } else {
+                        post
+                    }
                 }
             }
+        }
 
-        }.flowOn(Dispatchers.Default)
 
-//    private val _data = MutableLiveData(FeedModel())
-//    val data: LiveData<FeedModel> = appAuth
-//        .authStateFlow.flatMapLatest {(myId,_) ->
-//        repository.data.map{ posts->
-//            FeedModel(posts.map { post ->
-//                post.copy(ownedByMe = post.authorId==myId) },posts.isEmpty())
-//        }
-//    }.asLiveData(Dispatchers.Default)
 
     private val _dataState = MutableLiveData(FeedModelState())
     val dataState: LiveData<FeedModelState>
@@ -160,7 +148,6 @@ class PostViewModel @Inject constructor(
             } catch (e: Exception) {
                 _dataState.value = FeedModelState(error = true)
             }
-
         }
     }
 
@@ -202,7 +189,7 @@ class PostViewModel @Inject constructor(
     }
 
 
-    fun edit(post: Post){
+    fun edit(post: Post) {
         edited.value = post
     }
 
@@ -210,9 +197,9 @@ class PostViewModel @Inject constructor(
         edited.value = empty // сброс текста
     }
 
-    fun refresh() {
-        loadPosts()
-    }
+//    fun refresh() {
+//        loadPosts()
+//    }
 
     fun getPostById(id: Long): LiveData<Post?> = repository.getPostById(id)
 
