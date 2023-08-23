@@ -27,15 +27,12 @@ class PostRemoteMediator(
         state: PagingState<Int, PostEntity>
     ): MediatorResult {
         try {
-
-//            определяем, какие данные подгружать
             val result = when (loadType) {
                 LoadType.REFRESH -> {
                     if (postRemoteKeyDao.max() != null) {
                         service.getAfter(postRemoteKeyDao.max()!!, state.config.pageSize)
                     } else service.getLatest(state.config.pageSize)
                 }
-//                    service.getLatest(state.config.pageSize)
                 LoadType.PREPEND -> {
 //                    отмена загрузки
                     return MediatorResult.Success(false)
@@ -46,19 +43,6 @@ class PostRemoteMediator(
                 LoadType.APPEND -> {
                     val id = postRemoteKeyDao.min() ?: return MediatorResult.Success(false)
                     service.getAfter(id, state.config.pageSize)
-
-//                    val remoteKeys = getRemoteKeyForLastItem(state)
-//                    // If remoteKeys is null, that means the refresh result is not in the database yet.
-//                    // We can return Success with endOfPaginationReached = false because Paging
-//                    // will call this method again if RemoteKeys becomes non-null.
-//                    // If remoteKeys is NOT NULL but its nextKey is null, that means we've reached
-//                    // the end of pagination for append.
-//                    val nextKey = remoteKeys?.nextKey
-//                    if (nextKey == null) {
-//                        return MediatorResult.Success(endOfPaginationReached = remoteKeys != null)
-//                    }
-//                    nextKey
-
                 }
             }
             if (!result.isSuccessful) {
@@ -73,8 +57,6 @@ class PostRemoteMediator(
             appDb.withTransaction {
                 when (loadType) {
                     LoadType.REFRESH -> {
-//                        postDao.clear() // затираем данные здесь
-                        //ключи как-то получили выше
                         if (postDao.isEmpty()) {
                             postRemoteKeyDao.insert(
                                 listOf(
@@ -111,8 +93,6 @@ class PostRemoteMediator(
                     }
 
                     LoadType.APPEND -> {
-//                        APPEND работал в обычном режиме.
-//                        ничего не менять
                         postRemoteKeyDao.insert(
                             PostRemoteKeyEntity(
                                 PostRemoteKeyEntity.KeyType.BEFORE,
