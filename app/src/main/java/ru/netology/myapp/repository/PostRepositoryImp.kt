@@ -25,6 +25,7 @@ import ru.netology.myapp.appError.NetworkError
 import ru.netology.myapp.appError.UnknownError
 import ru.netology.myapp.auth.AppAuth
 import ru.netology.myapp.dao.PostDao
+import ru.netology.myapp.dao.PostRemoteKeyDao
 //import ru.netology.myapp.dao.PostRemoteKeyDao
 import ru.netology.myapp.db.AppDb
 import ru.netology.myapp.dto.Attachment
@@ -41,8 +42,8 @@ class PostRepositoryImp @Inject constructor(
     private val appAuth: AppAuth,
     private val postDao: PostDao,
     private val apiService: ApiService,
-//    appDb: AppDb,
-//    postRemoteKeyDao: PostRemoteKeyDao,
+    private val appDb: AppDb,
+    private val postRemoteKeyDao: PostRemoteKeyDao,
 ) : PostRepository {
 //    override val data = postDao.getAll()
 //        .map(List<PostEntity>::toDto)
@@ -53,44 +54,15 @@ class PostRepositoryImp @Inject constructor(
         config = PagingConfig(pageSize = 10, enablePlaceholders = false),
         pagingSourceFactory = { postDao.getPagingSource() },
         remoteMediator = PostRemoteMediator(
-            service = apiService, postDao = postDao
+            service = apiService,
+            postDao = postDao,
+            postRemoteKeyDao = postRemoteKeyDao,
+            appDb = appDb
         )
     ).flow
         .map {
             it.map(PostEntity::toDto)
         }
-
-
-    //page 26
-//    override fun getNewer(id: Long): Flow<Int> =
-//        flow {
-//            while (true) {
-//                try {
-//                    delay(10_000L)
-//                    val response = apiService.getNewer(id)
-//                    val posts = response.body().orEmpty()
-//                    emit(posts.size)
-//
-//                        postDao.insert(posts.toEntity().map { it.copy(toShow = false) })
-//                    } catch (e: CancellationException) {
-//                        throw e
-//                    } catch (e: Exception) {
-//                        e.printStackTrace()
-//                    }
-//                }
-//            }
-//        .flowOn(Dispatchers.Default)
-
-    //    override suspend fun getAll() {
-//        val response = apiService.getAll()
-//        if (!response.isSuccessful) throw ApiError(response.code(), response.message())
-//        val body = response.body() ?: throw ApiError(response.code(), response.message())
-//        val bodyEntity: List<PostEntity> = body.toEntity()
-//            for (it in bodyEntity){
-//                it.toShow = true
-//            }
-//        postDao.insert(bodyEntity)
-//    }
     override suspend fun likeById(id: Long) {
         postDao.likeById(id)
         try {
