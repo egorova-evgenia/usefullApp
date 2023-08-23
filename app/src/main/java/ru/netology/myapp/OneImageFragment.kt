@@ -30,19 +30,18 @@ class OneImageFragment : Fragment() {
 
         val postId = arguments?.textArg?.toLong()
 
-        if (postId!=null) {
-            viewModel.data.observe(viewLifecycleOwner) {
-                val post = it.posts.find { it.id == postId } ?: return@observe
-//                post.attachment?.
-                val BASE_URL ="http://10.0.2.2:9999"
-                val url="$BASE_URL/media/${post.attachment?.url}"
-                Glide.with(binding.oneImage)
-                    .load(url)
-                    .error(R.drawable.baseline_font_download_off_24)
-                    .timeout(10_000)
-                    .into(binding.oneImage)
-            }
+        if (postId != null) {
+            val dataPost = viewModel.getPostById(postId)
+            val post = dataPost.value
+            val BASE_URL = "http://10.0.2.2:9999"
+            val url = "$BASE_URL/media/${post!!.attachment?.url}"
+            Glide.with(binding.oneImage)
+                .load(url)
+                .error(R.drawable.baseline_font_download_off_24)
+                .timeout(10_000)
+                .into(binding.oneImage)
         }
+
         return binding.root
     }
 }

@@ -87,4 +87,5 @@ dependencies {
     implementation "com.google.dagger:hilt-android:$hilt_version"
     kapt "com.google.dagger:hilt-compiler:$hilt_version"
     implementation "androidx.paging:paging-runtime-ktx:3.2.0"
+    implementation "androidx.room:room-paging:2.5.2"
 }

@@ -35,72 +35,72 @@ class OnePostFragment : Fragment() {
         println(postId)
 
         if (postId!=null) {
-
-            viewModel.data.observe(viewLifecycleOwner) {
-                val post = it.posts.find { it.id == postId } ?: return@observe
-                binding.buttonLikes.text = numberToString(post.likes)
-                binding.apply {
-
-                    content.text = post.content
-                    autor.text = post.author
-                    published.text = post.published.toString()
-
-                    imageViewed.text = numberToString(0)
-
-                    buttonLikes.isChecked = post.likedByMe
-                    buttonLikes.text = numberToString(post.likes)
-                    buttonShare.text = numberToString(2)
-
-                    buttonLikes.setOnClickListener {
-                        viewModel.run {
-                            if (post.likedByMe) {
-                                viewModel.disLikeById(post.id)
-                            } else {
-                                viewModel.likeById(post.id)
-                            }
-                        }
-                    }
-
-                    buttonShare.setOnClickListener {
-                        val intent = Intent()
-                            .setAction(Intent.ACTION_SEND)
-                            .setType("text/plain")
-                        val createChooser = Intent.createChooser(intent, "Choose app")
-                        startActivity(createChooser)
-                        viewModel.shareById(post.id)
-                    }
-
-                    menu.setOnClickListener {
-                        PopupMenu(it.context, it).apply {
-                            inflate(R.menu.post_menu)
-                            setOnMenuItemClickListener { menuItem ->
-                                when (menuItem.itemId) {
-                                    R.id.remove -> {
-                                        viewModel.removeById(post.id)
-                                        findNavController().navigateUp()
-
-                                        //                                        R.id.action_onePostFragment_to_FeedFragment)
-                                        return@setOnMenuItemClickListener true
-                                    }
-
-                                    R.id.edit -> {
-                                        findNavController().navigate(
-                                            R.id.action_onePostFragment_to_editFragment,
-                                            Bundle().apply
-                                            { textArg = post.content }
-                                        )
-                                        viewModel.edit(post)
-                                        return@setOnMenuItemClickListener true
-                                    }
-                                }
-                                false
-                            }
-
-                            show()
-                        }
-                    }
-                }
-            }
+//
+//            viewModel.data.observe(viewLifecycleOwner) {
+//                val post = it.posts.find { it.id == postId } ?: return@observe
+//                binding.buttonLikes.text = numberToString(post.likes)
+//                binding.apply {
+//
+//                    content.text = post.content
+//                    autor.text = post.author
+//                    published.text = post.published.toString()
+//
+//                    imageViewed.text = numberToString(0)
+//
+//                    buttonLikes.isChecked = post.likedByMe
+//                    buttonLikes.text = numberToString(post.likes)
+//                    buttonShare.text = numberToString(2)
+//
+//                    buttonLikes.setOnClickListener {
+//                        viewModel.run {
+//                            if (post.likedByMe) {
+//                                viewModel.disLikeById(post.id)
+//                            } else {
+//                                viewModel.likeById(post.id)
+//                            }
+//                        }
+//                    }
+//
+//                    buttonShare.setOnClickListener {
+//                        val intent = Intent()
+//                            .setAction(Intent.ACTION_SEND)
+//                            .setType("text/plain")
+//                        val createChooser = Intent.createChooser(intent, "Choose app")
+//                        startActivity(createChooser)
+//                        viewModel.shareById(post.id)
+//                    }
+//
+//                    menu.setOnClickListener {
+//                        PopupMenu(it.context, it).apply {
+//                            inflate(R.menu.post_menu)
+//                            setOnMenuItemClickListener { menuItem ->
+//                                when (menuItem.itemId) {
+//                                    R.id.remove -> {
+//                                        viewModel.removeById(post.id)
+//                                        findNavController().navigateUp()
+//
+//                                        //                                        R.id.action_onePostFragment_to_FeedFragment)
+//                                        return@setOnMenuItemClickListener true
+//                                    }
+//
+//                                    R.id.edit -> {
+//                                        findNavController().navigate(
+//                                            R.id.action_onePostFragment_to_editFragment,
+//                                            Bundle().apply
+//                                            { textArg = post.content }
+//                                        )
+//                                        viewModel.edit(post)
+//                                        return@setOnMenuItemClickListener true
+//                                    }
+//                                }
+//                                false
+//                            }
+//
+//                            show()
+//                        }
+//                    }
+//                }
+//            }
         }
         return binding.root
     }

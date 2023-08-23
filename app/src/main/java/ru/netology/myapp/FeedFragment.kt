@@ -133,10 +133,6 @@ class FeedFragment : Fragment(
             }
         })
 
-//        viewModel.data.observe(viewLifecycleOwner) {
-//            adapter.submitList(it.posts)
-//            binding.emptyText.isVisible = it.empty
-//        }
         lifecycleScope.launch {
             viewModel.dataToShow.collectLatest {
                 adapter.submitData(it)
@@ -154,12 +150,12 @@ class FeedFragment : Fragment(
             }
         }
 
-        viewModel.newerCount.observe(viewLifecycleOwner){
-            println("Newer cout: $it")
-            if (it != 0) {
-                binding.showNewPost.visibility = View.VISIBLE
-            }
-        }
+//        viewModel.newerCount.observe(viewLifecycleOwner){
+//            println("Newer cout: $it")
+//            if (it != 0) {
+//                binding.showNewPost.visibility = View.VISIBLE
+//            }
+//        }
 
         binding.showNewPost.setOnClickListener {
             viewModel.changeHidden()

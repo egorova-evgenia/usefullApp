@@ -7,7 +7,7 @@ import com.bumptech.glide.Glide
 import ru.netology.myapp.R
 import ru.netology.myapp.databinding.CardPostBinding
 import ru.netology.myapp.dto.Post
-import ru.netology.myapp.numberToString
+//import ru.netology.myapp.numberToString
 
 class PostViewHolder(
     val binding: CardPostBinding,
@@ -47,7 +47,7 @@ class PostViewHolder(
             imageViewed.text = 1.toString()
 
             buttonLikes.isChecked = post.likedByMe
-            buttonLikes.text = numberToString(post.likes)
+            buttonLikes.text = post.likes.toString()
             buttonShare.text = 2.toString()
 
             buttonLikes.setOnClickListener {
