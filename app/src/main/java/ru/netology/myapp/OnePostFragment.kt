@@ -44,18 +44,18 @@ class OnePostFragment : Fragment() {
 //                val post = it.post.find { it.id == postId } ?: return@observe
                 val post = dataPost.value
 
-                binding.buttonLikes.text = numberToString(post!!.likes)
+                binding.buttonLikes.text = post!!.likes.toString()
                 binding.apply {
 
                     content.text = post.content
                     autor.text = post.author
                     published.text = post.published.toString()
 
-                    imageViewed.text = numberToString(0)
+                    imageViewed.text = "1"
 
                     buttonLikes.isChecked = post.likedByMe
-                    buttonLikes.text = numberToString(post.likes)
-                    buttonShare.text = numberToString(2)
+                    buttonLikes.text = post.likes.toString()
+                    buttonShare.text = "0"
 
                     buttonLikes.setOnClickListener {
                         viewModel.run {

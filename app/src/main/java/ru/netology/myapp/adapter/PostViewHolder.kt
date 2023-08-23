@@ -4,17 +4,19 @@ import android.widget.PopupMenu
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import ru.netology.myapp.BuildConfig.BASE_URL
 import ru.netology.myapp.R
 import ru.netology.myapp.databinding.CardPostBinding
 import ru.netology.myapp.dto.Post
-import ru.netology.myapp.numberToString
+
+//import ru.netology.myapp.numberToString
 
 class PostViewHolder(
     val binding: CardPostBinding,
     val listener: PostEventListener
 ) : RecyclerView.ViewHolder(binding.root) {
     fun attach(post: Post) {
-        val BASE_URL = "http://10.0.2.2:9999"
+//        val BASE_URL = "http://10.0.2.2:9999"
         val url = "$BASE_URL/media/${post.attachment?.url}"
         Glide.with(binding.attachImage)
             .load(url)
@@ -47,7 +49,7 @@ class PostViewHolder(
             imageViewed.text = 1.toString()
 
             buttonLikes.isChecked = post.likedByMe
-            buttonLikes.text = numberToString(post.likes)
+            buttonLikes.text = post.likes.toString()
             buttonShare.text = 2.toString()
 
             buttonLikes.setOnClickListener {
