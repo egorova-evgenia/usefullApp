@@ -39,7 +39,7 @@ class PostRemoteMediator(
 
                 LoadType.APPEND -> {
                     val id = postRemoteKeyDao.min() ?: return MediatorResult.Success(false)
-                    service.getAfter(id, state.config.pageSize)
+                    service.getBefore(id, state.config.pageSize)
                 }
             }
             if (!result.isSuccessful) {
@@ -48,6 +48,8 @@ class PostRemoteMediator(
 
             val body = result.body() ?: throw ApiError(result.code(), result.message())
 //            запись в базу данных
+
+            if (body.isEmpty()) return MediatorResult.Success(false)
 
             appDb.withTransaction {
                 when (loadType) {
