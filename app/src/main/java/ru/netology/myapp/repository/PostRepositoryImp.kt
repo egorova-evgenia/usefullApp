@@ -30,7 +30,7 @@ import ru.netology.myapp.dto.AttachmentType
 import ru.netology.myapp.dto.FeedItem
 import ru.netology.myapp.dto.Media
 import ru.netology.myapp.entity.PostEntity
-import ru.netology.myapp.viewmodel.PhotoModel
+import ru.netology.myapp.viewmodel.AttachmentModel
 import java.io.IOException
 import javax.inject.Inject
 import kotlin.random.Random
@@ -57,14 +57,15 @@ class PostRepositoryImp @Inject constructor(
         .map {
             it.map(PostEntity::toDto)
                 .insertSeparators { previous, _ ->
-                    if (previous?.id?.rem(5) == 0L) {
-                        Ad(Random.nextLong(), "figma.jpg")
+                    if (previous?.id?.rem(5) == 0) {
+                        Ad(Random.nextInt(), "figma.jpg")
                     } else {
                         null
                     }
                 }
         }
-    override suspend fun likeById(id: Long) {
+
+    override suspend fun likeById(id: Int) {
         postDao.likeById(id)
         try {
             val response = apiService.likeById(id)
@@ -74,14 +75,14 @@ class PostRepositoryImp @Inject constructor(
             val body = response.body() ?: throw ApiError(response.code(), response.message())
             postDao.insert(PostEntity.fromDto(body))//один
 
-        }catch (e: IOException) {
+        } catch (e: IOException) {
             throw NetworkError
         } catch (e: Exception) {
             throw UnknownError
         }
     }
 
-    override suspend fun disLikeById(id: Long) {
+    override suspend fun disLikeById(id: Int) {
         postDao.likeById(id)
         try {
             val response = apiService.dislikeById(id)
@@ -91,14 +92,15 @@ class PostRepositoryImp @Inject constructor(
             val body = response.body() ?: throw ApiError(response.code(), response.message())
             postDao.insert(PostEntity.fromDto(body))//один
 
-        }catch (e: IOException) {
+        } catch (e: IOException) {
             throw NetworkError
         } catch (e: Exception) {
             throw UnknownError
         }
 
     }
-    override suspend fun removeById(id: Long) {
+
+    override suspend fun removeById(id: Int) {
         postDao.removeById(id)
         try {
             val response = apiService.removeById(id)
@@ -112,7 +114,7 @@ class PostRepositoryImp @Inject constructor(
         }
     }
 
-    override fun getPostById(id: Long): LiveData<Post?> =
+    override fun getPostById(id: Int): LiveData<Post?> =
         postDao.getById(id).map {
             it!!.toDto()
         }.asLiveData()
@@ -133,12 +135,17 @@ class PostRepositoryImp @Inject constructor(
         }
     }
 
-    override suspend fun saveWithAttachment(post: Post, photo: PhotoModel) {
+    override suspend fun saveWithAttachment(
+        post: Post,
+        attachItem: AttachmentModel,
+        attachType: AttachmentType?
+    ) {
         try {
-            val media = upload(photo)
-            val response =  apiService.save(
+            val media = upload(attachItem)
+            val response = apiService.save(
                 post.copy(
-                    attachment = Attachment(media.id, "фото",AttachmentType.IMAGE)
+//                    todo что делать с этими !!
+                    attachment = Attachment(media.id, attachType!!)
                 )
             )
             if (!response.isSuccessful) {
@@ -153,15 +160,15 @@ class PostRepositoryImp @Inject constructor(
         }
     }
 
-    private suspend fun upload(photo: PhotoModel): Media {
+    private suspend fun upload(attachItem: AttachmentModel): Media {
         try {
-            val media = photo.file?.let {
+            val media = attachItem.file?.let {
                 MultipartBody.Part.createFormData(
-                    "file", photo.file.name, it.asRequestBody()
+                    "file", attachItem.file.name, it.asRequestBody()
                 )
             }
             val response = media?.let { apiService.uploadPhoto(it) }
-            if (!response?.isSuccessful!!){
+            if (!response?.isSuccessful!!) {
                 throw ApiError(response.code(), response.message())
             }
             return response.body() ?: throw ApiError(response.code(), response.message())
@@ -173,7 +180,7 @@ class PostRepositoryImp @Inject constructor(
         }
     }
     override suspend fun changeHidden() {
-        postDao.toShowAll()
+//        postDao.toShowAll()
     }
 
     override suspend fun updateUser(login: String, password: String) {
@@ -220,7 +227,7 @@ class PostRepositoryImp @Inject constructor(
         login: String,
         password: String,
         name: String,
-        photo: PhotoModel
+        photo: AttachmentModel
     ) {
         val media = photo.file?.let {
             MultipartBody.Part.createFormData(

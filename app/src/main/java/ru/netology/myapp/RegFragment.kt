@@ -10,11 +10,11 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.net.toFile
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.github.dhaval2404.imagepicker.ImagePicker
 import ru.netology.myapp.databinding.FragmentRegBinding
-import ru.netology.myapp.viewmodel.PhotoModel
+import ru.netology.myapp.dto.AttachmentType
+import ru.netology.myapp.viewmodel.AttachmentModel
 import ru.netology.myapp.viewmodel.RegViewModel
 
 class RegFragment: Fragment() {
@@ -53,8 +53,9 @@ class RegFragment: Fragment() {
                 }
                 Activity.RESULT_OK -> {
                     val uri = it.data?.data ?: return@registerForActivityResult
-                    val file =uri.toFile()
-                    viewModel.changePhoto(PhotoModel(uri, file) )
+                    val file = uri.toFile()
+                    val type = AttachmentType.IMAGE
+                    viewModel.changePhoto(AttachmentModel(uri, file, type))
                 }
             }
         }

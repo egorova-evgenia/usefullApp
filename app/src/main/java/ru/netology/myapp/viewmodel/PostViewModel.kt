@@ -3,15 +3,9 @@ package ru.netology.myapp.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.asLiveData
-import androidx.lifecycle.switchMap
 import androidx.paging.PagingData
-import androidx.paging.cachedIn
 import androidx.paging.map
- import dagger.hilt.android.AndroidEntryPoint
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.*
@@ -25,16 +19,24 @@ import ru.netology.myapp.eventsAndOther.SingleLiveEvent
 import ru.netology.myapp.repository.PostRepository
 import javax.inject.Inject
 
-val newPostId=0L
+val newPostId = 0
 val empty = Post(
     newPostId,
+    0,
     "Mary",
     "  ",
     " ",
-    1,
+    "1",
+    "",
+    null,
+    null,
+    null,
+    null,
     false,
-    0,
-    authorId = 0L
+    false,
+    null,
+    false,
+    null,
 )
 
 //@AndroidEntryPoint
@@ -70,7 +72,7 @@ class PostViewModel @Inject constructor(
         loadPosts()
     }
 
-    fun loadPosts() = scope.launch {// корутина
+    fun loadPosts() = scope.launch {
         try {
             _dataState.value = FeedModelState(loading = true)
 //            repository.getAll()
@@ -106,7 +108,7 @@ class PostViewModel @Inject constructor(
 
     val edited = MutableLiveData(empty)
 
-    fun likeById(id: Long) {
+    fun likeById(id: Int) {
         scope.launch {
             try {
                 repository.likeById(id)
@@ -117,7 +119,7 @@ class PostViewModel @Inject constructor(
         }
     }
 
-    fun disLikeById(id: Long) {
+    fun disLikeById(id: Int) {
         scope.launch {
             try {
                 repository.disLikeById(id)
@@ -127,9 +129,11 @@ class PostViewModel @Inject constructor(
             }
         }
     }
-        fun shareById(id: Long) {
+
+    fun shareById(id: Int) {
     }
-    fun removeById(id: Long) {
+
+    fun removeById(id: Int) {
         scope.launch {
             try {
                 repository.removeById(id)
@@ -153,18 +157,20 @@ class PostViewModel @Inject constructor(
 
     fun editContent(content: String) {
         edited.value?.let {
-        val trimmed = content.trim()
-        if (trimmed==it.content){
-            return}
-        edited.value=it.copy(content=trimmed)
+            val trimmed = content.trim()
+            if (trimmed == it.content) {
+                return
+            }
+            edited.value = it.copy(content = trimmed)
         }
     }
 
-    private val _photoState = MutableLiveData<PhotoModel?>()
-    val photoState: LiveData<PhotoModel?>
-        get()=_photoState
-    fun changePhoto(photoModel: PhotoModel?) {
-        _photoState.value=photoModel
+    private val _photoState = MutableLiveData<AttachmentModel?>()
+    val photoState: LiveData<AttachmentModel?>
+        get() = _photoState
+
+    fun changePhoto(photoModel: AttachmentModel?) {
+        _photoState.value = photoModel
     }
 
     fun save() {
@@ -174,8 +180,13 @@ class PostViewModel @Inject constructor(
                 try {
                     when(_photoState.value) {
                         null -> repository.save(post)
-                        else -> _photoState.value?.file.let{file ->
-                            repository.saveWithAttachment(post, _photoState.value!!)}
+                        else -> _photoState.value?.file.let { file ->
+                            repository.saveWithAttachment(
+                                post,
+                                _photoState.value!!,
+                                _photoState.value?.type
+                            )
+                        }
 
                     }
                     _dataState.value = FeedModelState()
@@ -201,7 +212,7 @@ class PostViewModel @Inject constructor(
 //        loadPosts()
 //    }
 
-    fun getPostById(id: Long): LiveData<Post?> = repository.getPostById(id)
+    fun getPostById(id: Int): LiveData<Post?> = repository.getPostById(id)
 
 
 }

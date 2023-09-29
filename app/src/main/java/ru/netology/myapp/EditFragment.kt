@@ -15,12 +15,11 @@ import androidx.core.view.MenuProvider
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.github.dhaval2404.imagepicker.ImagePicker
 import ru.netology.myapp.databinding.FragmentEditBinding
-import ru.netology.myapp.repository.utils.AndroidUtils
-import ru.netology.myapp.viewmodel.PhotoModel
+import ru.netology.myapp.dto.AttachmentType
+import ru.netology.myapp.viewmodel.AttachmentModel
 import ru.netology.myapp.viewmodel.PostViewModel
 
 class EditFragment : Fragment() {
@@ -51,8 +50,9 @@ class EditFragment : Fragment() {
                 }
                 Activity.RESULT_OK -> {
                     val uri = it.data?.data ?: return@registerForActivityResult
-                    val file =uri.toFile()
-                    viewModel.changePhoto(PhotoModel(uri, file) )
+                    val file = uri.toFile()
+                    val type = AttachmentType.IMAGE
+                    viewModel.changePhoto(AttachmentModel(uri, file, type))
                 }
             }
         }
@@ -110,11 +110,12 @@ class EditFragment : Fragment() {
         }
 
         viewModel.photoState.observe(viewLifecycleOwner){
-            if (it == null){
-                binding.photoContainer.isVisible=false
-                return@observe}
-            binding.photoContainer.isVisible=true
-            binding.preview.setImageURI(it.uri)
+            if (it == null) {
+                binding.attachmentContainer.isVisible = false
+                return@observe
+            }
+            binding.attachmentContainer.isVisible = true
+            binding.photoPreview.setImageURI(it.uri)
         }
 
         binding.removePhoto.setOnClickListener {

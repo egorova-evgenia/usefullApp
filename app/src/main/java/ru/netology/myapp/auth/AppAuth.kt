@@ -2,7 +2,6 @@ package ru.netology.myapp.auth
 
 import android.content.Context
 import androidx.core.content.edit
-import com.google.firebase.messaging.FirebaseMessaging
 import dagger.hilt.EntryPoint
 import dagger.hilt.InstallIn
 import dagger.hilt.android.EntryPointAccessors
@@ -13,9 +12,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.tasks.await
 import ru.netology.myapp.ServerService.ApiService
-import ru.netology.myapp.service.PushToken
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -31,12 +28,12 @@ class AppAuth @Inject constructor(
     val authStateFlow = _authStateFlow.asStateFlow()
 
     init {
-        var id: Long = 0L
+        var id: Int = 0
         var token: String? = null
         token = prefs.getString(tokenKey, null)
-        id = prefs.getLong(idKey, 0L)
+        id = prefs.getInt(idKey, 0)
 
-        if (id == 0L || token == null) {
+        if (id == 0 || token == null) {
             _authStateFlow.value = AuthState()
             prefs.edit {
                 clear()
@@ -57,10 +54,10 @@ class AppAuth @Inject constructor(
     }
 
     @Synchronized
-    fun setAuth(id: Long, token: String) {
+    fun setAuth(id: Int, token: String) {
         _authStateFlow.value = AuthState(id = id, token = token)
         prefs.edit {
-            putLong(idKey, id)
+            putInt(idKey, id)
             putString(tokenKey, token)
         }
         sendPushToken()
@@ -74,14 +71,14 @@ class AppAuth @Inject constructor(
     }
     fun sendPushToken(token: String? = null) {
         CoroutineScope(Dispatchers.IO).launch {
-            try {
-                val pushToken = PushToken(token ?: FirebaseMessaging.getInstance().token.await())
-                val entryPoint =
-                    EntryPointAccessors.fromApplication(context, AppAuthEntryPoint::class.java)
-                getApiService(context).saveToken(pushToken)
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
+//            try {
+//                val pushToken = PushToken(token ?: FirebaseMessaging.getInstance().token.await())
+//                val entryPoint =
+//                    EntryPointAccessors.fromApplication(context, AppAuthEntryPoint::class.java)
+//                getApiService(context).saveToken(pushToken)
+//            } catch (e: Exception) {
+//                e.printStackTrace()
+//            }
         }
     }
 
@@ -92,4 +89,4 @@ class AppAuth @Inject constructor(
     }
 }
 
-data class AuthState(val id: Long = 0, val token: String? = null)
+data class AuthState(val id: Int = 0, val token: String? = null)

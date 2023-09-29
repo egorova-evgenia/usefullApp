@@ -40,27 +40,81 @@
                 />
 
             <FrameLayout
-                android:id="@+id/photoContainer"
+                android:id="@+id/attachmentContainer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:visibility="gone"
-                tools:visibility="visible"
-                >
+                tools:visibility="visible">
 
                 <ImageView
-                    android:id="@+id/preview"
+                    android:id="@+id/photoPreview"
                     android:adjustViewBounds="true"
                     tools:srcCompat="@tools:sample/avatars[5]"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content"
+                    android:visibility="gone" />
+
+                <!--                <ImageView-->
+                <!--                    android:id="@+id/videoPreview"-->
+                <!--                    android:layout_width="match_parent"-->
+                <!--                    android:layout_height="250dp"-->
+                <!--                    android:scaleType="centerCrop"-->
+                <!--                    app:layout_constraintEnd_toEndOf="parent"-->
+                <!--                    app:layout_constraintStart_toStartOf="parent"-->
+                <!--                    app:layout_constraintTop_toBottomOf="@id/url"-->
+                <!--                    tools:src="@tools:sample/backgrounds/scenic" />-->
+
+
+                <!--                <TextView-->
+                <!--                    android:id="@+id/title"-->
+                <!--                    android:layout_width="wrap_content"-->
+                <!--                    android:layout_height="wrap_content"-->
+                <!--                    android:textColor="#FF37332D"-->
+                <!--                    android:text="Песня"-->
+                <!--                    app:layout_constraintStart_toStartOf="parent"-->
+                <!--                    app:layout_constraintTop_toTopOf="parent"-->
+                <!--                    android:textSize="40sp"-->
+                <!--                    android:singleLine="true"-->
+                <!--                    android:ellipsize="end"-->
+                <!--                    tools:text="песня"-->
+                <!--                    />-->
+
+                <!--                <ImageView-->
+                <!--                    android:id="@+id/playOrPause"-->
+                <!--                    android:layout_width="wrap_content"-->
+                <!--                    android:layout_height="wrap_content"-->
+                <!--                    android:contentDescription="play or pause"-->
+                <!--                    app:layout_constraintTop_toTopOf="parent"-->
+                <!--                    app:layout_constraintEnd_toEndOf="parent"-->
+                <!--                    android:background="@android:color/transparent"-->
+                <!--                    android:src="@drawable/play_48"-->
+                <!--                    />-->
+
+                <!--                <ImageButton-->
+                <!--                    android:id="@+id/play"-->
+                <!--                    android:layout_width="60dp"-->
+                <!--                    android:layout_height="60dp"-->
+                <!--                    android:backgroundTint="@android:color/transparent"-->
+                <!--                    android:src="@drawable/baseline_play_circle_60"-->
+                <!--                    app:layout_constraintBottom_toBottomOf="@id/video"-->
+                <!--                    app:layout_constraintEnd_toEndOf="@id/video"-->
+                <!--                    app:layout_constraintStart_toStartOf="@id/video"-->
+                <!--                    app:layout_constraintTop_toTopOf="@id/video" />-->
+
+                <!--                <androidx.constraintlayout.widget.Group-->
+                <!--                    android:id="@+id/videoGroup"-->
+                <!--                    android:layout_width="wrap_content"-->
+                <!--                    android:layout_height="wrap_content"-->
+                <!--                    app:constraint_referenced_ids="video, play"-->
+                <!--                    android:visibility="visible"-->
+                <!--                    />-->
 
                 <Button
                     android:id="@+id/removePhoto"
                     android:text="DELETE"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="bottom|center"
-                    />
+                    android:layout_gravity="bottom|center" />
 
             </FrameLayout>
 
@@ -128,6 +182,24 @@
             android:padding="8dp"
             app:srcCompat="@drawable/photo_library"
             android:background="?selectableItemBackground"
+            app:tint="@color/white" />
+
+        <ImageView
+            android:id="@+id/addVideo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="?selectableItemBackground"
+            android:padding="8dp"
+            app:srcCompat="@drawable/baseline_video_call_24"
+            app:tint="@color/white" />
+
+        <ImageView
+            android:id="@+id/addAudio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="?selectableItemBackground"
+            android:padding="8dp"
+            app:srcCompat="@drawable/baseline_library_music_24"
             app:tint="@color/white" />
     </LinearLayout>
 

@@ -31,17 +31,17 @@ class OnePostFragment : Fragment() {
             false
         )
         val viewModel: PostViewModel by activityViewModels()
-        val postId = arguments?.textArg?.toLong()
-        println(postId)
+        val postId = arguments?.textArg?.toInt()
 
         if (postId!=null) {
-//
-//            viewModel.data.observe(viewLifecycleOwner) {
-//                val post = it.posts.find { it.id == postId } ?: return@observe
+            val dataPost = viewModel.getPostById(postId)
+
+            dataPost.observe(viewLifecycleOwner) {
+                val post = dataPost.value
 //                binding.buttonLikes.text = numberToString(post.likes)
-//                binding.apply {
+                binding.apply {
 //
-//                    content.text = post.content
+                    content.text = post!!.content
 //                    autor.text = post.author
 //                    published.text = post.published.toString()
 //
@@ -89,7 +89,9 @@ class OnePostFragment : Fragment() {
 //                                            Bundle().apply
 //                                            { textArg = post.content }
 //                                        )
-//                                        viewModel.edit(post)
+//                                        if (post != null) {
+//                                            viewModel.edit(post)
+//                                        }
 //                                        return@setOnMenuItemClickListener true
 //                                    }
 //                                }
@@ -99,8 +101,8 @@ class OnePostFragment : Fragment() {
 //                            show()
 //                        }
 //                    }
-//                }
-//            }
+                }
+            }
         }
         return binding.root
     }

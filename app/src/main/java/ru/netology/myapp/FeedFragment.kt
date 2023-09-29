@@ -119,7 +119,7 @@ class FeedFragment : Fragment(
             footer = PostLoadingStateAdapter { adapter.retry() }
         )
         binding.plus.setOnClickListener {
-            if (appAuth.authStateFlow.value.id != 0L) {
+            if (appAuth.authStateFlow.value.id != 0) {
                 findNavController().navigate(R.id.action_feedFragment_to_editFragment)
             } else {
                 findNavController().navigate(R.id.action_feedFragment_to_AuthDialog)

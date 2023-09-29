@@ -11,6 +11,6 @@ class AuthViewModel @Inject constructor(
 ): ViewModel() {
     val state = appAuth.authStateFlow.asLiveData()
     val authorized : Boolean
-        get() = appAuth.authStateFlow.value.id != 0L
+        get() = appAuth.authStateFlow.value.id != 0
 }
 

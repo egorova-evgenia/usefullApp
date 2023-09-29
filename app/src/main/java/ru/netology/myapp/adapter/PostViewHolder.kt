@@ -47,7 +47,8 @@ class PostViewHolder(
             imageViewed.text = 1.toString()
 
             buttonLikes.isChecked = post.likedByMe
-            buttonLikes.text = post.likes.toString()
+//          todo  buttonLikes.text = post.likes.toString()
+            buttonLikes.text = 0.toString()
             buttonShare.text = 2.toString()
 
             buttonLikes.setOnClickListener {

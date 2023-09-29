@@ -42,9 +42,11 @@ class FCMService : FirebaseMessagingService() {
         val content=msg.content
         val myId = appAuth.authStateFlow.value.id
         when(recipientId) {
-            null -> println ("массовая рассылка:  " + message.data["content"])
-            myId -> println ("персональное сообщение:  " + content)
-            else -> {appAuth.sendPushToken()}
+            null -> println("массовая рассылка:  " + message.data["content"])
+            myId.toLong() -> println("персональное сообщение:  " + content)
+            else -> {
+                appAuth.sendPushToken()
+            }
         }
     }
 

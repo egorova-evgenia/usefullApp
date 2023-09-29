@@ -28,12 +28,11 @@ class OneImageFragment : Fragment() {
 
         val viewModel: PostViewModel by activityViewModels()
 
-        val postId = arguments?.textArg?.toLong()
+        val postId = arguments?.textArg?.toInt()
 
         if (postId != null) {
             val dataPost = viewModel.getPostById(postId)
             val post = dataPost.value
-//            val BASE_URL = "http://10.0.2.2:9999"
             val url = "$BASE_URL/media/${post!!.attachment?.url}"
             Glide.with(binding.oneImage)
                 .load(url)

@@ -35,14 +35,19 @@ class SignInFragment  : Fragment() {
                 Toast.makeText(binding.root.context, message, Toast.LENGTH_SHORT)
                     .show()
             } else {
-                val  login = binding.putLogin.text.trim().toString()
+                val login = binding.putLogin.text.trim().toString()
                 val password = binding.putPassword.text.trim().toString()
                 println("trim password, login")
-                viewModel.updateUser(login,password)//вьюмодель для
+                viewModel.updateUser(login, password)//вьюмодель для
                 findNavController().navigateUp()
             }
 
-    }
+//            todo
+//            В SignInFragment хотелось бы, чтобы сначала приходил результат,
+//            а потом была навигация. Сейчас наоборот.
+//            Вы можете добиться такого эффекта при помощи SingleLiveEvent
+
+        }
 
 
 
