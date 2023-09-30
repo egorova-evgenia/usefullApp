@@ -1,6 +1,7 @@
 package ru.netology.myapp
 
 import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.Menu
@@ -48,16 +49,44 @@ class EditFragment : Fragment() {
                     Toast.makeText(requireContext(),"ошибка загрузки", Toast.LENGTH_LONG)
                         .show()
                 }
+
                 Activity.RESULT_OK -> {
                     val uri = it.data?.data ?: return@registerForActivityResult
                     val file = uri.toFile()
                     val type = AttachmentType.IMAGE
-                    viewModel.changePhoto(AttachmentModel(uri, file, type))
+                    viewModel.changeAttachment(AttachmentModel(uri, file, type))
                 }
             }
         }
 
-        viewModel.postCreated.observe(viewLifecycleOwner){
+//        видео
+        val videoLauncher =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+                when (it.resultCode) {
+                    Activity.RESULT_CANCELED -> {
+                        Toast.makeText(requireContext(), "ошибка загрузки", Toast.LENGTH_LONG)
+                            .show()
+                    }
+
+                    Activity.RESULT_OK -> {
+                        val uri = it.data?.data ?: return@registerForActivityResult
+                        val file = uri.toFile()
+                        val type = AttachmentType.VIDEO
+                        viewModel.changeAttachment(AttachmentModel(uri, file, type))
+                    }
+                }
+            }
+//        добавляем видео
+        binding.addVideo.setOnClickListener {
+            val intent = Intent()
+                .setType("video/*")
+                .setAction(Intent.ACTION_GET_CONTENT)
+            videoLauncher.launch(intent)
+        }
+//
+// аудио добавляем аналогично
+
+        viewModel.postCreated.observe(viewLifecycleOwner) {
             viewModel.loadPosts()
             findNavController().navigateUp()
         }
@@ -83,11 +112,10 @@ class EditFragment : Fragment() {
                             viewModel.save()
                         }
                         true }
-//                    R.id.cancel ->{}
                     else -> { false  }
                 }
         }, viewLifecycleOwner)
-
+// добавляем фото через лаунчер
         binding.takePhoto.setOnClickListener {
             ImagePicker.with(this)
                 .crop()
@@ -104,12 +132,9 @@ class EditFragment : Fragment() {
                 .createIntent(photoLauncher::launch)
         }
 
-        viewModel.postCreated.observe(viewLifecycleOwner){
-            viewModel.loadPosts()
-            findNavController().navigateUp()
-        }
 
-        viewModel.photoState.observe(viewLifecycleOwner){
+
+        viewModel.attachmentState.observe(viewLifecycleOwner) {
             if (it == null) {
                 binding.attachmentContainer.isVisible = false
                 return@observe
@@ -119,13 +144,16 @@ class EditFragment : Fragment() {
         }
 
         binding.removePhoto.setOnClickListener {
-            viewModel.changePhoto(null)
+            viewModel.changeAttachment(null)
         }
 
         binding.cancel.setOnClickListener {
             viewModel.cancelEdit()
             findNavController().navigateUp()
         }
+
+
+
 
         return binding.root
     }

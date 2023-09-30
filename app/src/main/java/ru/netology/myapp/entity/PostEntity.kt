@@ -24,7 +24,7 @@ data class PostEntity(
     val link: String?,
 //    @TypeConverter
 //    @Embedded
-//    val likeOwnerIds:String? ,  //List<Int>?
+//    val likeOwnerIds:List<Int>?,  //String?
 //    @Embedded
 //    val mentionIds: List<Int>,
     val mentionMe: Boolean,
@@ -46,6 +46,7 @@ data class PostEntity(
             content = content,
             published = published,
             link = link,
+//            likeOwnerIds=likeOwnerIds,
 //            likeOwnerIds= likeOwnerIds?.let { toListInt(it) },
             mentionMe = mentionMe,
             likedByMe = likedByMe,
@@ -59,6 +60,7 @@ data class PostEntity(
                 dto.authorJob, dto.content, dto.published,
 
                 dto.link,
+//                dto.likeOwnerIds,
 //                dto.likeOwnerIds?.joinToString(","),
                 dto.mentionMe,
                 dto.likedByMe, dto.attachment, dto.ownedByMe

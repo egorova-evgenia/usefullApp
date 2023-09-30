@@ -20,6 +20,7 @@ class PostsAdapter(
         when (getItem(position)) {
             is Ad -> R.layout.card_ad
             is Post -> R.layout.card_post
+//            is
             null -> error("unknown item type")
         }
 

@@ -20,7 +20,7 @@ data class Post(
     val likedByMe: Boolean,
     val attachment: Attachment? = null,
     val ownedByMe: Boolean,
-    val users: List<UserPreview>? = null//
+    val users: Map<Int, UserPreview>? = null//
 ) : FeedItem
 
 data class Coordinates(

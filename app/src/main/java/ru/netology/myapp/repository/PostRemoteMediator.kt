@@ -31,7 +31,8 @@ class PostRemoteMediator(
                 LoadType.REFRESH -> {
                     println("here3 2" + postRemoteKeyDao.max())
                     if (postRemoteKeyDao.max() != null) {
-                        service.getAfter(postRemoteKeyDao.max()!!, state.config.pageSize)
+//                        state.config.pageSize
+                        service.getAfter(postRemoteKeyDao.max()!!, 1)
                     } else service.getLatest(state.config.pageSize)
                 }
 

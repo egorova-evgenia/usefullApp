@@ -165,12 +165,12 @@ class PostViewModel @Inject constructor(
         }
     }
 
-    private val _photoState = MutableLiveData<AttachmentModel?>()
-    val photoState: LiveData<AttachmentModel?>
-        get() = _photoState
+    private val _attachmentState = MutableLiveData<AttachmentModel?>()
+    val attachmentState: LiveData<AttachmentModel?>
+        get() = _attachmentState
 
-    fun changePhoto(photoModel: AttachmentModel?) {
-        _photoState.value = photoModel
+    fun changeAttachment(attachmentModel: AttachmentModel?) {
+        _attachmentState.value = attachmentModel
     }
 
     fun save() {
@@ -178,13 +178,13 @@ class PostViewModel @Inject constructor(
             _postCreated.value = Unit
             scope.launch {
                 try {
-                    when(_photoState.value) {
+                    when (_attachmentState.value) {
                         null -> repository.save(post)
-                        else -> _photoState.value?.file.let { file ->
+                        else -> _attachmentState.value?.file.let { file ->
                             repository.saveWithAttachment(
                                 post,
-                                _photoState.value!!,
-                                _photoState.value?.type
+                                _attachmentState.value!!,
+                                _attachmentState.value?.type
                             )
                         }
 
