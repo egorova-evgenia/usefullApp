@@ -1,74 +1,72 @@
 package ru.netology.myapp.entity
+
 import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.google.gson.annotations.SerializedName
 import ru.netology.myapp.dto.Attachment
-import ru.netology.myapp.dto.Post
+import ru.netology.myapp.dto.Event
 
 @Entity
-//@TypeConverters(PostConverter::class)
-data class PostEntity(
+data class EventEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Int,
     val authorId: Int,
     val author: String,
     val authorAvatar: String?,
     val authorJob: String?,
+    val datetime: String,
     val content: String,
     val published: String,
 //    @Embedded //??? вложенность
-
 //    val coords: String?,
-    val link: String?,
-//    @SerializedName
+//    val type: EventType,
+
 //    val likeOwnerIds:List<Int>?,  //String?
-//    @Embedded
-//    val mentionIds: List<Int>,
-    val mentionMe: Boolean,
     var likedByMe: Boolean,
+//    val speakerIds: List<Int>? = null,
+    val participatedByMe: Boolean,
     @Embedded
     val attachment: Attachment?,
+    val link: String?,
     val ownedByMe: Boolean,
 //    @Embedded
 //    val users: List<UserPreview>?,//todo что это???
+
+//    todo понадобится для crud
     val isRemoteSaved: Boolean = false,
 ) {
-    fun toDto() =
-        Post(
+    fun toEventDto(): Event =
+        Event(
             id = id,
             authorId = authorId,
             author = author,
             authorAvatar = authorAvatar,
             authorJob = authorJob,
+            datetime = datetime,
             content = content,
             published = published,
-            link = link,
-//            likeOwnerIds=likeOwnerIds,
-//            likeOwnerIds= likeOwnerIds?.let { toListInt(it) },
-            mentionMe = mentionMe,
             likedByMe = likedByMe,
+            participatedByMe = participatedByMe,
             attachment = attachment,
-            ownedByMe = ownedByMe
+            link = link,
+            ownedByMe = ownedByMe,
         )
 
     companion object {
-        fun fromDto(dto: Post) =
-            PostEntity(
+        fun fromDto(dto: Event) =
+            EventEntity(
                 dto.id, dto.authorId, dto.author, dto.authorAvatar,
-                dto.authorJob, dto.content, dto.published,
-
-                dto.link,
+                dto.authorJob, dto.datetime, dto.content, dto.published,
+                dto.likedByMe, dto.participatedByMe, dto.attachment,
+                dto.link, dto.ownedByMe
 //                dto.likeOwnerIds,
-                //   dto.likeOwnerIds?.joinToString(","),
-                dto.mentionMe,
-                dto.likedByMe, dto.attachment, dto.ownedByMe
+//                dto.likeOwnerIds?.joinToString(","),
+
             )
     }
 }
 
 
-fun List<PostEntity>.toDto(): List<Post> = map(PostEntity::toDto)
-fun List<Post>.toEntity(): List<PostEntity> = map(PostEntity::fromDto)
-
+fun List<EventEntity>.toDto(): List<Event> = map(EventEntity::toEventDto)
+fun List<Event>.toEntity(): List<EventEntity> = map(EventEntity::fromDto)
 

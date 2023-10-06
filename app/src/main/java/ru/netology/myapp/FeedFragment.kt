@@ -1,6 +1,5 @@
 package ru.netology.myapp
 
-import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -13,24 +12,30 @@ import androidx.core.view.MenuProvider
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
+import androidx.paging.PagingData
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.FlowCollector
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.combineTransform
+import kotlinx.coroutines.flow.merge
+import kotlinx.coroutines.flow.zip
 import kotlinx.coroutines.launch
 import ru.netology.myapp.adapter.PostEventListener
 import ru.netology.myapp.adapter.PostLoadingStateAdapter
 import ru.netology.myapp.adapter.PostsAdapter
 import ru.netology.myapp.auth.AppAuth
 import ru.netology.myapp.databinding.FragmentFeedBinding
+import ru.netology.myapp.dto.FeedItem
 import ru.netology.myapp.dto.Post
-import ru.netology.myapp.viewmodel.AuthDialogFragment
 import ru.netology.myapp.viewmodel.AuthViewModel
+import ru.netology.myapp.viewmodel.EventViewModel
 import ru.netology.myapp.viewmodel.PostViewModel
 import javax.inject.Inject
 
@@ -55,6 +60,7 @@ class FeedFragment : Fragment(
 
         val viewModel: PostViewModel by activityViewModels()
         val authViewModel: AuthViewModel by activityViewModels()
+        val eventViewModel: EventViewModel by activityViewModels()
 
         val adapter = PostsAdapter (
 
@@ -135,8 +141,16 @@ class FeedFragment : Fragment(
             }
         })
 
+        val dataToShow = merge(viewModel.postsData, eventViewModel.eventsData)
+//            combineTransform(
+//
+//
+//            transform: suspend FlowCollector<R>.(T1, T2, T3) -> Unit
+//        )
+
+
         lifecycleScope.launch {
-            viewModel.dataToShow.collectLatest {
+            eventViewModel.eventsData.collectLatest {
                 adapter.submitData(it)
             }
         }

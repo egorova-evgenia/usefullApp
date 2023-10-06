@@ -44,7 +44,7 @@ class PostRepositoryImp @Inject constructor(
 ) : PostRepository {
 
     @OptIn(ExperimentalPagingApi::class)
-    override val dataToShow: Flow<PagingData<FeedItem>> = Pager(
+    override val data: Flow<PagingData<FeedItem>> = Pager(
         config = PagingConfig(pageSize = 10, enablePlaceholders = false),
         pagingSourceFactory = { postDao.getPagingSource() },
         remoteMediator = PostRemoteMediator(
@@ -56,13 +56,6 @@ class PostRepositoryImp @Inject constructor(
     ).flow
         .map {
             it.map(PostEntity::toDto)
-                .insertSeparators { previous, _ ->
-                    if (previous?.id?.rem(5) == 0) {
-                        Ad(Random.nextInt(), "figma.jpg")
-                    } else {
-                        null
-                    }
-                }
         }
 
     override suspend fun likeById(id: Int) {
@@ -114,7 +107,7 @@ class PostRepositoryImp @Inject constructor(
         }
     }
 
-    override fun getPostById(id: Int): LiveData<Post?> =
+    override fun getItemById(id: Int): LiveData<Post?> =
         postDao.getById(id).map {
             it!!.toDto()
         }.asLiveData()

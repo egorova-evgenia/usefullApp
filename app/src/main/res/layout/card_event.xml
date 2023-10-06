@@ -43,12 +43,12 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/menu"
+        style="@style/Widget.AppTheme.button_style"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:contentDescription="@string/menu_description"
         app:icon="@drawable/ic_baseline_more_vert_24"
         app:iconTint="@color/usualGrey"
-        style="@style/Widget.AppTheme.button_style"
-        android:contentDescription="@string/menu_description"
         app:layout_constraintEnd_toEndOf="parent"
         tools:ignore="MissingConstraints" />
 
@@ -64,6 +64,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
+        android:textColor="@color/teal_700"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/barrier1" />
 
@@ -81,7 +82,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/url"
-        tools:src="@tools:sample/avatars"/>
+        tools:src="@tools:sample/avatars" />
 
     <androidx.constraintlayout.widget.Barrier
         android:id="@+id/barrier2"
@@ -92,31 +93,29 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/buttonLikes"
+        style="@style/Widget.AppTheme.LikeButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:contentDescription="@string/like_description"
         android:checkable="true"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/barrier2"
+        android:contentDescription="@string/like_description"
         app:icon="@drawable/ic_like"
         app:iconTint="@color/like_check_tint"
-        style="@style/Widget.AppTheme.LikeButton"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/barrier2"
         tools:isChecked="@sample/posts.json/data/iLiked"
-        tools:text="@sample/posts.json/data/likes"
-        />
+        tools:text="@sample/posts.json/data/likes" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/buttonShare"
+        style="@style/Widget.AppTheme.button_style"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:contentDescription="@string/share_description"
         app:icon="@drawable/ic_baseline_share_24"
         app:iconTint="@color/usualGrey"
-        style="@style/Widget.AppTheme.button_style"
         app:layout_constraintStart_toEndOf="@+id/buttonLikes"
         app:layout_constraintTop_toTopOf="@id/barrier2"
-        android:contentDescription="@string/share_description"
-        tools:text="@sample/posts.json/data/share"
-        />
+        tools:text="@sample/posts.json/data/share" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

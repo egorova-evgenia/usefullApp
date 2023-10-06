@@ -39,7 +39,6 @@ val empty = Post(
     null,
 )
 
-//@AndroidEntryPoint
 @HiltViewModel
 class PostViewModel @Inject constructor(
     private val repository: PostRepository,
@@ -49,9 +48,9 @@ class PostViewModel @Inject constructor(
 
 //    private val cached = repository.dataToShow.cachedIn(scope)
 
-    val dataToShow: Flow<PagingData<FeedItem>> = appAuth
+    val postsData: Flow<PagingData<FeedItem>> = appAuth
         .authStateFlow.flatMapLatest { (myId, _) ->
-            repository.dataToShow.map { posts ->
+            repository.data.map { posts ->
                 posts.map { post ->
                     if (post is Post) {
                         post.copy(ownedByMe = (post.authorId == myId))
@@ -87,13 +86,6 @@ class PostViewModel @Inject constructor(
         super.onCleared()
         scope.cancel()
     }
-
-
-//    fun findPost(id: Long): Post? {
-//        return _data.value?.posts?.find {
-//            it.id==id
-//        }
-//    }
 
     private val _postCreated = SingleLiveEvent<Unit>()
     val postCreated: LiveData<Unit>
@@ -208,11 +200,7 @@ class PostViewModel @Inject constructor(
         edited.value = empty // сброс текста
     }
 
-//    fun refresh() {
-//        loadPosts()
-//    }
-
-    fun getPostById(id: Int): LiveData<Post?> = repository.getPostById(id)
+    fun getPostById(id: Int): LiveData<Post?> = repository.getItemById(id)
 
 
 }

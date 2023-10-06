@@ -1,16 +1,10 @@
 package ru.netology.myapp.viewmodel
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
-import ru.netology.myapp.auth.AppAuth
-import ru.netology.myapp.db.AppDb
 import ru.netology.myapp.repository.PostRepository
-import ru.netology.myapp.repository.PostRepositoryImp
 import javax.inject.Inject
 
 

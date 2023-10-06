@@ -7,8 +7,10 @@ import androidx.recyclerview.widget.RecyclerView
 import ru.netology.myapp.BuildConfig
 import ru.netology.myapp.R
 import ru.netology.myapp.databinding.CardAdBinding
+import ru.netology.myapp.databinding.CardEventBinding
 import ru.netology.myapp.databinding.CardPostBinding
 import ru.netology.myapp.dto.Ad
+import ru.netology.myapp.dto.Event
 import ru.netology.myapp.dto.FeedItem
 import ru.netology.myapp.dto.Post
 
@@ -20,7 +22,7 @@ class PostsAdapter(
         when (getItem(position)) {
             is Ad -> R.layout.card_ad
             is Post -> R.layout.card_post
-//            is
+            is Event -> R.layout.card_event
             null -> error("unknown item type")
         }
 
@@ -30,6 +32,12 @@ class PostsAdapter(
                 val binding =
                     CardPostBinding.inflate(LayoutInflater.from(parent.context), parent, false)
                 PostViewHolder(binding, listener)
+            }
+
+            R.layout.card_event -> {
+                val binding =
+                    CardEventBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+                EventViewHolder(binding, listener)//todo сделать нового или общего слушателя
             }
 
             R.layout.card_ad -> {
@@ -45,6 +53,7 @@ class PostsAdapter(
         when (val item = getItem(position)) {
             is Ad -> (holder as? AdViewHolder)?.bind(item)
             is Post -> (holder as? PostViewHolder)?.bind(item)
+            is Event -> (holder as? EventViewHolder)?.bind(item)
             null -> error("unknown item type")
         }
     }

@@ -1,5 +1,6 @@
 package ru.netology.myapp.ServerService
 
+import androidx.lifecycle.LiveData
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Response
@@ -8,6 +9,7 @@ import ru.netology.myapp.auth.AuthState
 //import ru.netology.myapp.dto.ListPost
 import ru.netology.myapp.dto.Media
 import ru.netology.myapp.dto.Post
+import ru.netology.myapp.dto.User
 
 interface ApiService {
     // получение данных для paging
@@ -56,6 +58,9 @@ interface ApiService {
 
 //    @GET("users")
 //    suspend fun getAll(): Response<List<User>>
+
+    @GET("users/{user_id}")
+    suspend fun getUserById(@Path("user_id") id: Int): Response<LiveData<User>>
 
     @FormUrlEncoded
     @POST("users/authentication")

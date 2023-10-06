@@ -13,3 +13,14 @@ data class PostRemoteKeyEntity(
         AFTER, BEFORE
     }
 }
+
+@Entity
+data class EventRemoteKeyEntity(
+    @PrimaryKey
+    val type: KeyType,
+    val key: Int,
+) {
+    enum class KeyType {
+        AFTER, BEFORE
+    }
+}
