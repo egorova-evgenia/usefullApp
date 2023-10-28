@@ -1,7 +1,5 @@
 package ru.netology.myapp
 
-import ru.netology.myapp.R
-import ru.netology.myapp.StringArg
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -17,34 +15,27 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
-import androidx.paging.PagingData
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.FlowCollector
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.combineTransform
-import kotlinx.coroutines.flow.merge
-import kotlinx.coroutines.flow.zip
 import kotlinx.coroutines.launch
-import ru.netology.myapp.MediaPlayer.MediaLifecycleObserver
 import ru.netology.myapp.adapter.PostEventListener
 import ru.netology.myapp.adapter.PostLoadingStateAdapter
 import ru.netology.myapp.adapter.PostsAdapter
 import ru.netology.myapp.auth.AppAuth
+import ru.netology.myapp.databinding.FragmentEventBinding
 import ru.netology.myapp.databinding.FragmentFeedBinding
-import ru.netology.myapp.dto.FeedItem
 import ru.netology.myapp.dto.Post
 import ru.netology.myapp.viewmodel.AuthViewModel
 import ru.netology.myapp.viewmodel.EventViewModel
-import ru.netology.myapp.viewmodel.PostViewModel
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class FeedFragment : Fragment(
+class EventsFragment : Fragment(
+
 ) {
+
     @Inject
     lateinit var appAuth: AppAuth
 
@@ -53,94 +44,84 @@ class FeedFragment : Fragment(
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val binding = FragmentFeedBinding.inflate(
+        val binding = FragmentEventBinding.inflate(
             inflater,
             container,
             false
         )
 
-        val viewModel: PostViewModel by activityViewModels()
         val authViewModel: AuthViewModel by activityViewModels()
-//        val eventViewModel: EventViewModel by activityViewModels()
+        val eventViewModel: EventViewModel by activityViewModels()
 
-        val adapter = PostsAdapter (
+        val adapter = PostsAdapter(
 
-            object : PostEventListener{
+            object : PostEventListener {
                 override fun onLike(post: Post) {
-                    if (post.likedByMe) {
-                        viewModel.disLikeById(post.id)
-                    } else {
-                        viewModel.likeById(post.id)
-                    }
+//                    if (post.likedByMe) {
+//                        println(post.likedByMe)
+//                        eventViewModel.disLikeById(post.id)
+//                    } else {
+//                        println(post.likedByMe)
+//                        eventViewModel.likeById(post.id)
+//                    }
                 }
 
                 override fun onShare(post: Post) {
-                    val intent = Intent()
-                        .setAction(Intent.ACTION_SEND)
-                        .setType("text/plain")
-                    val createChooser = Intent.createChooser(intent, "Choose app")
-                    startActivity(createChooser)
-                    viewModel.shareById(post.id)
+//                    val intent = Intent()
+//                        .setAction(Intent.ACTION_SEND)
+//                        .setType("text/plain")
+//                    val createChooser = Intent.createChooser(intent, "Choose app")
+//                    startActivity(createChooser)
+//                    viewModel.shareById(post.id)
                 }
 
                 override fun onRemove(post: Post) {
-                    viewModel.removeById(post.id)
+//                    viewModel.removeById(post.id)
                 }
 
                 override fun onEdit(post: Post) {
-                    findNavController().navigate(
-                        R.id.action_feedFragment_to_editFragment,
-                        Bundle().apply
-                        { textArg = post.content }
-                    )
-                    viewModel.edit(post)
+//                    findNavController().navigate(
+//                        R.id.action_feedFragment_to_editFragment,
+//                        Bundle().apply
+//                        { textArg = post.content }
+//                    )
+//                    viewModel.edit(post)
                 }
 
                 override fun onCancelEdit(post: Post) {
-                    viewModel.edit(post)
+//                    viewModel.edit(post)
                 }
 
-                override fun onShowOnePost(post: Post){
-                    findNavController().navigate(
-                        R.id.action_feedFragment_to_onePostFragment,
-                        Bundle().apply
-                        { textArg = post.id.toString() }
-                    )
+                override fun onShowOnePost(post: Post) {
+//                    findNavController().navigate(
+//                        R.id.action_feedFragment_to_onePostFragment,
+//                        Bundle().apply
+//                        { textArg = post.id.toString() }
+//                    )
                 }
 
                 override fun onShowOneImage(post: Post) {
-                    findNavController().navigate(
-                        R.id.action_feedFragment_to_imageFragment,
-                        Bundle().apply
-                        { textArg = post.id.toString() }
-                    )
+//                    findNavController().navigate(
+//                        R.id.action_feedFragment_to_imageFragment,
+//                        Bundle().apply
+//                        { textArg = post.id.toString() }
+//                    )
                 }
 
                 override fun onShowVideoFragment(post: Post) {
-                    findNavController().navigate(
-                        R.id.action_feedFragment_to_videoFragment,
-                        Bundle().apply
-                        { textArg = post.id.toString() }
-                    )
+                    TODO("Not yet implemented")
                 }
 
-                //
                 override fun onControlAudio(post: Post) {
-                    var player = MediaLifecycleObserver()
-                    val resours = post.attachment?.url
-                    player.apply {
-                        if (resours != null) {
-                            mediaPlayer?.setDataSource(resours)
-                        }
-                    }.play()
+                    TODO("Not yet implemented")
                 }
 
                 override fun onShowUser(post: Post) {
-                    findNavController().navigate(
-                        R.id.action_feedFragment_to_userFragment,
-                        Bundle().apply
-                        { textArg = post.authorId.toString() }
-                    )
+//                    findNavController().navigate(
+//                        R.id.action_feedFragment_to_userFragment,
+//                        Bundle().apply
+//                        { textArg = post.authorId.toString() }
+//                    )
                 }
 
             }
@@ -159,8 +140,8 @@ class FeedFragment : Fragment(
 
         }
 
-        binding.toEvets.setOnClickListener {
-            findNavController().navigate(R.id.action_feedFragment_to_EventsFragment)
+        binding.toFeed.setOnClickListener {
+            findNavController().navigate(R.id.action_EventsFragment_to_feedFragment)
         }
 
         adapter.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
@@ -171,49 +152,28 @@ class FeedFragment : Fragment(
             }
         })
 
-//        val dataToShow = merge(viewModel.postsData, eventViewModel.eventsData)
-//            combineTransform(
-//            transform: suspend FlowCollector<R>.(T1, T2, T3) -> Unit
-//        )
-
-
         lifecycleScope.launch {
-            viewModel.postsData.collectLatest {
+            eventViewModel.eventsData.collectLatest {
                 adapter.submitData(it)
             }
         }
 
-        viewModel.dataState.observe(viewLifecycleOwner) { state ->
+        eventViewModel.dataState.observe(viewLifecycleOwner) { state ->
             binding.progress.isVisible = state.loading
 //            binding.errorGroup.isVisible = state.error
             binding.swiprefresh.isRefreshing = state.loading
             if (state.error) {
                 Snackbar.make(binding.root, "ошибка", Snackbar.LENGTH_LONG)
-                    .setAction("Retry") { viewModel.loadPosts() }
+                    .setAction("Retry") { eventViewModel.loadEvents() }
                     .show()
             }
         }
 
-//        viewModel.newerCount.observe(viewLifecycleOwner){
-//            println("Newer cout: $it")
-//            if (it != 0) {
-//                binding.showNewPost.visibility = View.VISIBLE
-//            }
-//        }
-
-//        binding.showNewPost.setOnClickListener {
-//            viewModel.changeHidden()
-//            binding.showNewPost.visibility = View.GONE
-//        }
-
         lifecycleScope.launch {
             adapter.loadStateFlow.collectLatest {
                 binding.swiprefresh.isRefreshing = it.refresh is LoadState.Loading
-//                        || it.append is LoadState.Loading
-//                        || it.prepend is LoadState.Loading
             }
         }
-
 
         binding.swiprefresh.setOnRefreshListener {
             adapter.refresh()
@@ -252,7 +212,7 @@ class FeedFragment : Fragment(
                         else -> false
                     }
                 }
-            }.apply { menuProvider = this },viewLifecycleOwner)
+            }.apply { menuProvider = this }, viewLifecycleOwner)
         }
         return binding.root
     }

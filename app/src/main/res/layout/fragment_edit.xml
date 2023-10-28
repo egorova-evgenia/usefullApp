@@ -33,17 +33,18 @@
                 android:padding="8dp"
                 android:hint="@string/write_your_text_input"
                 android:importantForAutofill="no"
-
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/editeModeText"
                 />
+<!--            tools:text="@sample/posts.json/data/content"-->
 
-            <FrameLayout
+            <LinearLayout
                 android:id="@+id/attachmentContainer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:visibility="gone"
+                android:orientation="vertical"
                 tools:visibility="visible">
 
                 <ImageView
@@ -54,60 +55,59 @@
                     android:layout_height="wrap_content"
                     android:visibility="gone" />
 
-                <!--                <ImageView-->
-                <!--                    android:id="@+id/videoPreview"-->
-                <!--                    android:layout_width="match_parent"-->
-                <!--                    android:layout_height="250dp"-->
-                <!--                    android:scaleType="centerCrop"-->
-                <!--                    app:layout_constraintEnd_toEndOf="parent"-->
-                <!--                    app:layout_constraintStart_toStartOf="parent"-->
-                <!--                    app:layout_constraintTop_toBottomOf="@id/url"-->
-                <!--                    tools:src="@tools:sample/backgrounds/scenic" />-->
+                <FrameLayout
+                    android:id="@+id/videoGroup"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    tools:visibility="visible">
 
+                    <ImageView
+                        android:id="@+id/video"
+                        android:layout_width="match_parent"
+                        android:layout_height="250dp"
+                        android:orientation="vertical"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/simple_background" />
 
-                <!--                <TextView-->
-                <!--                    android:id="@+id/title"-->
-                <!--                    android:layout_width="wrap_content"-->
-                <!--                    android:layout_height="wrap_content"-->
-                <!--                    android:textColor="#FF37332D"-->
-                <!--                    android:text="Песня"-->
-                <!--                    app:layout_constraintStart_toStartOf="parent"-->
-                <!--                    app:layout_constraintTop_toTopOf="parent"-->
-                <!--                    android:textSize="40sp"-->
-                <!--                    android:singleLine="true"-->
-                <!--                    android:ellipsize="end"-->
-                <!--                    tools:text="песня"-->
-                <!--                    />-->
+                    <ImageView
+                        android:id="@+id/play"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:layout_gravity="center|center"
+                        android:backgroundTint="@android:color/transparent"
+                        android:src="@drawable/baseline_play_circle_60" />
+                </FrameLayout>
 
-                <!--                <ImageView-->
-                <!--                    android:id="@+id/playOrPause"-->
-                <!--                    android:layout_width="wrap_content"-->
-                <!--                    android:layout_height="wrap_content"-->
-                <!--                    android:contentDescription="play or pause"-->
-                <!--                    app:layout_constraintTop_toTopOf="parent"-->
-                <!--                    app:layout_constraintEnd_toEndOf="parent"-->
-                <!--                    android:background="@android:color/transparent"-->
-                <!--                    android:src="@drawable/play_48"-->
-                <!--                    />-->
+                <FrameLayout
+                    android:id="@+id/audioGroup"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    tools:visibility="visible">
 
-                <!--                <ImageButton-->
-                <!--                    android:id="@+id/play"-->
-                <!--                    android:layout_width="60dp"-->
-                <!--                    android:layout_height="60dp"-->
-                <!--                    android:backgroundTint="@android:color/transparent"-->
-                <!--                    android:src="@drawable/baseline_play_circle_60"-->
-                <!--                    app:layout_constraintBottom_toBottomOf="@id/video"-->
-                <!--                    app:layout_constraintEnd_toEndOf="@id/video"-->
-                <!--                    app:layout_constraintStart_toStartOf="@id/video"-->
-                <!--                    app:layout_constraintTop_toTopOf="@id/video" />-->
+                    <TextView
+                        android:id="@+id/audioTitle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/purple_200"
+                        android:ellipsize="end"
+                        android:singleLine="true"
+                        android:text="Audio"
+                        android:textAllCaps="true"
+                        android:textColor="#FF37332D"
+                        android:textSize="60sp"
+                        android:textStyle="bold" />
 
-                <!--                <androidx.constraintlayout.widget.Group-->
-                <!--                    android:id="@+id/videoGroup"-->
-                <!--                    android:layout_width="wrap_content"-->
-                <!--                    android:layout_height="wrap_content"-->
-                <!--                    app:constraint_referenced_ids="video, play"-->
-                <!--                    android:visibility="visible"-->
-                <!--                    />-->
+                    <ImageView
+                        android:id="@+id/playOrPause"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center|end"
+                        android:background="@android:color/transparent"
+                        android:contentDescription="play or pause"
+                        android:src="@drawable/baseline_play_circle_60" />
+                </FrameLayout>
 
                 <Button
                     android:id="@+id/removePhoto"
@@ -116,8 +116,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="bottom|center" />
 
-            </FrameLayout>
-
+            </LinearLayout>
         </LinearLayout>
     </ScrollView>
 

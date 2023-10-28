@@ -12,6 +12,7 @@
         android:layout_height="48dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+
         tools:src="@tools:sample/avatars" />
 
     <TextView
@@ -76,19 +77,83 @@
         app:layout_constraintTop_toBottomOf="@+id/content"
         tools:text="@sample/posts.json/data/url" />
 
-    <ImageView
-        android:id="@+id/attachImage"
+
+    <LinearLayout
+        android:id="@+id/attachmentContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/url"
-        tools:src="@tools:sample/avatars"/>
+        android:orientation="vertical"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/content"
+        tools:visibility="visible">
+
+        <ImageView
+            android:id="@+id/attachImage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/url"
+            tools:src="@tools:sample/avatars" />
+
+        <FrameLayout
+            android:id="@+id/videoGroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/video"
+                android:layout_width="match_parent"
+                android:layout_height="250dp"
+                android:orientation="vertical"
+                android:scaleType="centerCrop"
+                android:src="@drawable/simple_background" />
+
+            <ImageView
+                android:id="@+id/play"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_gravity="center|center"
+                android:backgroundTint="@android:color/transparent"
+                android:src="@drawable/baseline_play_circle_60" />
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/audioGroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            tools:visibility="visible">
+
+            <TextView
+                android:id="@+id/audioTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/purple_200"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:text="Audio"
+                android:textAllCaps="true"
+                android:textColor="#FF37332D"
+                android:textSize="60sp"
+                android:textStyle="bold" />
+
+            <ImageView
+                android:id="@+id/playOrPause"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|end"
+                android:background="@android:color/transparent"
+                android:contentDescription="play or pause"
+                android:src="@drawable/baseline_play_circle_60" />
+        </FrameLayout>
+    </LinearLayout>
 
     <androidx.constraintlayout.widget.Barrier
         android:id="@+id/barrier2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:barrierDirection="bottom"
-        app:constraint_referenced_ids="url,content,attachImage" />
+        app:constraint_referenced_ids="url,content,attachmentContainer" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/buttonLikes"
@@ -115,7 +180,6 @@
         app:layout_constraintStart_toEndOf="@+id/buttonLikes"
         app:layout_constraintTop_toTopOf="@id/barrier2"
         android:contentDescription="@string/share_description"
-        tools:text="@sample/posts.json/data/share"
         />
 
 

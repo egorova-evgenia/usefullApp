@@ -22,7 +22,7 @@ class RegFragment: Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         val binding = FragmentRegBinding.inflate(
             inflater,
             container,
@@ -32,8 +32,12 @@ class RegFragment: Fragment() {
         val viewModel: RegViewModel by activityViewModels()
 
         binding.okButton.setOnClickListener {
-            if (binding.putLogin.text.isNullOrBlank()||binding.putPassword.text.isNullOrBlank()) {
-                Toast.makeText(binding.root.context, "введите все", Toast.LENGTH_SHORT)
+            if (binding.putLogin.text.isNullOrBlank() || binding.putPassword.text.isNullOrBlank()) {
+                Toast.makeText(
+                    binding.root.context,
+                    "Введите все необходимые данные",
+                    Toast.LENGTH_SHORT
+                )
                     .show()
             } else {
                 val  login = binding.putLogin.text.trim().toString()

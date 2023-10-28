@@ -7,11 +7,8 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import ru.netology.myapp.databinding.FragmentSignInBinding
 import androidx.navigation.fragment.findNavController
-import ru.netology.myapp.viewmodel.AuthViewModel
-import ru.netology.myapp.viewmodel.PostViewModel
 import ru.netology.myapp.viewmodel.SignInViewModel
 
 
@@ -30,8 +27,9 @@ class SignInFragment  : Fragment() {
         val viewModel: SignInViewModel by activityViewModels()
 
         binding.okButton.setOnClickListener {
-            if (binding.putLogin.text.isNullOrBlank()||binding.putPassword.text.isNullOrBlank()) {
-                val message = if (binding.putLogin.text.isNullOrBlank()) "введите логин" else "введите пароль"
+            if (binding.putLogin.text.isNullOrBlank() || binding.putPassword.text.isNullOrBlank()) {
+                val message =
+                    if (binding.putLogin.text.isNullOrBlank()) "введите логин" else "введите пароль"
                 Toast.makeText(binding.root.context, message, Toast.LENGTH_SHORT)
                     .show()
             } else {
@@ -39,8 +37,18 @@ class SignInFragment  : Fragment() {
                 val password = binding.putPassword.text.trim().toString()
                 println("trim password, login")
                 viewModel.updateUser(login, password)//вьюмодель для
+//                findNavController().navigateUp()
+            }
+
+            viewModel.resCreated.observe(viewLifecycleOwner) {
                 findNavController().navigateUp()
             }
+
+            viewModel.errorMessage.observe(viewLifecycleOwner) {
+                val message = viewModel.errorMessage.toString()
+                Toast.makeText(binding.root.context, message, Toast.LENGTH_SHORT).show()
+            }
+
 
 //            todo
 //            В SignInFragment хотелось бы, чтобы сначала приходил результат,

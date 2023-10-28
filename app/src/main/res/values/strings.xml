@@ -24,5 +24,10 @@
     <string name="noAccount">Еще нет аккаунта?</string>
     <string name="ad">ad</string>
     <string name="retry">Retry</string>
+    <string name="add_new_event">add new event</string>
+    <string name="jobs_list">JOBS List</string>
+    <string name="add">Add</string>
+    <string name="add_a_new_job">Add a new job</string>
+    <string name="play_or_pause">play or pause</string>
 
 </resources>

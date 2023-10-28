@@ -7,11 +7,6 @@
     android:id="@+id/signInGroup"
     android:background="@color/purple_200">
 
-<!--    <LinearLayout-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="match_parent"-->
-<!--        android:orientation="vertical">-->
-
     <EditText
         android:id="@+id/putLogin"
         android:layout_width="match_parent"
@@ -79,6 +74,5 @@
         android:layout_marginBottom="24dp"
         android:visibility="gone"
         />
-<!--    </LinearLayout>-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>

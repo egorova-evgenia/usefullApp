@@ -49,7 +49,6 @@ class EditFragment : Fragment() {
                     Toast.makeText(requireContext(),"ошибка загрузки", Toast.LENGTH_LONG)
                         .show()
                 }
-
                 Activity.RESULT_OK -> {
                     val uri = it.data?.data ?: return@registerForActivityResult
                     val file = uri.toFile()
@@ -59,7 +58,6 @@ class EditFragment : Fragment() {
             }
         }
 
-//        видео
         val videoLauncher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
                 when (it.resultCode) {
@@ -67,7 +65,6 @@ class EditFragment : Fragment() {
                         Toast.makeText(requireContext(), "ошибка загрузки", Toast.LENGTH_LONG)
                             .show()
                     }
-
                     Activity.RESULT_OK -> {
                         val uri = it.data?.data ?: return@registerForActivityResult
                         val file = uri.toFile()
@@ -83,8 +80,32 @@ class EditFragment : Fragment() {
                 .setAction(Intent.ACTION_GET_CONTENT)
             videoLauncher.launch(intent)
         }
-//
+
 // аудио добавляем аналогично
+
+        val audioLauncher =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+                when (it.resultCode) {
+                    Activity.RESULT_CANCELED -> {
+                        Toast.makeText(requireContext(), "ошибка загрузки", Toast.LENGTH_LONG)
+                            .show()
+                    }
+
+                    Activity.RESULT_OK -> {
+                        val uri = it.data?.data ?: return@registerForActivityResult
+                        val file = uri.toFile()
+                        val type = AttachmentType.VIDEO
+                        viewModel.changeAttachment(AttachmentModel(uri, file, type))
+                    }
+                }
+            }
+
+        binding.addVideo.setOnClickListener {
+            val intent = Intent()
+                .setType("video/*")
+                .setAction(Intent.ACTION_GET_CONTENT)
+            audioLauncher.launch(intent)
+        }
 
         viewModel.postCreated.observe(viewLifecycleOwner) {
             viewModel.loadPosts()
@@ -132,13 +153,37 @@ class EditFragment : Fragment() {
                 .createIntent(photoLauncher::launch)
         }
 
-
-
         viewModel.attachmentState.observe(viewLifecycleOwner) {
             if (it == null) {
                 binding.attachmentContainer.isVisible = false
                 return@observe
+            } else {
+                binding.attachmentContainer.isVisible = true
+                when (viewModel.attachmentState.value?.type) {
+                    AttachmentType.IMAGE -> {
+                        binding.photoPreview.isVisible = true
+                        binding.videoGroup.isVisible = false
+                        binding.audioGroup.isVisible = false
+                    }
+
+                    AttachmentType.VIDEO -> {
+                        binding.photoPreview.isVisible = false
+                        binding.videoGroup.isVisible = true
+                        binding.audioGroup.isVisible = false
+                    }
+
+                    AttachmentType.AUDIO -> {
+                        binding.photoPreview.isVisible = false
+                        binding.videoGroup.isVisible = false
+                        binding.audioGroup.isVisible = true
+                    }
+
+                    else -> {
+                        println(viewModel.attachmentState.value?.type.toString())
+                    }
+                }
             }
+
             binding.attachmentContainer.isVisible = true
             binding.photoPreview.setImageURI(it.uri)
         }
@@ -151,10 +196,6 @@ class EditFragment : Fragment() {
             viewModel.cancelEdit()
             findNavController().navigateUp()
         }
-
-
-
-
         return binding.root
     }
 

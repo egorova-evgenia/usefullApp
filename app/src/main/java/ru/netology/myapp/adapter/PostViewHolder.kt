@@ -7,6 +7,7 @@ import com.bumptech.glide.Glide
 import ru.netology.myapp.BuildConfig.BASE_URL
 import ru.netology.myapp.R
 import ru.netology.myapp.databinding.CardPostBinding
+import ru.netology.myapp.dto.AttachmentType
 import ru.netology.myapp.dto.Post
 //import ru.netology.myapp.numberToString
 
@@ -15,15 +16,45 @@ class PostViewHolder(
     val listener: PostEventListener
 ) : RecyclerView.ViewHolder(binding.root) {
     fun attach(post: Post) {
-//        $BASE_URL/media/
         println("att2+ " + post.attachment?.url)
         val url = "${post.attachment?.url}"
-        Glide.with(binding.attachImage)
-            .load(url)
-            .placeholder(R.drawable.baseline_downloading_100)
-            .error(R.drawable.baseline_font_download_off_24)
-            .timeout(10_000)
-            .into(binding.attachImage)
+
+        val type = post.attachment?.type
+        println(type.toString())
+        when (type) {
+            AttachmentType.IMAGE -> {
+                println("here image  " + url)
+                Glide.with(binding.attachImage)
+                    .load(url)
+//                    .placeholder(R.drawable.baseline_downloading_100)
+                    .error(R.drawable.baseline_font_download_off_24)
+                    .timeout(10_000)
+                    .into(binding.attachImage)
+                binding.videoGroup.isVisible = false
+                binding.audioGroup.isVisible = false
+                binding.attachImage.isVisible = true
+                binding.attachmentContainer.isVisible = true
+
+            }
+
+            AttachmentType.VIDEO -> {
+                binding.videoGroup.isVisible = true
+                binding.audioGroup.isVisible = false
+                binding.attachImage.isVisible = false
+                binding.attachmentContainer.isVisible = true
+            }
+
+            AttachmentType.AUDIO -> {
+                binding.audioGroup.isVisible = true
+                binding.videoGroup.isVisible = false
+                binding.attachImage.isVisible = false
+                binding.attachmentContainer.isVisible = true
+            }
+
+            else -> {
+                binding.attachmentContainer.isVisible = false
+            }
+        }
     }
 
     fun setAvatar(post: Post) {
@@ -41,7 +72,12 @@ class PostViewHolder(
             println("att+  " + post.attachment.url)
             attach(post)
         }
-        setAvatar(post)
+        if (post.authorAvatar != null) {
+            setAvatar(post)
+        } else {
+            binding.avatar.setImageResource(R.drawable.baseline_question_mark_24)
+        }
+
         binding.apply {
             content.text = post.content
             autor.text = post.author
@@ -90,6 +126,18 @@ class PostViewHolder(
 
             attachImage.setOnClickListener {
                 listener.onShowOneImage(post)
+            }
+
+            videoGroup.setOnClickListener {
+                listener.onShowVideoFragment(post)
+            }
+
+            playOrPause.setOnClickListener {
+                listener.onControlAudio(post)
+            }
+
+            avatar.setOnClickListener {
+                listener.onShowUser(post)
             }
         }
     }

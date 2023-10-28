@@ -1,10 +1,5 @@
 package ru.netology.myapp.adapter
 
-import android.content.Intent
-import android.os.Bundle
-import androidx.navigation.fragment.findNavController
-import ru.netology.myapp.FeedFragment.Companion.textArg
-import ru.netology.myapp.R
 import ru.netology.myapp.dto.Post
 
 interface PostEventListener{
@@ -15,4 +10,7 @@ interface PostEventListener{
     fun onCancelEdit(post: Post)
     fun onShowOnePost(post: Post)
     fun onShowOneImage(post: Post)//    fun refresh()
+    fun onShowVideoFragment(post: Post)
+    fun onControlAudio(post: Post)
+    fun onShowUser(post: Post)
 }

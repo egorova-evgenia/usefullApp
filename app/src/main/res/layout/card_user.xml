@@ -17,6 +17,7 @@
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        android:visibility="gone"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
@@ -29,8 +30,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/title"
-        tools:ignore="MissingConstraints"
-        tools:srcCompat="@tools:sample/avatars[5]" />
+        android:src="@drawable/anonimus"
+        tools:ignore="MissingConstraints" />
 
     <TextView
         android:id="@+id/name"
@@ -52,7 +53,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/name"
-        tools:text="РАБОТА" />
+        android:background="@color/purple_200"
+        android:text="@string/jobs_list" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/toShow"
@@ -70,14 +72,29 @@
         android:id="@+id/jobList"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:visibility="gone"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/toShow"
-        tools:listitem="@layout/card_jobs"
+        app:layout_constraintVertical_bias="0.0"
 
-        />
+        tools:listitem="@layout/card_jobs"
+        tools:visibility="visible" />
+
+    <Button
+        android:id="@+id/showNewPost"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:contentDescription="@string/add_a_new_job"
+        android:text="@string/add"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="@id/jobList"
+        app:layout_constraintTop_toBottomOf="@id/jobList"
+        tools:visibility="visible" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

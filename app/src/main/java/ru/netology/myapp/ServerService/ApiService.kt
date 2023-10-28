@@ -59,9 +59,6 @@ interface ApiService {
 //    @GET("users")
 //    suspend fun getAll(): Response<List<User>>
 
-    @GET("users/{user_id}")
-    suspend fun getUserById(@Path("user_id") id: Int): Response<LiveData<User>>
-
     @FormUrlEncoded
     @POST("users/authentication")
     suspend fun updateUser(

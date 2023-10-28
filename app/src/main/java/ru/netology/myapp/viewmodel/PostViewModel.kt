@@ -44,7 +44,7 @@ class PostViewModel @Inject constructor(
     private val repository: PostRepository,
     appAuth: AppAuth,
 ) : ViewModel() {
-    private val scope = MainScope()//page 14
+    private val scope = MainScope()
 
 //    private val cached = repository.dataToShow.cachedIn(scope)
 
@@ -74,8 +74,7 @@ class PostViewModel @Inject constructor(
     fun loadPosts() = scope.launch {
         try {
             _dataState.value = FeedModelState(loading = true)
-//            repository.getAll()
-            _dataState.value = FeedModelState()// обновляем MutableLiveData
+            _dataState.value = FeedModelState()
         } catch (e: Exception) {
             _dataState.value = FeedModelState(error = true)
         }
@@ -88,6 +87,8 @@ class PostViewModel @Inject constructor(
     }
 
     private val _postCreated = SingleLiveEvent<Unit>()
+
+    //    в editFrsgment
     val postCreated: LiveData<Unit>
         get() = _postCreated
 
@@ -201,6 +202,6 @@ class PostViewModel @Inject constructor(
     }
 
     fun getPostById(id: Int): LiveData<Post?> = repository.getItemById(id)
-
+    fun getListPostById(id: Int): List<Post?> = listOf<Post?>(getPostById(id).value)
 
 }

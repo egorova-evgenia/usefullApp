@@ -17,8 +17,7 @@
             app:enterAnim="@android:anim/fade_in"
             app:exitAnim="@android:anim/fade_out"
             app:popEnterAnim="@android:anim/fade_in"
-            app:popExitAnim="@android:anim/fade_out"
-        />
+            app:popExitAnim="@android:anim/fade_out" />
 
         <action
             android:id="@+id/action_feedFragment_to_onePostFragment"
@@ -26,8 +25,23 @@
             app:enterAnim="@android:anim/fade_in"
             app:exitAnim="@android:anim/fade_out"
             app:popEnterAnim="@android:anim/fade_in"
-            app:popExitAnim="@android:anim/fade_out"
-            />
+            app:popExitAnim="@android:anim/fade_out" />
+
+        <action
+            android:id="@+id/action_feedFragment_to_EventsFragment"
+            app:destination="@id/eventsFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out" />
+
+        <action
+            android:id="@+id/action_feedFragment_to_userFragment"
+            app:destination="@id/userFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out" />
 
         <action
             android:id="@+id/action_feedFragment_to_imageFragment"
@@ -35,8 +49,15 @@
             app:enterAnim="@android:anim/fade_in"
             app:exitAnim="@android:anim/fade_out"
             app:popEnterAnim="@android:anim/fade_in"
-            app:popExitAnim="@android:anim/fade_out"
-            />
+            app:popExitAnim="@android:anim/fade_out" />
+
+        <action
+            android:id="@+id/action_feedFragment_to_videoFragment"
+            app:destination="@id/VideoFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out" />
 
         <action
             android:id="@+id/action_feedFragment_to_signInFragment"
@@ -44,8 +65,7 @@
             app:enterAnim="@android:anim/fade_in"
             app:exitAnim="@android:anim/fade_out"
             app:popEnterAnim="@android:anim/fade_in"
-            app:popExitAnim="@android:anim/fade_out"
-            />
+            app:popExitAnim="@android:anim/fade_out" />
 
         <action
             android:id="@+id/action_feedFragment_to_regFragment"
@@ -62,8 +82,7 @@
             app:enterAnim="@android:anim/fade_in"
             app:exitAnim="@android:anim/fade_out"
             app:popEnterAnim="@android:anim/fade_in"
-            app:popExitAnim="@android:anim/fade_out"
-            />
+            app:popExitAnim="@android:anim/fade_out" />
 
     </fragment>
 
@@ -72,6 +91,12 @@
         android:name="ru.netology.myapp.OneImageFragment"
         android:label="fragment_one_image"
         tools:layout="@layout/fragment_one_image" />
+
+    <fragment
+        android:id="@+id/VideoFragment"
+        android:name="ru.netology.myapp.OneVideoFragment"
+        android:label="fragment_one_video"
+        tools:layout="@layout/fragment_one_video" />
 
     <fragment
         android:id="@+id/editFragment"
@@ -92,15 +117,20 @@
         app:popEnterAnim="@android:anim/fade_in"
         app:popExitAnim="@android:anim/fade_out"
         />
-    <action
-        android:id="@+id/action_onePostFragment_to_FeedFragment"
-        app:destination="@id/feedFragment"
-        app:enterAnim="@android:anim/fade_in"
-        app:exitAnim="@android:anim/fade_out"
-        app:popEnterAnim="@android:anim/fade_in"
-        app:popExitAnim="@android:anim/fade_out"
-        />
+        <action
+            android:id="@+id/action_onePostFragment_to_FeedFragment"
+            app:destination="@id/feedFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out" />
     </fragment>
+
+    <fragment
+        android:id="@+id/userFragment"
+        android:name="ru.netology.myapp.UserFragment"
+        android:label="fragment_user"
+        tools:layout="@layout/card_user" />
 
     <fragment
         android:id="@+id/signInGroup"
@@ -118,14 +148,30 @@
         android:id="@+id/auth_dialog"
         android:name="ru.netology.myapp.viewmodel.AuthDialogFragment">
 
-    <action
-        android:id="@+id/action_dialog_to_signInFragment"
-        app:destination="@id/signInGroup"
-        app:enterAnim="@android:anim/fade_in"
-        app:exitAnim="@android:anim/fade_out"
-        app:popEnterAnim="@android:anim/fade_in"
-        app:popExitAnim="@android:anim/fade_out"
-        />
+        <action
+            android:id="@+id/action_dialog_to_signInFragment"
+            app:destination="@id/signInGroup"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out" />
     </dialog>
+
+    <fragment
+        android:id="@+id/eventsFragment"
+        android:name="ru.netology.myapp.EventsFragment"
+        android:label="fragment_events"
+        tools:layout="@layout/fragment_event">
+
+
+        <action
+            android:id="@+id/action_EventsFragment_to_feedFragment"
+            app:destination="@id/feedFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out" />
+
+    </fragment>
 
 </navigation>

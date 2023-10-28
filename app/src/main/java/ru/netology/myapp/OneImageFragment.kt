@@ -27,20 +27,21 @@ class OneImageFragment : Fragment() {
         )
 
         val viewModel: PostViewModel by activityViewModels()
-
         val postId = arguments?.textArg?.toInt()
 
         if (postId != null) {
             val dataPost = viewModel.getPostById(postId)
-            val post = dataPost.value
-            val url = "$BASE_URL/media/${post!!.attachment?.url}"
-            Glide.with(binding.oneImage)
-                .load(url)
-                .error(R.drawable.baseline_font_download_off_24)
-                .timeout(10_000)
-                .into(binding.oneImage)
+            dataPost.observe(viewLifecycleOwner) {
+                val post = dataPost.value
+                val url = "${post?.attachment?.url}"
+                println("postdata1 url   " + url)
+                Glide.with(binding.oneImage)
+                    .load(url)
+                    .error(R.drawable.baseline_font_download_off_24)
+                    .timeout(10_000)
+                    .into(binding.oneImage)
+            }
         }
-
         return binding.root
     }
 }
