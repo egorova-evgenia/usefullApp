@@ -29,17 +29,13 @@ class PostRemoteMediator(
         try {
             val result = when (loadType) {
                 LoadType.REFRESH -> {
-                    println("here3 2" + postRemoteKeyDao.max())
                     if (postRemoteKeyDao.max() != null) {
-//
                         service.getAfter(postRemoteKeyDao.max()!!, state.config.pageSize)
                     } else service.getLatest(state.config.pageSize)
                 }
 
                 LoadType.PREPEND -> {
-//                    val id = postRemoteKeyDao.max() ?:
                     return MediatorResult.Success(false)
-//                    service.getAfter(id, state.config.pageSize)
                 }
 
                 LoadType.APPEND -> {
@@ -53,8 +49,6 @@ class PostRemoteMediator(
             }
 
             val body = result.body() ?: throw ApiError(result.code(), result.message())
-//            запись в базу данных
-
             if (body.isEmpty()) return MediatorResult.Success(false)
 
             appDb.withTransaction {
@@ -76,7 +70,6 @@ class PostRemoteMediator(
                                 )
                             )
                         } else {
-// ели пуст, то работает как рефреш, если с данными, как препенд
                             postRemoteKeyDao.insert(
                                 listOf(
                                     PostRemoteKeyEntity(

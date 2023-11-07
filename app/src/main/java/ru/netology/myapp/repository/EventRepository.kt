@@ -5,8 +5,7 @@ import androidx.paging.PagingData
 import kotlinx.coroutines.flow.Flow
 import ru.netology.myapp.dto.AttachmentType
 import ru.netology.myapp.dto.Event
-import ru.netology.myapp.dto.Post
-import ru.netology.myapp.viewmodel.AttachmentModel
+import ru.netology.myapp.viewmodel.AttachmentForSaving
 
 interface EventRepository {
     val data: Flow<PagingData<Event>>
@@ -18,7 +17,7 @@ interface EventRepository {
     suspend fun save(event: Event)
     suspend fun saveWithAttachment(
         event: Event,
-        attachItem: AttachmentModel,
+        attachItem: AttachmentForSaving,
         attachType: AttachmentType?
     )
 }

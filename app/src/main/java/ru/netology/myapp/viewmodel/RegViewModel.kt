@@ -15,11 +15,11 @@ class RegViewModel @Inject constructor(
 ) : ViewModel(){
     private val scope = MainScope()
 
-    private val _avatarState = MutableLiveData<AttachmentModel?>()
-    val photoState: LiveData<AttachmentModel?>
+    private val _avatarState = MutableLiveData<AttachmentForSaving?>()
+    val photoState: LiveData<AttachmentForSaving?>
         get() = _avatarState
 
-    fun changePhoto(photoModel: AttachmentModel?) {
+    fun changePhoto(photoModel: AttachmentForSaving?) {
         _avatarState.value = photoModel
     }
 

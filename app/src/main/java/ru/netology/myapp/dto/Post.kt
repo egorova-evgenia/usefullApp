@@ -14,8 +14,8 @@ data class Post(
     val published: String,
     val coords: Coordinates? = null,
     val link: String?,
-    val likeOwnerIds: List<Int>? = null,//
-    val mentionIds: List<Int>? = null,//
+    val likeOwnerIds: List<Int>,//
+    val mentionIds: List<Int>,//
     val mentionMe: Boolean,
     val likedByMe: Boolean,
     val attachment: Attachment? = null,
@@ -24,8 +24,8 @@ data class Post(
 ) : FeedItem
 
 data class Coordinates(
-    val lat: String,
-    val long: String,
+    val lat: Double,
+    val long: Double,
 )
 
 data class UserPreview(

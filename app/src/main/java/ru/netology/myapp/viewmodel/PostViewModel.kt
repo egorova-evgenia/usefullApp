@@ -30,8 +30,8 @@ val empty = Post(
     "",
     null,
     null,
-    null,
-    null,
+    listOf<Int>(),
+    listOf<Int>(),
     false,
     false,
     null,
@@ -158,12 +158,12 @@ class PostViewModel @Inject constructor(
         }
     }
 
-    private val _attachmentState = MutableLiveData<AttachmentModel?>()
-    val attachmentState: LiveData<AttachmentModel?>
+    private val _attachmentState = MutableLiveData<AttachmentForSaving?>()
+    val attachmentState: LiveData<AttachmentForSaving?>
         get() = _attachmentState
 
-    fun changeAttachment(attachmentModel: AttachmentModel?) {
-        _attachmentState.value = attachmentModel
+    fun changeAttachment(attachmentForSaving: AttachmentForSaving?) {
+        _attachmentState.value = attachmentForSaving
     }
 
     fun save() {
@@ -202,6 +202,5 @@ class PostViewModel @Inject constructor(
     }
 
     fun getPostById(id: Int): LiveData<Post?> = repository.getItemById(id)
-    fun getListPostById(id: Int): List<Post?> = listOf<Post?>(getPostById(id).value)
 
 }

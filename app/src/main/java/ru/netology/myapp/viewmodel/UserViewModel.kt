@@ -25,6 +25,9 @@ class UserViewModel @Inject constructor(
     appAuth: AppAuth,
 ) : ViewModel() {
 
+    val myId = appAuth
+        .authStateFlow.value.id
+
     override fun onCleared() {
         super.onCleared()
         viewModelScope.cancel()
@@ -44,7 +47,21 @@ class UserViewModel @Inject constructor(
         }
     }
 
-//    val myProfile: LiveData<User>
+
+    private var _myProfile = MutableLiveData<User>()
+    val myProfile: LiveData<User>
+        get() = _myProfile
+
+    fun getMyProfile() {
+        viewModelScope.launch {
+            try {
+                _myProfile.postValue(userRepository.getUserById(myId))
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+    }
+
 
     private val _userJobs = MutableLiveData<List<Job>>()
     val userJobs: LiveData<List<Job>>

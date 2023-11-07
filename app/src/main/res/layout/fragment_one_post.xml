@@ -6,126 +6,139 @@
     android:layout_height="match_parent"
     tools:context=".OnePostFragment">
 
-    <ImageView
-        android:id="@+id/avatar"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/list"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:src="@tools:sample/avatars" />
-
-    <TextView
-        android:id="@+id/autor"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:layout_marginStart="16dp"
-        android:ellipsize="end"
-        android:singleLine="true"
-        app:layout_constraintBottom_toTopOf="@+id/published"
-        app:layout_constraintStart_toEndOf="@+id/avatar"
-        app:layout_constraintTop_toTopOf="@+id/avatar"
-        tools:text="@sample/posts.json/data/autor" />
-
-    <TextView
-        android:id="@+id/published"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:ellipsize="end"
-        android:singleLine="true"
-        app:layout_constraintBottom_toBottomOf="@+id/avatar"
-        app:layout_constraintStart_toEndOf="@+id/avatar"
-        app:layout_constraintTop_toBottomOf="@+id/autor"
-        tools:text="@sample/posts.json/data/published" />
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/menu"
-        style="@style/Widget.AppTheme.button_style"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:contentDescription="@string/menu_description"
-        app:icon="@drawable/ic_baseline_more_vert_24"
-        app:iconTint="@color/usualGrey"
         app:layout_constraintEnd_toEndOf="parent"
-        tools:ignore="MissingConstraints" />
-
-    <androidx.constraintlayout.widget.Barrier
-        android:id="@+id/barrier1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:barrierDirection="bottom"
-        app:constraint_referenced_ids="avatar,published" />
-
-    <ScrollView
-        android:id="@+id/scrol"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/url"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/barrier1">
-
-        <TextView
-            android:id="@+id/content"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="16dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:ignore="MissingConstraints"
-            tools:text="@sample/posts.json/data/content" />
-
-    </ScrollView>
-
-    <TextView
-        android:id="@+id/url"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:textColor="#144BED"
-        app:layout_constraintBottom_toTopOf="@id/buttonLikes"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:text="@sample/posts.json/data/url" />
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/buttonLikes"
-        style="@style/Widget.AppTheme.LikeButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:checkable="true"
-        android:contentDescription="@string/like_description"
-        app:icon="@drawable/ic_like"
-        app:iconTint="@color/like_check_tint"
+        android:layout_width="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:isChecked="@sample/posts.json/data/iLiked"
-        tools:text="@sample/posts.json/data/likes" />
+        android:layout_height="0dp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:listitem="@layout/card_post" />
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/buttonShare"
-        style="@style/Widget.AppTheme.button_style"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:contentDescription="@string/share_description"
-        app:icon="@drawable/ic_baseline_share_24"
-        app:iconTint="@color/usualGrey"
-        app:layout_constraintBottom_toBottomOf="@+id/buttonLikes"
-        app:layout_constraintStart_toEndOf="@+id/buttonLikes"
-        app:layout_constraintTop_toTopOf="@+id/buttonLikes"
-        tools:text="@sample/posts.json/data/share" />
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/imageViewed"
-        style="@style/Widget.AppTheme.button_style"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@android:color/transparent"
-        android:contentDescription="@string/viewed_description"
-        app:icon="@drawable/ic_baseline_visibility_24"
-        app:layout_constraintBottom_toBottomOf="@+id/buttonLikes"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/buttonLikes" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <!--<ImageView-->
+    <!--android:id="@+id/avatar"-->
+    <!--android:layout_width="48dp"-->
+    <!--android:layout_height="48dp"-->
+    <!--app:layout_constraintStart_toStartOf="parent"-->
+    <!--app:layout_constraintTop_toTopOf="parent"-->
+    <!--tools:src="@tools:sample/avatars" />-->
+
+    <!--<TextView-->
+    <!--android:id="@+id/autor"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_margin="16dp"-->
+    <!--android:layout_marginStart="16dp"-->
+    <!--android:ellipsize="end"-->
+    <!--android:singleLine="true"-->
+    <!--app:layout_constraintBottom_toTopOf="@+id/published"-->
+    <!--app:layout_constraintStart_toEndOf="@+id/avatar"-->
+    <!--app:layout_constraintTop_toTopOf="@+id/avatar"-->
+    <!--tools:text="@sample/posts.json/data/autor" />-->
+
+    <!--<TextView-->
+    <!--android:id="@+id/published"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_marginStart="16dp"-->
+    <!--android:ellipsize="end"-->
+    <!--android:singleLine="true"-->
+    <!--app:layout_constraintBottom_toBottomOf="@+id/avatar"-->
+    <!--app:layout_constraintStart_toEndOf="@+id/avatar"-->
+    <!--app:layout_constraintTop_toBottomOf="@+id/autor"-->
+    <!--tools:text="@sample/posts.json/data/published" />-->
+
+    <!--<com.google.android.material.button.MaterialButton-->
+    <!--android:id="@+id/menu"-->
+    <!--style="@style/Widget.AppTheme.button_style"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:contentDescription="@string/menu_description"-->
+    <!--app:icon="@drawable/ic_baseline_more_vert_24"-->
+    <!--app:iconTint="@color/usualGrey"-->
+    <!--app:layout_constraintEnd_toEndOf="parent"-->
+    <!--tools:ignore="MissingConstraints" />-->
+
+    <!--<androidx.constraintlayout.widget.Barrier-->
+    <!--android:id="@+id/barrier1"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--app:barrierDirection="bottom"-->
+    <!--app:constraint_referenced_ids="avatar,published" />-->
+
+    <!--<ScrollView-->
+    <!--android:id="@+id/scrol"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="0dp"-->
+    <!--app:layout_constraintBottom_toTopOf="@+id/url"-->
+    <!--app:layout_constraintStart_toStartOf="parent"-->
+    <!--app:layout_constraintTop_toBottomOf="@+id/barrier1">-->
+
+    <!--<TextView-->
+    <!--    android:id="@+id/content"-->
+    <!--    android:layout_width="wrap_content"-->
+    <!--    android:layout_height="wrap_content"-->
+    <!--    android:layout_marginTop="16dp"-->
+    <!--    android:layout_marginBottom="16dp"-->
+    <!--    app:layout_constraintStart_toStartOf="parent"-->
+    <!--    app:layout_constraintTop_toTopOf="parent"-->
+    <!--    tools:ignore="MissingConstraints"-->
+    <!--    tools:text="@sample/posts.json/data/content" />-->
+
+    <!--</ScrollView>-->
+
+    <!--<TextView-->
+    <!--android:id="@+id/url"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_marginBottom="16dp"-->
+    <!--android:textColor="#144BED"-->
+    <!--app:layout_constraintBottom_toTopOf="@id/buttonLikes"-->
+    <!--app:layout_constraintStart_toStartOf="parent"-->
+    <!--tools:text="@sample/posts.json/data/url" />-->
+
+    <!--<com.google.android.material.button.MaterialButton-->
+    <!--android:id="@+id/buttonLikes"-->
+    <!--style="@style/Widget.AppTheme.LikeButton"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_marginTop="4dp"-->
+    <!--android:checkable="true"-->
+    <!--android:contentDescription="@string/like_description"-->
+    <!--app:icon="@drawable/ic_like"-->
+    <!--app:iconTint="@color/like_check_tint"-->
+    <!--app:layout_constraintBottom_toBottomOf="parent"-->
+    <!--app:layout_constraintStart_toStartOf="parent"-->
+    <!--tools:isChecked="@sample/posts.json/data/iLiked"-->
+    <!--tools:text="@sample/posts.json/data/likes" />-->
+
+    <!--<com.google.android.material.button.MaterialButton-->
+    <!--android:id="@+id/buttonShare"-->
+    <!--style="@style/Widget.AppTheme.button_style"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:contentDescription="@string/share_description"-->
+    <!--app:icon="@drawable/ic_baseline_share_24"-->
+    <!--app:iconTint="@color/usualGrey"-->
+    <!--app:layout_constraintBottom_toBottomOf="@+id/buttonLikes"-->
+    <!--app:layout_constraintStart_toEndOf="@+id/buttonLikes"-->
+    <!--app:layout_constraintTop_toTopOf="@+id/buttonLikes"-->
+    <!--tools:text="@sample/posts.json/data/share" />-->
+
+    <!--<com.google.android.material.button.MaterialButton-->
+    <!--android:id="@+id/imageViewed"-->
+    <!--style="@style/Widget.AppTheme.button_style"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:background="@android:color/transparent"-->
+    <!--android:contentDescription="@string/viewed_description"-->
+    <!--app:icon="@drawable/ic_baseline_visibility_24"-->
+    <!--app:layout_constraintBottom_toBottomOf="@+id/buttonLikes"-->
+    <!--app:layout_constraintEnd_toEndOf="parent"-->
+    <!--app:layout_constraintTop_toTopOf="@+id/buttonLikes" />-->

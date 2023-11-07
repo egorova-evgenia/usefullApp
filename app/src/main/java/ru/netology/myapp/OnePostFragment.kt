@@ -9,21 +9,8 @@ import android.widget.PopupMenu
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.map
-import androidx.navigation.fragment.findNavController
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
-import ru.netology.myapp.adapter.PostEventListener
-import ru.netology.myapp.adapter.PostsAdapter
-//import ru.netology.myapp.adapter.PostViewHolder
 import ru.netology.myapp.databinding.CardPostBinding
-import ru.netology.myapp.dto.Post
-import ru.netology.myapp.viewmodel.AuthViewModel
-import ru.netology.myapp.viewmodel.FeedModel
 import ru.netology.myapp.viewmodel.PostViewModel
-import ru.netology.myapp.viewmodel.empty
 
 class OnePostFragment : Fragment() {
     override fun onCreateView(
@@ -38,13 +25,6 @@ class OnePostFragment : Fragment() {
         )
         val viewModel: PostViewModel by activityViewModels()
 //        val authViewModel: AuthViewModel by activityViewModels()
-//
-//        val adapter = PostsAdapter (
-//
-//            object : PostEventListener {}
-//        )
-//        val postId = arguments?.textArg?.toInt()
-
 
         val postId = arguments?.textArg?.toInt()
         if (postId != null) {
@@ -54,6 +34,8 @@ class OnePostFragment : Fragment() {
 
             dataPost.observe(viewLifecycleOwner) {
                 val post = dataPost.value
+
+                println(post)
 //                binding.buttonLikes.text = numberToString(post.likes)
                 binding.apply {
 //

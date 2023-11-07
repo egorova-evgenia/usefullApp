@@ -22,7 +22,7 @@ import ru.netology.myapp.entity.PostRemoteKeyEntity
     version = 1,
     exportSchema = false
 )
-//@TypeConverters(PostConverter::class)
+@TypeConverters(PostConverter::class)
 abstract class AppDb : RoomDatabase() {
     abstract fun postDao(): PostDao
     abstract fun eventDao(): EventDao

@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.Flow
 import ru.netology.myapp.dto.AttachmentType
 import ru.netology.myapp.dto.FeedItem
 import ru.netology.myapp.dto.Post
-import ru.netology.myapp.viewmodel.AttachmentModel
+import ru.netology.myapp.viewmodel.AttachmentForSaving
 
 
 interface PostRepository {
@@ -19,7 +19,7 @@ interface PostRepository {
     suspend fun save(post: Post)
     suspend fun saveWithAttachment(
         post: Post,
-        attachItem: AttachmentModel,
+        attachItem: AttachmentForSaving,
         attachType: AttachmentType?
     )
 
@@ -30,7 +30,7 @@ interface PostRepository {
         login: String,
         password: String,
         name: String,
-        photo: AttachmentModel
+        photo: AttachmentForSaving
     )
 
 }

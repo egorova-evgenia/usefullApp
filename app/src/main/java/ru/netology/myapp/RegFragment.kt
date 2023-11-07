@@ -14,7 +14,7 @@ import androidx.navigation.fragment.findNavController
 import com.github.dhaval2404.imagepicker.ImagePicker
 import ru.netology.myapp.databinding.FragmentRegBinding
 import ru.netology.myapp.dto.AttachmentType
-import ru.netology.myapp.viewmodel.AttachmentModel
+import ru.netology.myapp.viewmodel.AttachmentForSaving
 import ru.netology.myapp.viewmodel.RegViewModel
 
 class RegFragment: Fragment() {
@@ -59,7 +59,7 @@ class RegFragment: Fragment() {
                     val uri = it.data?.data ?: return@registerForActivityResult
                     val file = uri.toFile()
                     val type = AttachmentType.IMAGE
-                    viewModel.changePhoto(AttachmentModel(uri, file, type))
+                    viewModel.changePhoto(AttachmentForSaving(uri, file, type))
                 }
             }
         }

@@ -21,13 +21,7 @@ import androidx.paging.PagingData
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.FlowCollector
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.combineTransform
-import kotlinx.coroutines.flow.merge
-import kotlinx.coroutines.flow.zip
 import kotlinx.coroutines.launch
 import ru.netology.myapp.MediaPlayer.MediaLifecycleObserver
 import ru.netology.myapp.adapter.PostEventListener
@@ -35,10 +29,8 @@ import ru.netology.myapp.adapter.PostLoadingStateAdapter
 import ru.netology.myapp.adapter.PostsAdapter
 import ru.netology.myapp.auth.AppAuth
 import ru.netology.myapp.databinding.FragmentFeedBinding
-import ru.netology.myapp.dto.FeedItem
 import ru.netology.myapp.dto.Post
 import ru.netology.myapp.viewmodel.AuthViewModel
-import ru.netology.myapp.viewmodel.EventViewModel
 import ru.netology.myapp.viewmodel.PostViewModel
 import javax.inject.Inject
 
@@ -61,7 +53,6 @@ class FeedFragment : Fragment(
 
         val viewModel: PostViewModel by activityViewModels()
         val authViewModel: AuthViewModel by activityViewModels()
-//        val eventViewModel: EventViewModel by activityViewModels()
 
         val adapter = PostsAdapter (
 

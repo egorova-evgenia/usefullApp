@@ -20,7 +20,7 @@ import androidx.navigation.fragment.findNavController
 import com.github.dhaval2404.imagepicker.ImagePicker
 import ru.netology.myapp.databinding.FragmentEditBinding
 import ru.netology.myapp.dto.AttachmentType
-import ru.netology.myapp.viewmodel.AttachmentModel
+import ru.netology.myapp.viewmodel.AttachmentForSaving
 import ru.netology.myapp.viewmodel.PostViewModel
 
 class EditFragment : Fragment() {
@@ -53,7 +53,7 @@ class EditFragment : Fragment() {
                     val uri = it.data?.data ?: return@registerForActivityResult
                     val file = uri.toFile()
                     val type = AttachmentType.IMAGE
-                    viewModel.changeAttachment(AttachmentModel(uri, file, type))
+                    viewModel.changeAttachment(AttachmentForSaving(uri, file, type))
                 }
             }
         }
@@ -69,7 +69,7 @@ class EditFragment : Fragment() {
                         val uri = it.data?.data ?: return@registerForActivityResult
                         val file = uri.toFile()
                         val type = AttachmentType.VIDEO
-                        viewModel.changeAttachment(AttachmentModel(uri, file, type))
+                        viewModel.changeAttachment(AttachmentForSaving(uri, file, type))
                     }
                 }
             }
@@ -95,7 +95,7 @@ class EditFragment : Fragment() {
                         val uri = it.data?.data ?: return@registerForActivityResult
                         val file = uri.toFile()
                         val type = AttachmentType.VIDEO
-                        viewModel.changeAttachment(AttachmentModel(uri, file, type))
+                        viewModel.changeAttachment(AttachmentForSaving(uri, file, type))
                     }
                 }
             }

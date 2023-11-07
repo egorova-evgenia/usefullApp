@@ -16,14 +16,11 @@ class PostViewHolder(
     val listener: PostEventListener
 ) : RecyclerView.ViewHolder(binding.root) {
     fun attach(post: Post) {
-        println("att2+ " + post.attachment?.url)
         val url = "${post.attachment?.url}"
 
         val type = post.attachment?.type
-        println(type.toString())
         when (type) {
             AttachmentType.IMAGE -> {
-                println("here image  " + url)
                 Glide.with(binding.attachImage)
                     .load(url)
 //                    .placeholder(R.drawable.baseline_downloading_100)
@@ -67,9 +64,7 @@ class PostViewHolder(
     }
 
     fun bind(post: Post) {
-        println("att5+ " + post.attachment?.url)
         if (post.attachment != null) {
-            println("att+  " + post.attachment.url)
             attach(post)
         }
         if (post.authorAvatar != null) {

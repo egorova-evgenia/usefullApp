@@ -6,7 +6,6 @@ import androidx.paging.ExperimentalPagingApi
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
-import androidx.paging.insertSeparators
 import androidx.paging.map
 
 import kotlinx.coroutines.flow.Flow
@@ -24,16 +23,14 @@ import ru.netology.myapp.auth.AppAuth
 import ru.netology.myapp.dao.PostDao
 import ru.netology.myapp.dao.PostRemoteKeyDao
 import ru.netology.myapp.db.AppDb
-import ru.netology.myapp.dto.Ad
 import ru.netology.myapp.dto.Attachment
 import ru.netology.myapp.dto.AttachmentType
 import ru.netology.myapp.dto.FeedItem
 import ru.netology.myapp.dto.Media
 import ru.netology.myapp.entity.PostEntity
-import ru.netology.myapp.viewmodel.AttachmentModel
+import ru.netology.myapp.viewmodel.AttachmentForSaving
 import java.io.IOException
 import javax.inject.Inject
-import kotlin.random.Random
 
 class PostRepositoryImp @Inject constructor(
     private val appAuth: AppAuth,
@@ -120,7 +117,9 @@ class PostRepositoryImp @Inject constructor(
                 throw ApiError(response.code(), response.message())
             }
             val body = response.body() ?: throw ApiError(response.code(), response.message())
+
             postDao.insert(PostEntity.fromDto(body).copy(isRemoteSaved = true))
+
         } catch (e: IOException) {
             throw NetworkError
         } catch (e: Exception) {
@@ -130,7 +129,7 @@ class PostRepositoryImp @Inject constructor(
 
     override suspend fun saveWithAttachment(
         post: Post,
-        attachItem: AttachmentModel,
+        attachItem: AttachmentForSaving,
         attachType: AttachmentType?
     ) {
         try {
@@ -153,7 +152,7 @@ class PostRepositoryImp @Inject constructor(
         }
     }
 
-    private suspend fun upload(attachItem: AttachmentModel): Media {
+    private suspend fun upload(attachItem: AttachmentForSaving): Media {
         try {
             val media = attachItem.file?.let {
                 MultipartBody.Part.createFormData(
@@ -220,7 +219,7 @@ class PostRepositoryImp @Inject constructor(
         login: String,
         password: String,
         name: String,
-        photo: AttachmentModel
+        photo: AttachmentForSaving
     ) {
         val media = photo.file?.let {
             MultipartBody.Part.createFormData(

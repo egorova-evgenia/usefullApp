@@ -16,10 +16,8 @@ import ru.netology.myapp.auth.AppAuth
 import ru.netology.myapp.dto.FeedItem
 import ru.netology.myapp.dto.Event
 import ru.netology.myapp.dto.EventType
-import ru.netology.myapp.dto.Post
 import ru.netology.myapp.eventsAndOther.SingleLiveEvent
 import ru.netology.myapp.repository.EventRepository
-import ru.netology.myapp.repository.PostRepository
 import javax.inject.Inject
 
 val newEventId = 0
@@ -136,12 +134,12 @@ class EventViewModel @Inject constructor(
         }
     }
 
-    private val _attachmentState = MutableLiveData<AttachmentModel?>()
-    val attachmentState: LiveData<AttachmentModel?>
+    private val _attachmentState = MutableLiveData<AttachmentForSaving?>()
+    val attachmentState: LiveData<AttachmentForSaving?>
         get() = _attachmentState
 
-    fun changeAttachment(attachmentModel: AttachmentModel?) {
-        _attachmentState.value = attachmentModel
+    fun changeAttachment(attachmentForSaving: AttachmentForSaving?) {
+        _attachmentState.value = attachmentForSaving
     }
 
     fun save() {

@@ -6,34 +6,26 @@ import androidx.paging.ExperimentalPagingApi
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
-import androidx.paging.insertSeparators
 import androidx.paging.map
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
-import ru.netology.myapp.ServerService.ApiService
 import ru.netology.myapp.ServerService.EventApiService
 import ru.netology.myapp.appError.ApiError
 import ru.netology.myapp.appError.NetworkError
 import ru.netology.myapp.appError.UnknownError
 import ru.netology.myapp.dao.EventDao
 import ru.netology.myapp.dao.EventRemoteKeyDao
-import ru.netology.myapp.dao.PostRemoteKeyDao
 import ru.netology.myapp.db.AppDb
-import ru.netology.myapp.dto.Ad
 import ru.netology.myapp.dto.Attachment
 import ru.netology.myapp.dto.AttachmentType
 import ru.netology.myapp.dto.Event
-import ru.netology.myapp.dto.FeedItem
 import ru.netology.myapp.dto.Media
-import ru.netology.myapp.dto.Post
 import ru.netology.myapp.entity.EventEntity
-import ru.netology.myapp.entity.PostEntity
-import ru.netology.myapp.viewmodel.AttachmentModel
+import ru.netology.myapp.viewmodel.AttachmentForSaving
 import java.io.IOException
 import javax.inject.Inject
-import kotlin.random.Random
 
 class EventRepositoryImpl @Inject constructor(
 //    private val appAuth: AppAuth,
@@ -130,7 +122,7 @@ class EventRepositoryImpl @Inject constructor(
 
     override suspend fun saveWithAttachment(
         event: Event,
-        attachItem: AttachmentModel,
+        attachItem: AttachmentForSaving,
         attachType: AttachmentType?
     ) {
         try {
@@ -153,7 +145,7 @@ class EventRepositoryImpl @Inject constructor(
         }
     }
 
-    private suspend fun upload(attachItem: AttachmentModel): Media {
+    private suspend fun upload(attachItem: AttachmentForSaving): Media {
         try {
             val media = attachItem.file?.let {
                 MultipartBody.Part.createFormData(
